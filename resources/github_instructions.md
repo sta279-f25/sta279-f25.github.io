@@ -32,15 +32,15 @@ Full details on these steps is provided below.
 
 ## Initial setup: File system + R + RStudio + Git + GitHub
 
-Before completing your first assignment, you will need to get all of your software set up and talking to each other. This means that you will need to install R and RStudio (if they are not already installed, or update them if needed), install Git, set up a GitHub account, and connect Git, GitHub, and RStudio. For the Git and GitHub setup, and the connection with RStudio, see the book [Happy Git and GitHub for the useR](https://happygitwithr.com/). You should also prepare a folder on your local computer that you will use for your classwork in 379 this semester.
+Before completing your first assignment, you will need to get all of your software set up and talking to each other. This means that you will need to install R and RStudio (if they are not already installed, or update them if needed), install Git, set up a GitHub account, and connect Git, GitHub, and RStudio. For the Git and GitHub setup, and the connection with RStudio, see the book [Happy Git and GitHub for the useR](https://happygitwithr.com/). You should also prepare a folder on your local computer that you will use for your classwork in 279 this semester.
 
 ### Step 1: Local file organization
 
-Create a folder on your local computer to store your work in this class. I would recommend calling it something like `sta379-s25-work`, and saving it somewhere permanent and accessible (NOT your Downloads folder, e.g.). For example, on my computer I created the folder `~/Documents/sta379-s25-work` (storing it under Documents). When you later accept assignments through GitHub Classroom, you should store them in this folder, with a subdirectory for each assignment.
+Create a folder on your local computer to store your work in this class. I would recommend calling it something like `sta279-f25-work`, and saving it somewhere permanent and accessible (NOT your Downloads folder, e.g.). For example, on my computer I created the folder `~/Documents/sta279-f25-work` (storing it under Documents). When you later accept assignments through GitHub Classroom, you should store them in this folder, with a subdirectory for each assignment.
 
 ### Step 2: Install or update R and RStudio
 
-Install or update R and RStudio; see the [R and RStudio installation instructions](https://sta379-s25.github.io/resources/r_installation/) on the course website, and [Chapter 5](https://happygitwithr.com/install-r-rstudio) of Happy Git with R. If you have not updated your versions of R and RStudio in a while, make sure to do so at the beginning of this course!
+Install or update R and RStudio; see the [R and RStudio installation instructions](https://sta279-f25.github.io/resources/r_installation/) on the course website, and [Chapter 5](https://happygitwithr.com/install-r-rstudio) of Happy Git with R. If you have not updated your versions of R and RStudio in a while, make sure to do so at the beginning of this course!
 
 ### Step 3: Set up a GitHub account and send me details
 
@@ -66,97 +66,93 @@ Once these initial steps are complete, proceed to the next section below, which 
 
 ## Your first assignment through GitHub
 
-This section describes the steps for accepting and submitting your first assignment on GitHub Classroom. The first time you do this, you will also join the GitHub Classroom for this course. To give you practice with these steps, I have created an **example assignment** which you can submit, and which I will walk you through in detail in this section, but which has no stakes and is not graded. For future assignments (homeworks, challenges, projects), your workflow will be very similar, with the difference that you will not need to re-join the classroom, and the specific assignment and repository names will change.
+This section describes the steps for accepting and submitting your first assignment on GitHub Classroom. The first time you do this, you will also join the GitHub Classroom for this course. To give you practice with these steps, I have created an **example assignment** which you can submit, and which I will walk you through in detail in this section. Completing this assignment is part of the course participation grade. For future assignments (homeworks, challenges, projects), your workflow will be very similar, with the difference that you will not need to re-join the classroom, and the specific assignment and repository names will change.
 
 ### Step 1: Open the assignment link
 
-Go to Canvas. Under Assignments, click on *Example assignment (ungraded)*. Click on the GitHub Classroom link provided in the assignment description.
+Go to Canvas. Under Assignments, click on *Example Assignment*. Click on the GitHub Classroom link provided in the assignment description.
 
 ### Step 2: Log in to GitHub
 
 If you are not already logged in, GitHub will prompt you to log in to your account:
 
-<img src="https://sta379-s25.github.io/resources/github_instruction_pictures/assignment_link_login.png" width="30%"/>
+<img src="https://sta279-f25.github.io/resources/github_instruction_pictures/assignment_link_login.png" width="30%"/>
 
 ### Step 3: Join the Classroom (only needs to be done once!)
 
-The first time you click on an assignment link, GitHub will ask you to join the GitHub Classroom for the course (`sta379-s25-compstats-classroom`). Click on your email address from the list of identifiers. **Important:** Once you click on an identifier, GitHub will link your account to that email address. Do not click on anyone else's email, only your own!
-
-<img src="https://sta379-s25.github.io/resources/github_instruction_pictures/github_classroom_join_classroom.png" width="40%"/>
+The first time you click on an assignment link, GitHub will ask you to join the GitHub Classroom for the course (`sta279-f25-statcomp-classroom`). Click on your email address from the list of identifiers. **Important:** Once you click on an identifier, GitHub will link your account to that email address. Do not click on anyone else's email, only your own!
 
 ### Step 4: Accept the assignment
 
 You will now be prompted to accept the assignment (in this case, `example-assignment`). This will give you access to a new repository on GitHub called `example-assignment-USERNAME` (e.g., `example-assignment-ciaran-evans`). Click the green "Accept this assignment" button.
 
-<img src="https://sta379-s25.github.io/resources/github_instruction_pictures/assignment_accept_assignment.png" width="40%"/>
+<img src="https://sta279-f25.github.io/resources/github_instruction_pictures/assignment_accept_assignment.png" width="40%"/>
 
-Once you have accepted the assignment, you will be taken to the assignment repository on GitHub (e.g., `example-assignment-ciaran-evans`). In the example assignment, there are two files already in the repository: `README.md` provides some information about the assignment (short because full assignment instructions are on the course website), and `example_template.R` provides an R script with starter code.
+Once you have accepted the assignment, you will be taken to the assignment repository on GitHub (e.g., `example-assignment-ciaran-evans`). In the example assignment, there are two files already in the repository: `README.md` provides some information about the assignment (short because full assignment instructions are on the course website), and `example_template.qmd` provides a Quarto file with starter code.
 
-<img src="https://sta379-s25.github.io/resources/github_instruction_pictures/assignment_landing_page.png" width="70%"/>
+<img src="https://sta279-f25.github.io/resources/github_instruction_pictures/assignment_landing_page.png" width="70%"/>
 
-If you click on the `example_template.R` file, for example, you will see an incomplete R function for calculating the mean, called `my_mean`. In most assignments, you will have one or more .R files, containing starter code and unit tests. Assignments involving C++ will also have one or more `.cpp` starter files.
+If you click on the `example_template.qmd` file, for example, you will see a chunk of R code with some errors that need fixing.
 
 ### Step 5: Clone the repository to your local computer
 
 Click the green "Code" button, and select HTTPS. You will see a web URL that you can copy to the clipboard:
 
-<img src="https://sta379-s25.github.io/resources/github_instruction_pictures/assignment_get_https.png" width="50%"/>
+<img src="https://sta279-f25.github.io/resources/github_instruction_pictures/assignment_get_https.png" width="50%"/>
 
 **(Important: if you have used the SSH key instead of Personal Access Token setup, e.g. because you are connecting from an RStudio server, then you should instead select "SSH" and copy the corresponding SSH URL)**
 
 Click the icon next to this URL to copy it to the clipboard
 
-<img src="https://sta379-s25.github.io/resources/github_instruction_pictures/assignment_copy_url_clipboard.png" width="60%"/>
+<img src="https://sta279-f25.github.io/resources/github_instruction_pictures/assignment_copy_url_clipboard.png" width="60%"/>
 
 
 Now open RStudio, and click *File* -> *New Project*. This will open the new project wizard. Select *Version Control*
 
-<img src="https://sta379-s25.github.io/resources/github_instruction_pictures/new_project_wizard_vc.png" width="40%"/>
+<img src="https://sta279-f25.github.io/resources/github_instruction_pictures/new_project_wizard_vc.png" width="40%"/>
 
 Then select *Git*
 
-<img src="https://sta379-s25.github.io/resources/github_instruction_pictures/new_project_wizard_git.png" width="40%"/>
+<img src="https://sta279-f25.github.io/resources/github_instruction_pictures/new_project_wizard_git.png" width="40%"/>
 
 The project wizard will then ask for Git repository info. 
 
 * Paste the URL you copied from GitHub into the "Repository URL" field. 
 * Under "Project directory name:", enter the assignment name (e.g., `example-assignment`). 
-* Under "Create project as subdirectory of:", browse and select the folder on your local computer that you created for your work in this class (e.g., `Documents/sta379-s25-work`). 
+* Under "Create project as subdirectory of:", browse and select the folder on your local computer that you created for your work in this class (e.g., `Documents/sta279-f25-work`). 
 * Select "Open in new session"
 * Then click "Create Project".
 
-<img src="https://sta379-s25.github.io/resources/github_instruction_pictures/new_project_wizard_directory_info.png" width="40%"/>
+<img src="https://sta279-f25.github.io/resources/github_instruction_pictures/new_project_wizard_directory_info.png" width="40%"/>
 
 This will clone the repository from GitHub to your local computer, and will create a new R project in that repository. This project will then be opened as a new RStudio session on your computer. In the new RStudio session, click the Files viewer (next to Plots, in one of the four panes). You should see the files for the example assignment repository:
 
-<img src="https://sta379-s25.github.io/resources/github_instruction_pictures/new_project_file_listing.png" width="50%"/>
+<img src="https://sta279-f25.github.io/resources/github_instruction_pictures/new_project_file_listing.png" width="50%"/>
 
 It is possible that the first time you try to clone/pull/push from RStudio, you will be asked to enter your GitHub username (e.g., `ciaran-evans`) and your password (that is, your Personal Access Token, not the password you use to sign in to GitHub on the browser):
 
-<img src="https://sta379-s25.github.io/resources/github_instruction_pictures/enter_git_token.png" width="50%"/>
+<img src="https://sta279-f25.github.io/resources/github_instruction_pictures/enter_git_token.png" width="50%"/>
 
 
 ### Step 6: Pull
 
 In one of the panes on RStudio, you should see a *Git* tab, which has the Git tools (pull, staging, commit, and push) that we will use to save work and interact with GitHub:
 
-<img src="https://sta379-s25.github.io/resources/github_instruction_pictures/new_assignment_pull_first.png" width="60%"/>
+<img src="https://sta279-f25.github.io/resources/github_instruction_pictures/new_assignment_pull_first.png" width="60%"/>
 
 Before doing work in the repository, pull from the remote GitHub repository (click the "Pull" arrow, pointing down). Try to make this a habit whenever you start work on an assignment, or go back to an assignment you have worked on previously. If you are the only one making changes to a repository, and you are only using one computer, then it won't really matter, but it is still a good habit for the future. However, if you are working on the same code across multiple computers, or collaborating with other people, then pulling first is very important!
 
 Because nothing has changed on the remote repository, you will get a message saying everything is up to date:
 
-<img src="https://sta379-s25.github.io/resources/github_instruction_pictures/new_assignment_pull_uptodate.png" width="60%"/>
+<img src="https://sta279-f25.github.io/resources/github_instruction_pictures/new_assignment_pull_uptodate.png" width="60%"/>
 
 ### Step 7: Work on the assignment
 
-In this example assignment, you are asked to write a function in R to calculate the mean of a vector, *without* using the existing `mean` function. Open the `example_template.R` file from the assignment repository. You will see the stub of the `my_mean` function, asking you to fill it in.
+In this example assignment, you are asked to fix errors in a chunk of R code. Open the `example_template.qmd` file from the assignment repository. You will see the chunk that you need to fix. 
 
-Suppose that you write the following (incorrect!) code, and save the R script:
+At the very top of the Quarto file, enter your name in the `author` field. Also, make sure that the `format` field is `gfm` (this will allow the rendered document to appear nicely on GitHub).
 
-<img src="https://sta379-s25.github.io/resources/github_instruction_pictures/example_assignment_initial_incorrect_code.png" width="60%"/>
-
-You then want to go ahead and submit your completed assignment.
+Now go ahead and fix the errors in the R chunk. When you are done, **Render** the Quarto file; this should produce a `.md` file in your repository. 
 
 ### Step 8: Commit your changes
 
@@ -164,21 +160,21 @@ Once you have made changes in the repository (e.g., made progress writing a func
 
 For an extended homework, challenge, or project, you should commit multiple times. In a homework assignment, plan to commit after you finish each coding question. In a project, plan to commit after you write a cohesive section of the code (e.g., some important helper functions).
 
-To make a commit, go to the Git panel in RStudio, where you will see any files which have changed since the last commit. You can ignore non-code files, like the .gitignore and the .Rproj files. Select the box next to the code files (.R, .cpp, etc) to *stage* them for a commit (if you have used Git previously, this is just doing a `git add`):
+To make a commit, go to the Git panel in RStudio, where you will see any files which have changed since the last commit. You can ignore files like the .gitignore and the .Rproj files. Select the box next to the files for your work (.R, .qmd, .md, etc) to *stage* them for a commit (if you have used Git previously, this is just doing a `git add`). In the example assignment, you should stage the `example_template.qmd` and `example_template.md` files.
 
-<img src="https://sta379-s25.github.io/resources/github_instruction_pictures/example_assignment_staging.png" width="60%"/>
+<img src="https://sta279-f25.github.io/resources/github_instruction_pictures/example_assignment_staging.png" width="60%"/>
 
 Once you have selected all the files you wish to commit, click the "Commit" box. This will open a new window for the commit, in which you can see the selected files you staged, and the changes you have made to those files (insertions are in green, deletions are in red):
 
-<img src="https://sta379-s25.github.io/resources/github_instruction_pictures/example_assignment_initial_commit_box1.png" width="60%"/>
+<img src="https://sta279-f25.github.io/resources/github_instruction_pictures/example_assignment_initial_commit_box1.png" width="60%"/>
 
 In the top right, you can also see a box to add a commit message. Enter a short, meaningful message here to describe the commit:
 
-<img src="https://sta379-s25.github.io/resources/github_instruction_pictures/example_assignment_initial_commit_message.png" width="60%"/>
+<img src="https://sta279-f25.github.io/resources/github_instruction_pictures/example_assignment_initial_commit_message.png" width="60%"/>
 
 Then click the "Commit" button below the message box. You should see a pop-up "Git Commit" box once the commit is complete:
 
-<img src="https://sta379-s25.github.io/resources/github_instruction_pictures/example_assignment_initial_commit_completed.png" width="60%"/>
+<img src="https://sta279-f25.github.io/resources/github_instruction_pictures/example_assignment_initial_commit_completed.png" width="60%"/>
 
 You can close the commit boxes now.
 
@@ -186,21 +182,21 @@ You can close the commit boxes now.
 
 Now you have committed changes to your local Git repository, which means that there is a difference between the version of the code on your local machine, and the version on the remote repository. Indeed, in the Git tab on RStudio, you can see that there is a message saying that your local branch is *ahead* of the remote branch (`origin/main`) by 1 commit:
 
-<img src="https://sta379-s25.github.io/resources/github_instruction_pictures/example_assignment_branch_ahead_after_commit.png" width="60%"/>
+<img src="https://sta279-f25.github.io/resources/github_instruction_pictures/example_assignment_branch_ahead_after_commit.png" width="60%"/>
 
 We want to share the changes in our code with the remote repository. First, if the remote repository on GitHub is up-to-date, you could access your current code from other computers, and collaborators can have the latest edits. Second, if something happens to your local computer, you still have a back-up of all your code on the remote repository. And finally, for the purposes of this class, pushing to GitHub is how you will share your code with me for grading and feedback!
 
 A *push* is how we send code from a local repository to GitHub (whereas a *pull*, recall, is how we go the other way to get code from GitHub to our local computer). Once you have committed your latest changes, click the "Push" button (green arrow, pointing up) in the Git panel in RStudio. You should get a message saying that your changes have been pushed to GitHub:
 
-<img src="https://sta379-s25.github.io/resources/github_instruction_pictures/example_assignment_push_completed.png" width="60%"/>
+<img src="https://sta279-f25.github.io/resources/github_instruction_pictures/example_assignment_push_completed.png" width="60%"/>
 
 You can close the pop-up message. Once you have pushed to GitHub, go to your web browser and navigate to the repository on GitHub. In the file list, you can see the corresponding commit message next to the file(s) that you have changed:
 
-<img src="https://sta379-s25.github.io/resources/github_instruction_pictures/example_assignment_updated_file1.png" width="60%"/>
+<img src="https://sta279-f25.github.io/resources/github_instruction_pictures/example_assignment_updated_file1.png" width="60%"/>
 
 If you click on the file, you can see that the updated version is now on GitHub:
 
-<img src="https://sta379-s25.github.io/resources/github_instruction_pictures/example_assignment_updated_file2.png" width="60%"/>
+<img src="https://sta279-f25.github.io/resources/github_instruction_pictures/example_assignment_updated_file2.png" width="60%"/>
 
 As with commits, you should push to GitHub multiple times throughout the course of working on your assignment. As a rule, push each time you make a commit.
 
@@ -211,58 +207,32 @@ Once you have completed the assignment and pushed the final version of your work
 
 In the GitHub repository, navigate to the "Pull requests" tab. There should be one open pull request, called "Feedback":
 
-<img src="https://sta379-s25.github.io/resources/github_instruction_pictures/example_assignment_pull_request_navigation.png" width="60%"/>
+<img src="https://sta279-f25.github.io/resources/github_instruction_pictures/example_assignment_pull_request_navigation.png" width="60%"/>
 
 Click on this pull request. The pull request has tabs for Conversation (for us to make comments on the code), Commits, Checks (ignore this for now), and Files changed. Under the Conversation tab, you can see some information automatically populated by GitHub Classroom, and a list of the commits to the repository:
 
-<img src="https://sta379-s25.github.io/resources/github_instruction_pictures/example_assignment_feedback_pr.png" width="60%"/>
+<img src="https://sta279-f25.github.io/resources/github_instruction_pictures/example_assignment_feedback_pr.png" width="60%"/>
 
 **Very Important: DO NOT close or merge the pull request!** You should only ever request reviews and make comments.
 
 To request feedback from me, click on the gears symbol next to "Reviewers" on the right:
 
-<img src="https://sta379-s25.github.io/resources/github_instruction_pictures/example_assignment_pr_request_review_1.png" width="40%"/>
+<img src="https://sta279-f25.github.io/resources/github_instruction_pictures/example_assignment_pr_request_review_1.png" width="40%"/>
 
 Click on my name (`ciaran-evans`) from the list that comes up:
 
-<img src="https://sta379-s25.github.io/resources/github_instruction_pictures/example_assignment_pr_request_reviewer_2.png" width="40%"/>
+<img src="https://sta279-f25.github.io/resources/github_instruction_pictures/example_assignment_pr_request_reviewer_2.png" width="40%"/>
 
 You should see that I have been assigned to review the code, and you are waiting for my comments:
 
-<img src="https://sta379-s25.github.io/resources/github_instruction_pictures/example_assignment_request_reviewer_3.png" width="40%"/>
+<img src="https://sta279-f25.github.io/resources/github_instruction_pictures/example_assignment_request_reviewer_3.png" width="40%"/>
 
 
 ### Step 11: I provide feedback
 
-Now it is my turn to look at your code, and provide feedback. For this example assignment, the initial code submitted was sadly incorrect, so my comments might look something like this:
+Now it is my turn to look at your code, and provide feedback. I will leave comments on your code, and summarize your overall performance on the assignment:
 
-<img src="https://sta379-s25.github.io/resources/github_instruction_pictures/example_assignment_review_requested.png" width="60%"/>
+<img src="https://sta279-f25.github.io/resources/github_instruction_pictures/example_assignment_review_requested.png" width="60%"/>
 
-As you can see, I have left comments describing what needs to be done differently, and I have requested changes to the code.
 
-**If you have Not yet mastered the assignment, I will request changes. If you have Mastered the assignment (or at least the coding portion), I will instead accept your code.**
-
-### Step 12: Revise code (if needed)
-
-If you have not yet mastered the assignment and changes are requested, you will now make changes to the code to address feedback:
-
-<img src="https://sta379-s25.github.io/resources/github_instruction_pictures/example_assignment_correct_r_code.png" width="50%"/>
-
-Following the same workflow as before, stage and commit the changes:
-
-<img src="https://sta379-s25.github.io/resources/github_instruction_pictures/example_assignment_corrected_code_commit.png" width="60%"/>
-
-Then push to GitHub; on GitHub, you should see that the file(s) are updated with your new code:
-
-<img src="https://sta379-s25.github.io/resources/github_instruction_pictures/example_assignment_corrected_code_github.png" width="50%"/>
-
-### Step 13: Re-request review (if needed)
-
-When you are finished revising your code to address all feedback from the initial submission, and you have committed and pushed the revised code to GitHub, it is time to ask me to review your revised code. In the feedback pull request, go to the right, where you should see my name under "Reviewers":
-
-<img src="https://sta379-s25.github.io/resources/github_instruction_pictures/feedback_pr_rerequest_review.png" width="40%"/>
-
-Click the spinny arrows next to my name to re-request a review from me. If you have mastered the assignment after submitting the revision, I will approve the changes after reviewing the code, and I will leave you a comment letting you know that you have mastered the assignment (or at least the coding portion):
-
-<img src="https://sta379-s25.github.io/resources/github_instruction_pictures/feedback_pr_changes_approved.png" width="60%"/>
 
