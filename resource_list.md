@@ -7,6 +7,13 @@ description: >-
 
 # Course resources
 
+* Software instructions and documentation:
+
+    * [R installation instructions](https://sta279-f25.github.io/resources/r_installation/)
+    * [Git and GitHub assignment instructions](https://sta279-f25.github.io/resources/github_instructions/)
+    * [Happy Git and GitHub for the useR](https://happygitwithr.com/) (excellent reference for setting up and using Git and GitHub with RStudio)
+    * [R cheatsheets](https://posit.co/resources/cheatsheets/)
+    
 * Reference books:
 
 	* [Modern Data Science with R (3rd edition)](https://mdsr-book.github.io/mdsr3e/)
@@ -15,16 +22,7 @@ description: >-
 	* [R for Data Science (2nd edition)](https://r4ds.hadley.nz/)
 	* [Python for Data Analysis (3rd edition)](https://wesmckinney.com/book/)
 
-* [Software installation instructions](https://sta279-f23.github.io/resources/software_installation/)
+* Other helpful resources for R, statistics, and data science:
 
-* [R cheatsheets](https://posit.co/resources/cheatsheets/)
-
-Other helpful resources for R, statistics, and data science:
-
-* [OpenIntro](https://www.openintro.org/book/os/)
-
-* [Visual and Statistical Thinking](https://www.edwardtufte.com/tufte/books_textb)
-
-* [swirl package](https://swirlstats.com/)
-
-* [StackOverflow](https://stackoverflow.com/) 
+    * [OpenIntro](https://www.openintro.org/book/os/)
+    * [StackOverflow](https://stackoverflow.com/) 
