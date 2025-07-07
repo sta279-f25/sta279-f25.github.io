@@ -1,21 +1,24 @@
 ---
-title: Simulation and iteration
+title: Beginning data wrangling
 ---
 
-August 28
-: Introduction to simulation
-  : [slides (html)](https://sta279-f23.github.io/slides/lecture_1.html), [slides (pdf)](https://sta279-f23.github.io/slides/lecture_1.pdf), [Class Activity](https://sta279-f23.github.io/class_activities/ca_lecture_1.html), [Class Activity Solutions](https://sta279-f23.github.io/class_activities/ca_lecture_1_solutions.html)
+August 25
+: Course introduction and motivation
+  : [slides (html)](https://sta279-f25.github.io/slides/lecture_01.html), [slides (pdf)](https://sta279-f25.github.io/slides/lecture_01.pdf), [Class Activity](https://sta279-f23.github.io/class_activities/ca_01.html)
 
-: Install R, RStudio, Python 
-  : [Software installation](https://sta279-f23.github.io/resources/software_installation/)
+: Install R, RStudio
+  : [Software installation](https://sta279-f25.github.io/resources/r_installation/)
 
-August 30
-: Simulation
-  : [slides (html)](https://sta279-f23.github.io/slides/lecture_2.html), [slides (pdf)](https://sta279-f23.github.io/slides/lecture_2.pdf)
+August 27
+: Data wrangling fundamentals
 
-September 1
-: Designing simulations
-  : [slides (html)](https://sta279-f23.github.io/slides/lecture_3.html), [slides (pdf)](https://sta279-f23.github.io/slides/lecture_3.pdf), [Class Activity](https://sta279-f23.github.io/class_activities/ca_lecture_3.html)
+: Reading for Friday's class
+  : [Chapter 3, R4DS](https://r4ds.hadley.nz/data-transform.html), [Chapter 4, MDSR](https://mdsr-book.github.io/mdsr3e/04-dataI.html)
+
+August 29
+: Data wrangling fundamentals
 
 : **Homework 1 released**{: .label .label-yellow }
-  : [HW 1](https://sta279-f23.github.io/homework/hw1.html)
+  : [HW 1](https://sta279-f25.github.io/homework/hw_01.html)
+  
+: Complete the [Git and GitHub setup](https://sta279-f25.github.io/resources/github_instructions/) and example assignment for Monday's class
