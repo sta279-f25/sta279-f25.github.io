@@ -1,0 +1,124 @@
+---
+title: "Introduction"
+format: 
+  revealjs:
+    theme: theme.scss
+editor: source
+execute: 
+  echo: true
+editor_options: 
+  chunk_output_type: console
+---
+
+## Animals and exam stress
+
+**Question:** Have you ever been to an event designed to help students reduce exam stress by interacting with animals (dog petting, goat yoga, etc.)?
+
+![](https://www.cmu.edu/piper/news/archives/2020/october/images/guy-with-goat900x600-min.jpg)
+
+## Do dogs help exam stress?
+
+* Data collected on 284 students at a mid-size Canadian university
+* Students randomly assigned to one of three treatment groups: handler-only contact (control), indirect contact, and direct contact
+* Well-being and ill-being measures recorded before and after treatment for each student
+* Approach: compare pre/post measures of well-being and ill-being
+
+## Recording well-being and ill-being measures
+
+* Likert items for each well-being / ill-being measure
+* Average the likert items to get a score for each measure
+* E.g.:
+  - Positive affect score is the average of 5 Likert items
+  - Social connectedness is the average of 20 Likert items
+  - Happiness is the average of 4 Likert items
+  
+## Example Likert item for social connectedness
+
+"I am able to relate to my peers."
+
+* Strongly disagree (1)
+* Disagree
+* Somewhat disagree
+* Somewhat agree
+* Agree
+* Strongly agree (6)
+
+## The raw data
+
+* 284 rows (one per student)
+* 200+ columns
+* Example: social connectedness
+
+```{r, include=F}
+library(tidyverse)
+raw_data <- read.csv("https://raw.githubusercontent.com/ciaran-evans/dog-data-analysis/main/dog_data_raw.csv")
+```
+
+```{r, echo=F}
+raw_data |>
+  select(starts_with("SC"))
+```
+
+## Activity
+
+* Need to process the raw data before it can be used to answer the research question
+* Work with your neighbor to brainstorm data processing steps, then we will discuss as a class
+* I will collect the handout at the end of class
+
+## Activity
+
+What do you want the *final* data to look like, to make it easy to answer the research question (do students who interact more with dogs see a greater reduction in stress and a greater improvement in well-being?)
+
+## Activity
+
+What are some of the steps that need to be done to turn the raw data into the data you *want*?
+
+## Activity
+
+Are you familiar with any tools (e.g. R functions) that would allow you to carry out the data processing steps?
+
+## Activity
+
+The original data from the Binfet *et al.* paper actually includes a *lot* more demographic information on the students (their ethnicity, gender identity, etc.). Why do you think I removed these variables before sharing the data with you?
+
+## Class plan
+
+Unit 1: data wrangling
+
+* tools for cleaning and processing data (modifying columns, creating new columns, subsetting rows, etc)
+* working with different variable types
+* reshaping data
+* wrangling with multiple tables
+* iteration across columns
+
+## Course goals
+
+* Develop computing skills to work with data and answer
+statistical questions
+* Emphasize reproducibility and good coding practices
+* Introduce other important computing tools for statistics
+and data science (Python, SQL, Git)
+
+What this course isn't:
+
+* An exhaustive list of R or Python functions
+* A computer science course
+* A deep dive into how R actually works
+
+## Expectations
+
+* Complete any assigned reading ahead of class
+* Become comfortable finding and using unfamiliar functions on your own
+* Bring laptop each day
+* Submit class activities and occasional concept quizzes (graded for effort, not completeness or correctness)
+* Attend department seminars (more info to follow)
+
+## Course components
+
+* Class participation (graded for effort)
+* HW assignments (roughly one per week)
+* Exams (2 midterms, 1 final)
+* Project
+
+
+

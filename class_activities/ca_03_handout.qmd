@@ -1,0 +1,55 @@
+---
+title: "Warmup: data wrangling with the Mets"
+format: pdf
+editor: source
+---
+
+**Group members:**
+
+**Instructions:** Work with a neighbor on the following activity. I will collect the handout at the end of class, and it will be part of your class participation grade. You will be graded only on effort -- it is ok if you don't finish all the questions, or get them all correct.
+
+# Baseball data
+
+The `Teams` dataset in contains 3045 rows and 48 columns, and describes yearly statistics for baseball teams between 1871 and 2023. 
+
+Here are the first few rows and columns of the dataset:
+
+```{r, echo=F, message=F, warning=F}
+library(Lahman)
+library(tidyverse)
+
+head(Teams[,1:13])
+```
+
+## Questions
+
+1. The following chunk of code is run, producing the output below. Explain what the `select` function is doing.
+
+```{r, eval=F}
+Teams |>
+  select(yearID, franchID, W, L)
+```
+
+```{r, echo=F}
+Teams |>
+  select(yearID, franchID, W, L) |>
+  head()
+```
+
+\vspace{3cm}
+
+2. Now suppose we want to get *only* the data for the New York Mets (franchise ID "NYM"), between 1998 and 2018. Fill in the code; the first few rows of the desired output are shown below.
+
+```{r, eval=F}
+Teams |>
+  select(yearID, franchID, W, L) |>
+  filter(...)
+```
+
+```{r, echo=F}
+Teams |>
+  select(yearID, franchID, W, L) |>
+  filter(franchID == "NYM",
+         yearID >= 1998, yearID <= 2018) |>
+  head()
+```

@@ -1,0 +1,15 @@
+---
+---
+---
+title: "Class activity"
+format: html
+editor: visual
+author: "Group members: "
+---
+
+1. 
+
+```{r}
+
+```
+

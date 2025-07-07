@@ -1,0 +1,165 @@
+---
+title: "Data wrangling fundamentals"
+format: 
+  revealjs:
+    theme: theme.scss
+editor: source
+execute: 
+  echo: true
+editor_options: 
+  chunk_output_type: console
+---
+
+## Last time
+
+* `filter`: choose certain rows
+* `summarize`: calculate summary statistics
+* `group_by`: group rows together
+* `mutate`: create new columns
+
+## Data for today
+
+* Data on professional baseball teams between 1871 and 2023
+* 3015 rows and 48 columns
+* Each row represents one year (season) for one team
+* Variables include:
+  * `yearID`: Year
+  * `franchID`: Franchise
+  * `W`: Wins
+  * `L`: Losses
+  
+## Data for today
+
+* Variables include:
+  * `yearID`: Year
+  * `franchID`: Franchise
+  * `W`: Wins
+  * `L`: Losses
+  
+We want to know: which NY Mets general manager performed best between 1998 - 2018
+
+## Warmup activity
+
+Work on the activity (handout) with a neighbor, then we will discuss as a class
+
+```{r, include=F}
+library(Lahman)
+library(tidyverse)
+```
+
+## Step 0: Make the columns more manageable
+
+There are 48 columns in the initial data! Let's only focus on the ones we care about:
+
+```{r}
+Teams |>
+  select(yearID, franchID, W, L)
+```
+
+## Step 1: Focus on the Mets between 1998 and 2018
+
+```{r, eval=F}
+Teams |>
+  select(yearID, franchID, W, L) |>
+  filter(...)
+```
+
+**Question:** What goes in my `filter`?
+
+## Step 1: Focus on the Mets between 1998 and 2018
+
+```{r}
+Teams |>
+  select(yearID, franchID, W, L) |>
+  filter(franchID == "NYM",
+         yearID >= 1998, yearID <= 2018)
+```
+
+## Step 2: Who was the GM?
+
+* 1998 - 2003: Steve Phillips
+* 2004: Jim Duquette
+* 2005 - 2010: Omar Minaya
+* 2011 - 2018: Sandy Alderson
+
+How should we add this information to the data?
+
+## Step 2: Who was the GM?
+
+```{r}
+Teams |>
+  select(yearID, franchID, W, L) |>
+  filter(franchID == "NYM",
+         yearID >= 1998, yearID <= 2018) |>
+  mutate(gm = case_when(
+    yearID <= 2003 ~ "Phillips",
+    yearID == 2004 ~ "Duquette",
+    yearID <= 2010 ~ "Minaya",
+    yearID <= 2018 ~ "Alderson"
+  ))
+```
+
+## Step 3: Summarize performance
+
+```{r, echo=F}
+Teams |>
+  select(yearID, franchID, W, L) |>
+  filter(franchID == "NYM",
+         yearID >= 1998, yearID <= 2018) |>
+  mutate(gm = case_when(
+    yearID <= 2003 ~ "Phillips",
+    yearID == 2004 ~ "Duquette",
+    yearID <= 2010 ~ "Minaya",
+    yearID <= 2018 ~ "Alderson"
+  ))
+```
+
+How would I calculate the win percentage for *each* GM?
+
+## Step 3: Summarize performance
+
+```{r}
+Teams |>
+  select(yearID, franchID, W, L) |>
+  filter(franchID == "NYM",
+         yearID >= 1998, yearID <= 2018) |>
+  mutate(gm = case_when(
+    yearID <= 2003 ~ "Phillips",
+    yearID == 2004 ~ "Duquette",
+    yearID <= 2010 ~ "Minaya",
+    yearID <= 2018 ~ "Alderson"
+  )) |>
+  group_by(gm) |>
+  summarize(wpct = sum(W)/sum(W + L))
+```
+
+## Finally: arrange results
+
+```{r}
+Teams |>
+  select(yearID, franchID, W, L) |>
+  filter(franchID == "NYM",
+         yearID >= 1998, yearID <= 2018) |>
+  mutate(gm = case_when(
+    yearID <= 2003 ~ "Phillips",
+    yearID == 2004 ~ "Duquette",
+    yearID <= 2010 ~ "Minaya",
+    yearID <= 2018 ~ "Alderson"
+  )) |>
+  group_by(gm) |>
+  summarize(wpct = sum(W)/sum(W + L)) |>
+  arrange(desc(wpct))
+```
+
+## Class activity
+
+[https://sta279-f25.github.io/class_activities/ca_03.html](https://sta279-f25.github.io/class_activities/ca_03.html)
+
+* Work with a neighbor on the class activity
+* At the end of class, submit your work as an HTML file on Canvas (one per group, list all your names)
+
+**Monday's class** will be reserved for getting Git and GitHub setup. We will use these tools for the rest of the semester.
+
+* Work through the **Git and GitHub assignment instructions** on the course website
+* If you successfully complete all steps, you do not need to come to class
+

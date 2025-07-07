@@ -1,0 +1,208 @@
+---
+title: "Data wrangling fundamentals"
+format: 
+  revealjs:
+    theme: theme.scss
+editor: source
+execute: 
+  echo: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include=F}
+library(tidyverse)
+```
+
+
+
+## What do you do with data?
+
+* Data manipulation and cleaning
+* Calculate summary statistics
+* Visualization
+* Input for modeling
+
+## Data manipulation
+
+```{r}
+glimpse(starwars)
+```
+
+What manipulation might I want to do with the `starwars` data?
+
+## `dplyr`: Tools for data wrangling
+
+:::: {.columns}
+
+::: {.column width="50%"}
+<img src="dplyr_logo.png" width = "200px">
+:::
+
+::: {.column width="50%"}
+* part of the tidyverse
+* provides a "grammar of data manipulation": useful verbs (functions) for manipulating data
+* we will cover the key `dplyr` functions
+:::
+
+::::
+
+
+## Some core verbs for data wrangling
+
+* `filter()`: take a subset of the rows (i.e., observations)
+* `select()`: take a subset of the columns (i.e., features, variables)
+* `mutate()`: add or modify existing columns
+* `arrange()`: sort the rows
+* `group_by()`: group rows by one or more variables
+* `summarize()`: aggregate the data across rows (often after grouping)
+
+## Creating a subset of the rows
+
+**Question:** Suppose I only want the droids in the `starwars` data. How would I choose only those rows?
+
+## Creating a subset of the rows
+
+**Question:** Suppose I only want the droids in the `starwars` data. How would I choose only those rows?
+
+```{r}
+filter(starwars, species == "Droid")
+```
+
+## Creating a subset of the rows
+
+```{r, eval=F}
+starwars |>
+  filter(species == "Droid")
+```
+
+```{r, echo=F}
+starwars |>
+  filter(species == "Droid") |>
+  head(2)
+```
+
+
+* `|>` is called the *pipe*. It means "take `<this>`, THEN do `<that>`"
+* `filter` keeps only the rows which satisfy a specific condition
+
+## Calculating summary statistics
+
+**Question:** What is the average height for droids in the dataset?
+
+## Calculating summary statistics
+
+**Question:** What is the average height for droids in the dataset?
+
+```{r}
+starwars |>
+  filter(species == "Droid") |>
+  summarize(mean_height = mean(height))
+```
+
+* pipes (`|>`) can be chained together
+* `summarize` calculates summary statistics
+* Why am I getting `NA`?
+
+## Handling missing values
+
+```{r, echo=F}
+starwars |>
+  filter(species == "Droid")
+```
+
+```{r}
+starwars |>
+  filter(species == "Droid") |>
+  summarize(mean_height = mean(height, na.rm=T))
+```
+
+## Calculating summary statistics
+
+**Question:** What if I want the average height for *humans*?
+
+```{r, eval=F}
+starwars |>
+  filter(species == "Droid") |>
+  summarize(mean_height = mean(height, na.rm=T))
+```
+
+
+## Calculating summary statistics
+
+**Question:** What if I want the average height for *humans*?
+
+```{r}
+starwars |>
+  filter(species == "Human") |>
+  summarize(mean_height = mean(height, na.rm=T))
+```
+
+## Calculating summary statistics
+
+**Question:** What is the average body mass for *each* species?
+
+## Calculating summary statistics
+
+**Question:** What is the average body mass for *each* species?
+
+```{r}
+starwars |>
+  group_by(species) |>
+  summarize(mean_height = mean(height, na.rm=T))
+```
+
+## Creating new variables
+
+**Question:** What is the distribution of the ratio of body mass to height?
+
+## Creating new variables
+
+**Question:** What is the distribution of the ratio of body mass to height?
+
+```{r, eval=F}
+starwars |>
+  mutate(body_ratio = mass/height)
+```
+
+## Creating new variables
+
+```{r}
+starwars |>
+  mutate(body_ratio = mass/height) |>
+  group_by(species) |>
+  summarize(mean_ratio = mean(body_ratio, na.rm=T),
+            sd_ratio = sd(body_ratio, na.rm=T))
+```
+
+## Creating new variables
+
+```{r}
+starwars |>
+  mutate(body_ratio = mass/height) |>
+  group_by(species) |>
+  summarize(mean_ratio = mean(body_ratio, na.rm=T),
+            sd_ratio = sd(body_ratio, na.rm=T),
+            N = n())
+```
+
+## Summary so far
+
+* `filter`: choose certain rows
+* `summarize`: calculate summary statistics
+* `group_by`: group rows together
+* `mutate`: create new columns
+
+## Class activity
+
+[https://sta279-f25.github.io/class_activities/ca_02.html](https://sta279-f25.github.io/class_activities/ca_02.html)
+
+* Work with a neighbor on the class activity
+* At the end of class, submit your work as an HTML file on Canvas (one per group, list all your names)
+* I will come around and answer any questions
+
+**For next time**, read:
+
+* Chapter 3 in *R for Data Science*
+* Chapter 4 in *Modern Data Science with R*
+

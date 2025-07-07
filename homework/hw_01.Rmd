@@ -1,0 +1,198 @@
+---
+title: "Homework 1"
+output: 
+  rmdformats::robobook:
+    css: "homework.css"
+    highlight: pygments
+link-citations: yes
+---
+
+**Due:** Friday, September 5, 10:00pm on Canvas
+
+**Instructions:** 
+
+* Download the [HW 1 template](https://sta279-f25.github.io/homework/hw_01_template.qmd), and open the template (a Quarto document) in RStudio. 
+* Put your name in the file header
+* Click `Render`
+* Type all code and answers in the document
+* Render early and often to catch any errors!
+* When you are finished, submit the final rendered HTML to Canvas
+
+**Code guidelines:**
+
+* If a question requires code, and code is not provided, you will not receive full credit
+* You will be graded on the quality of your code. In addition to being correct, your code should also be easy to read
+  
+**Resources:** In addition to the class notes and activities, you should read the following resources:
+
+* [Chapter 4](https://mdsr-book.github.io/mdsr3e/04-dataI.html) in *Modern Data Science with R*
+* [Chapter 3](https://r4ds.hadley.nz/data-transform) in *R for Data Science* (2nd edition)
+
+## NY Flights data
+
+Let's begin with the `flights` data from the `nycflights13` package.
+
+Suppose we want to know how many flights departed from each of the three NY airports (EWR, LGA, and JFK) in 2013. The `count` function allows us to count the number of rows, and to specify a variable to count by. Adding `sort = TRUE` will order the results from largest to smalles. For example:
+
+```{r, message=F, warning=F}
+library(nycflights13)
+library(tidyverse)
+
+flights |>
+  count(origin, sort = TRUE)
+```
+
+We can see that 120835 departed from EWR in 2013.
+
+
+:::{.question}
+#### Question 1
+
+Reproduce the output from the `count` function, but use the `group_by`, `summarize`, and `arrange` functions instead.
+:::
+
+:::{.question}
+#### Question 2
+
+The `dep_time` variable in the `flights` data records the actual departure time for each flight. However, there are several rows with missing departure times. Let's assume that these correspond to flights which were *cancelled*.
+
+Which month had the highest proportion of cancelled flights?
+
+*Hint 1:* the `is.na()` function will return `TRUE` if missing, and `FALSE` otherwise.
+
+```{r}
+is.na(c(1, 2, NA, 3))
+```
+
+*Hint 2:* In R, you can do math with boolean values (i.e., `TRUE`s and `FALSE`s). `TRUE` is treated as 1, and `FALSE` as 0. For example: For example:
+
+```{r}
+sum(is.na(c(1, 2, NA, 3)))
+```
+
+(that is, the number of `NA`s!)
+
+:::
+
+:::{.question}
+#### Question 3
+
+Which plane (specified by the `tailnum` variable) traveled the most times **from** New York City airports in 2013?
+:::
+
+:::{.question}
+#### Question 4
+
+Which carrier has the worst average delays?
+:::
+
+:::{.question}
+#### Question 5
+
+For the results in question 4, can you disentangle the effects of bad airports vs. bad carriers? Why or why not?
+
+*Hint*: Look at `table(flights$origin, flights$carrier)`
+:::
+
+## Working with dates
+
+Examining the available variables in the `flights` dataset, we can see that several columns provide information about the date and time of the flight. In particular, the `time_hour` column shows both the date and hour at which the flight was scheduled to depart, in a format like
+
+`2013-01-01 05:00:00`
+
+A very helpful package for working with dates in R is `lubridate`.
+
+* Install the `lubridate` package (if it is not installed already)
+* Read sections 17.2 and 17.3 in [R for Data Science](https://r4ds.hadley.nz/datetimes.html)
+* Then answer the following questions
+
+:::{.question}
+#### Question 6
+
+Fill in the code to extract the year (2013) from the date-time `2013-01-01 05:00:00`:
+
+```{r, eval=F}
+library(lubridate)
+
+datetime <- ymd_hms(...)
+...(datetime)
+```
+
+:::
+
+:::{.question}
+#### Question 7
+
+What is the difference between the `mday`, `yday`, and `wday` functions?
+
+:::
+
+:::{.question}
+#### Question 8
+
+Look up the documentation on the `week` function from the `lubridate` package by running the following code in your console:
+
+```{r, eval=F}
+?week
+```
+
+What does 
+
+```{r, eval=F}
+week(datetime)
+```
+
+tell us?
+
+
+:::
+
+:::{.question}
+#### Question 9
+
+For the plane identified in question 3, plot the number of trips per week over the year.
+
+To create this plot, you will need to determine the week of the year for each flight. Use the `week` function in the `lubridate` package.
+
+:::
+
+
+## Privacy and k-anonymity
+
+On the first day of class, we saw a dataset for which I deliberately removed many demographic features before releasing it to you. As we discussed in class, it is important to be careful with variables that can be used to identify subjects in the data. As statisticians and data scientists, we have an ethical responsibility to protect these individuals' privacy.
+
+One approach to assessing whether individuals are identifiable in a dataset is a concept called *k-anonymity*.
+
+* Read the Introduction (Section 1) of [this paper](https://dataprivacylab.org/dataprivacy/projects/kanonymity/kanonymity.pdf) by Dr. Latanya Sweeney on k-anonymity
+* Read the [Wikipedia article](https://en.wikipedia.org/wiki/K-anonymity) on k-anonymity (Wikipedia does a good job at explaining the concept without technical mathematical details). The tables on the Wikipedia page do a good job at providing an example of 2-anonymity
+* Then answer the following questions
+
+
+:::{.question}
+#### Question 10
+
+Summarize k-anonymity in a few sentences. What does it mean for a dataset to have k-anonymity (e.g., 2-anonymity)?
+
+:::
+
+On the Wikipedia page, the data in the second table has been modified so that the table has 2-anonymity with respect to Age, Gender, and State of domicile. We can import the data in this table into R with the following code (we will discuss web scraping in more detail later in the semester):
+
+```{r, eval=F}
+library(tidyverse)
+library(rvest)
+
+mod_data <- read_html("https://en.wikipedia.org/wiki/K-anonymity") |> 
+  html_elements("table") |>
+  purrr::pluck(2) |>
+  html_table()
+```
+
+
+:::{.question}
+#### Question 11
+
+Using `dplyr` functions that we have covered in this course, verify that this data has 2-anonymity with respect to Age, Gender, and State of domicile.
+:::
+
+
+
