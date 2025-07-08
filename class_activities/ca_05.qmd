@@ -66,8 +66,53 @@ cleaned_data <- cleaned_data %>%
                 homesick_pre, homesick_post,
                 lonely_pre, lonely_post, na_pre, na_post)
 
-write_csv(cleaned_data, "cleaned_dog_data.csv")
+# write_csv(cleaned_data, "cleaned_dog_data.csv")
 ```
 
+```{r}
+head(cleaned_data)
+```
+
+Each row of the cleaned data represents one student, with columns for student ID (`RID`), their experimental group assignment (`Control` means handler-only contact, `Indirect` means a dog was present, `Direct` means direct contact with a dog), and their pre- and post-intervention scores for different wellbeing and illbeing measurements.
+
+For example, `happiness_pre` is the student's assessed happiness before the intervention, and `happiness_post` is the student's assessed happiness after the intervention.
+
+The data can be imported into R with the following code:
+
+
+```{r, eval=F}
+library(readr)
+
+cleaned_data <- read_csv("https://sta279-f25.github.io/class_activities/cleaned_dog_data.csv")
+```
+
+## Pivoting
+
+1. Reshape the `cleaned_data` in R so it looks like this (note that I am only displaying the first few rows):
+
+```{r, echo=F}
+cleaned_data |>
+  pivot_longer(cols = -c(RID, GroupAssignment),
+               names_to = c("measurement", "stage"),
+               names_sep = "_",
+               values_to = "score") |>
+  head() |>
+  as.data.frame()
+```
+
+2.
+
+Reshape the `cleaned_data` in R so it looks like this (note that I am only displaying the first few rows):
+
+```{r, echo=F}
+cleaned_data |>
+  pivot_longer(cols = -c(RID, GroupAssignment),
+               names_to = c(".value", "stage"),
+               names_sep = "_") |>
+  head() |>
+  as.data.frame()
+```
+
+3. Using your reshaped data from question 2, fit a linear model with `happiness` as the response variable and `GroupAssignment` and `stage` as the explanatory variables. Would you have been able to fit this model without pivoting the data?
 
 
