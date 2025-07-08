@@ -1,7 +1,7 @@
 ---
 ---
 ---
-title: "Homework 5"
+title: "Homework 1"
 format: 
   html:
     embed-resources: true
@@ -9,6 +9,12 @@ editor: source
 author: "Your name"
 ---
 
+**Collaborators:** (leave blank if none)
+
+**Instructions:** 
+
+* Answer each question on the homework assignment
+* When done, Render this file to HTML and submit the HTML on Canvas
 
 #### Question 1
 
