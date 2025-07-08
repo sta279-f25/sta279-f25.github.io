@@ -1,0 +1,131 @@
+---
+title: "Reshaping data"
+format: 
+  revealjs:
+    theme: theme.scss
+editor: source
+execute: 
+  echo: true
+editor_options: 
+  chunk_output_type: console
+---
+
+## Last time: `pivot_longer`
+
+![](https://r4ds.hadley.nz/diagrams/tidy-data/variables.png)
+
+```{r, eval=F}
+df |> 
+  pivot_longer(
+    cols = bp1:bp2,
+    names_to = "measurement",
+    values_to = "value"
+  )
+```
+
+## Example from last time
+
+```{r, include=F}
+library(tidyverse)
+
+df_3 = data.frame(id = c(1, 2, 3),
+                 bp_1 = c(100, 120, 125),
+                 bp_2 = c(120, 115, 130),
+                 hr_1 = c(60, 75, 80),
+                 hr_2 = c(77, 81, 93))
+```
+
+
+```{r}
+df_3
+
+df_3 |>
+  pivot_longer(cols = -id, 
+               names_to = c("measurement", "stage"), 
+               names_sep = "_", 
+               values_to = "value")
+```
+
+
+## Warmup activity
+
+Work on the activity (handout) with a neighbor, then we will discuss as a class
+
+## Warmup
+
+```{r, eval=F}
+df_3
+
+df_3 |>
+  pivot_longer(cols = -id,
+               names_to = c(".value", "stage"),
+               names_sep = "_")
+```
+
+```{r, echo=F}
+df_3
+
+df_3 |>
+  pivot_longer(cols = -id,
+               names_to = c(".value", "stage"),
+               names_sep = "_") |>
+  as.data.frame()
+```
+
+What is `names_to = c(".value", "stage")` doing?
+
+## Going the other way
+
+Data on air quality in two locations (BETR801, London Westminster) on different days:
+
+```{r, include=F}
+air_quality = read_csv("https://raw.githubusercontent.com/pandas-dev/pandas/main/doc/data/air_quality_long.csv") |>
+  filter(parameter == "pm25") |>
+  select(date.utc, location, value)
+```
+
+```{r}
+air_quality
+```
+
+
+What if I want a separate column for each location?
+
+## `pivot_wider`
+
+```{r, echo=F}
+air_quality |>
+  head(3)
+```
+
+```{r, eval=F}
+air_quality |>
+  pivot_wider(id_cols = ...,
+              names_from = ...,
+              values_from = ...)
+```
+
+## `pivot_wider`
+
+```{r, echo=F}
+air_quality |>
+  head(3)
+```
+
+```{r}
+air_quality |>
+  pivot_wider(id_cols = "date.utc",
+              names_from = "location",
+              values_from = "value")
+```
+
+## Class activity
+
+[https://sta279-f25.github.io/class_activities/ca_05.html](https://sta279-f25.github.io/class_activities/ca_05.html)
+
+* Work with a neighbor on the class activity
+* At the end of class, submit your work as an HTML file on Canvas (one per group, list all your names)
+
+**For next time**, read:
+
+* Chapter 5 in *Modern Data Science with R*

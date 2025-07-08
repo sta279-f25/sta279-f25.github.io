@@ -1,0 +1,73 @@
+---
+title: "Activity: Practice pivoting with the dog data"
+format: html
+editor: source
+---
+
+**Instructions:** 
+
+* Work with a neighbor to answer the following questions 
+* To get started, download the [class activity template](https://sta279-f25.github.io/class_activities/ca_05_template.qmd) file
+* When you are finished, render the file as an HTML and submit the HTML to Canvas (let me know if you encounter any problems)
+
+# Dog data
+
+On the first day of class, we discussed an experiment which investigated whether interacting with dogs can help exam stress for college students. After cleaning the raw measurements, the experiment data looks like this:
+
+```{r setup, include=F}
+library(tidyverse)
+
+raw_data <- read.csv("https://raw.githubusercontent.com/ciaran-evans/dog-data-analysis/main/dog_data_raw.csv")
+
+cleaned_data <- raw_data %>%
+  mutate(across(starts_with("PN"), ~ replace(.x, .x > 5, NA)),
+         across(starts_with("L2"), ~ replace(.x, .x > 4, NA)),
+         across(starts_with("SC"), ~ replace(.x, .x > 6, NA)),
+         across(paste("L1_", c(1, 5, 6, 9, 10, 15, 16, 19, 20), sep=""),
+                function(x){5-x}),
+         across(paste("L2_", c(1, 5, 6, 9, 10, 15, 16, 19, 20), sep=""),
+                function(x){5-x}),
+         across(paste("SC1_", c(3, 6, 7, 9, 11, 13, 15, 17, 18, 20), sep=""),
+                function(x){7-x}),
+         across(paste("SC2_", c(3, 6, 7, 9, 11, 13, 15, 17, 18, 20), sep=""),
+                function(x){7-x}),
+         Engagement1 = 6 - HO1_2,
+         Engagement2 = 6 - HO2_2)
+
+
+cleaned_data <- cleaned_data %>%
+  mutate(pa_pre = rowMeans(select(cleaned_data,
+                                     num_range("PN1_", range = c(3,5,7,8,10))),
+                              na.rm = TRUE),
+         pa_post = rowMeans(select(cleaned_data,
+                                     num_range("PN2_", range = c(3,5,7,8,10))),
+                              na.rm = TRUE), 
+         happiness_pre = rowMeans(select(cleaned_data, num_range("HA1_", range = c(1,2,3))), na.rm = TRUE),
+         happiness_post = rowMeans(select(cleaned_data, num_range("HA2_", range = c(1,2,3))), na.rm = TRUE),
+         sc_pre = rowMeans(select(cleaned_data, starts_with("SC1_")), na.rm = TRUE),
+         sc_post = rowMeans(select(cleaned_data, starts_with("SC2_")), na.rm = TRUE),
+         fs_pre = rowMeans(select(cleaned_data, starts_with("F1_")), na.rm = TRUE),
+         fs_post = rowMeans(select(cleaned_data, starts_with("F2_")), na.rm = TRUE),
+         stress_pre = S1_1,
+         stress_post = S2_1,
+         homesick_pre = HO1_1,
+         homesick_post = HO2_1,
+         lonely_pre = rowMeans(select(cleaned_data, starts_with("L1_")), na.rm = T),
+         lonely_post = rowMeans(select(cleaned_data, starts_with("L2_")), na.rm = T),
+         na_pre = rowMeans(select(cleaned_data,
+                                     num_range("PN1_", range = c(1,2,4,6,9))),
+                              na.rm = TRUE),
+         na_post = rowMeans(select(cleaned_data,
+                                     num_range("PN2_", range = c(1,2,4,6,9))),
+                              na.rm = TRUE)) %>%
+  dplyr::select(RID, GroupAssignment, pa_pre, 
+                pa_post, happiness_pre, happiness_post, 
+                sc_pre, sc_post, fs_pre, fs_post, stress_pre, stress_post,
+                homesick_pre, homesick_post,
+                lonely_pre, lonely_post, na_pre, na_post)
+
+write_csv(cleaned_data, "cleaned_dog_data.csv")
+```
+
+
+

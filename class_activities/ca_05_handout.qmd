@@ -1,0 +1,40 @@
+---
+title: "Warmup: pivoting"
+format: pdf
+editor: source
+---
+
+**Group members:**
+
+**Instructions:** Work with a neighbor on the following activity. I will collect the handout at the end of class, and it will be part of your class participation grade. You will be graded only on effort -- it is ok if you don't finish all the questions, or get them all correct.
+
+# More pivoting
+
+Consider the following data from last time:
+
+```{r, echo=F, message=F}
+library(tidyverse)
+df_3 = data.frame(id = c(1, 2, 3),
+                 bp_1 = c(100, 120, 125),
+                 bp_2 = c(120, 115, 130),
+                 hr_1 = c(60, 75, 80),
+                 hr_2 = c(77, 81, 93))
+```
+
+```{r}
+df_3
+```
+
+You run the following code, producing the output below:
+
+```{r}
+df_3 |>
+  pivot_longer(cols = -id,
+               names_to = c(".value", "stage"),
+               names_sep = "_")
+```
+
+1. Explain what the line `names_to = c(".value", "stage")` is doing.
+
+
+
