@@ -203,6 +203,6 @@ starwars |>
 
 **For next time**, read:
 
-* Chapter 3 in *R for Data Science*
+* Chapter 3 in *R for Data Science* (2nd ed.)
 * Chapter 4 in *Modern Data Science with R*
 

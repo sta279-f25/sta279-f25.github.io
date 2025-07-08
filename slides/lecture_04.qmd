@@ -1,0 +1,346 @@
+---
+title: "Reshaping data"
+format: 
+  revealjs:
+    theme: theme.scss
+editor: source
+execute: 
+  echo: true
+editor_options: 
+  chunk_output_type: console
+---
+
+## Warmup activity
+
+Work on the activity (handout) with a neighbor, then we will discuss as a class
+
+```{r, include=F}
+library(tidyverse)
+library(googlesheets4)
+gs4_deauth()
+litF <- read_sheet("https://docs.google.com/spreadsheets/d/1hDinTIRHQIaZg1RUn6Z_6mo12PtKwEPFIz_mJVF6P5I/pub?gid=0") |>
+  rename(country = starts_with("Adult"))
+```
+
+## Warmup
+
+```{r, echo=F}
+litF
+```
+
+**Question:** What does a row in this data represent?
+
+## Warmup
+
+```{r, echo=F}
+litF
+```
+
+**Question:** What does a row in this data represent?
+
+Each row is one country
+
+## Warmup
+
+```{r, echo=F}
+litF
+```
+
+**Question:** Is this table in "wide" or "narrow" format?
+
+## Warmup
+
+```{r, echo=F}
+litF
+```
+
+**Question:** Is this table in "wide" or "narrow" format?
+
+Wide format -- there is a column for each value of a variable (year)
+
+## Warmup
+
+```{r, echo=F}
+litF
+```
+
+**Question:** What would the data look like in *narrow* form?
+
+## Warmup
+
+Literacy data in narrow form:
+
+```{r, echo = F}
+litF |>
+  rename(country = starts_with("Adult")) |>
+  pivot_longer(
+    cols = -country,
+    names_to = "year",
+    values_to = "literacy_rate",
+    values_drop_na = T
+  )
+```
+
+## Another example
+
+Data on three patients (A, B, C), with two blood pressure measurements (bp1 and bp2) per patient:
+
+```{r, echo=F}
+bp_data <- data.frame(id = c("A", "B", "C"),
+                    bp1 = c(100, 140, 120),
+                    bp2 = c(120, 115, 125))
+
+bp_data
+```
+
+How might we want to reshape this data?
+
+## Another example
+
+Original data:
+
+```{r, echo=F}
+bp_data
+```
+
+Reshaped data:
+
+```{r, echo=F}
+bp_data |>
+  pivot_longer(cols = bp1:bp2,
+               names_to = "measurement",
+               values_to = "value") |>
+  as.data.frame()
+```
+
+**Question:** how do we do this reshaping in R?
+
+## Reshaping data: `pivot_longer`
+
+![](https://r4ds.hadley.nz/diagrams/tidy-data/variables.png)
+
+```{r, eval=F}
+df |> 
+  pivot_longer(
+    cols = bp1:bp2,
+    names_to = "measurement",
+    values_to = "value"
+  )
+```
+
+(Image and example from *R for Data Science*)
+
+## `pivot_longer`
+
+```{r, echo=F}
+litF
+```
+
+```{r, eval=F}
+litF |>
+  pivot_longer(
+    cols = ...,
+    names_to = ...,
+    values_to = ...
+  )
+```
+
+
+## `pivot_longer`
+
+```{r}
+litF |>
+  pivot_longer(
+    cols = -country,
+    names_to = "year",
+    values_to = "literacy_rate"
+  )
+```
+
+## `pivot_longer`
+
+```{r}
+litF |>
+  pivot_longer(
+    cols = -country,
+    names_to = "year",
+    values_to = "literacy_rate"
+  ) |>
+  drop_na()
+```
+
+## `pivot_longer`
+
+```{r}
+litF |>
+  pivot_longer(
+    cols = -country,
+    names_to = "year",
+    values_to = "literacy_rate",
+    values_drop_na = T
+  )
+```
+
+## Example 2
+
+```{r, include=F}
+ex_df <- data.frame(
+  id = c(1, 2, 3),
+  x_1 = c(3, 1, 4),
+  x_2 = c(5, 8, 9),
+  y_1 = c(0, 1, 2),
+  y_2 = c(2, 7, 9)
+)
+```
+
+Now consider the following table:
+
+```{r}
+ex_df
+```
+
+What will the following code return?
+
+```{r, eval=F}
+ex_df |>
+  pivot_longer(cols = -id, 
+               names_to = "group_obs", 
+               values_to = "value")
+```
+
+## Example 2
+
+:::: {.columns}
+
+::: {.column width="40%"}
+Original data:
+
+```{r}
+ex_df
+```
+:::
+
+::: {.column width="60%"}
+Reshaped data:
+
+```{r}
+ex_df |>
+  pivot_longer(cols = -id, 
+               names_to = "group_obs", 
+               values_to = "value")
+```
+:::
+
+::::
+
+## Example 2
+
+:::: {.columns}
+
+::: {.column width="32%"}
+Original data:
+
+```{r}
+ex_df
+```
+:::
+
+::: {.column width="68%"}
+Reshaped data:
+
+```{r}
+ex_df |>
+  pivot_longer(cols = -id, 
+               names_to = c("group", "obs"), 
+               names_sep = "_",
+               values_to = "value")
+```
+:::
+
+::::
+
+## Example 3
+
+Consider the following example data:
+
+```{r, echo=F}
+df_3 = data.frame(id = c(1, 2, 3),
+                 bp_1 = c(100, 120, 125),
+                 bp_2 = c(120, 115, 130),
+                 hr_1 = c(60, 75, 80),
+                 hr_2 = c(77, 81, 93))
+df_3
+```
+
+What if we want the data to look like this:
+
+```{r, echo=F}
+df_3 |>
+  pivot_longer(cols = -id, 
+               names_to = c("measurement", "stage"), 
+               names_sep = "_", 
+               values_to = "value")
+```
+
+## Example 3
+
+```{r}
+df_3
+
+df_3 |>
+  pivot_longer(cols = -id, 
+               names_to = c("measurement", "stage"), 
+               names_sep = "_", 
+               values_to = "value")
+```
+
+## Example 3
+
+```{r, eval=F}
+df_3 |>
+  pivot_longer(cols = -id, 
+               names_to = c("measurement", "stage"), 
+               names_sep = "_", 
+               values_to = "value")
+```
+
+:::: {.columns}
+
+::: {.column width="50%"}
+**Step 1:** Pivot 
+
+```{r, echo=F}
+df_3 |>
+  pivot_longer(cols = -id, 
+               names_to = "measurement", 
+               values_to = "value") |>
+  head()
+```
+:::
+
+::: {.column width="50%"}
+**Step 2:** Separate columns
+
+```{r, echo=F}
+df_3 |>
+  pivot_longer(cols = -id, 
+               names_to = c("measurement", "stage"), 
+               names_sep = "_", 
+               values_to = "value") |>
+  head()
+```
+:::
+
+::::
+
+## Class activity
+
+[https://sta279-f25.github.io/class_activities/ca_04.html](https://sta279-f25.github.io/class_activities/ca_04.html)
+
+* Work with a neighbor on the class activity
+* At the end of class, submit your work as an HTML file on Canvas (one per group, list all your names)
+
+**For next time**, read:
+
+* Chapter 5 in *R for Data Science* (2nd ed.)
+

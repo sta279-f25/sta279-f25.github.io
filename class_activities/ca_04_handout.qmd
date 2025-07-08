@@ -1,0 +1,33 @@
+---
+title: "Warmup: adult literacy data"
+format: pdf
+editor: source
+---
+
+**Group members:**
+
+**Instructions:** Work with a neighbor on the following activity. I will collect the handout at the end of class, and it will be part of your class participation grade. You will be graded only on effort -- it is ok if you don't finish all the questions, or get them all correct.
+
+
+# Adult literacy data
+
+Below are the first few rows and columns of a table containing data on the adult literacy rate in countries around the world, in each year since 1975:
+
+```{r, echo=F, message=F, warning=F}
+library(tidyverse)
+library(googlesheets4)
+gs4_deauth()
+litF <- read_sheet("https://docs.google.com/spreadsheets/d/1hDinTIRHQIaZg1RUn6Z_6mo12PtKwEPFIz_mJVF6P5I/pub?gid=0") |>
+  rename(country = starts_with("Adult"))
+litF
+```
+
+1. What does a row in this table represent?
+
+\vspace{3cm}
+
+2. Is the table in "wide" or "narrow" format?
+
+\vspace{3cm}
+
+3. If you were to reshape the table, what would you want it to look like instead? Describe what a row and column what represent in your reshaped table.

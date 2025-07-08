@@ -120,5 +120,8 @@ What this course isn't:
 * Exams (2 midterms, 1 final)
 * Project
 
+## For next time
 
+* Make sure R and RStudio are installed
+* Instructions are provided on the course website
 
