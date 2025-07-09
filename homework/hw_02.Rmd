@@ -1,0 +1,202 @@
+---
+title: "Homework 2"
+output: 
+  rmdformats::robobook:
+    css: "homework.css"
+    highlight: pygments
+link-citations: yes
+---
+
+**Due:** Friday, September 12, 10:00pm on Canvas
+
+**Instructions:** 
+
+1. Go to Canvas -> Assignments -> HW 2. Open the GitHub Classroom assignment link
+2. Follow the [instructions](https://sta279-f25.github.io/resources/github_instructions/) to accept the assignment and clone the repository to your local computer
+3. The repository contains the file `hw_02.qmd`. Write your code and answers to the questions in this Quarto document. Commit and push to GitHub regularly.
+4. When you are finished, make sure to Render your Quarto document; this will produce a `hw_02.md` file which is easy to view on GitHub. Commit and push both the `hw_02.qmd` and `hw_02.md` files to GitHub
+5. Finally, [request feedback](https://sta279-f25.github.io/resources/github_instructions/#step-10-request-feedback) on your assignment on the "Feedback" pull request on your HW 2 repository
+
+**Code guidelines:**
+
+* If a question requires code, and code is not provided, you will not receive full credit
+* You will be graded on the quality of your code. In addition to being correct, your code should also be easy to read
+  
+**Resources:**
+
+* [Chapter 4](https://mdsr-book.github.io/mdsr3e/04-dataI.html) and [Chapter 6](https://mdsr-book.github.io/mdsr3e/06-dataII.html) in *Modern Data Science with R*
+* [Chapter 3](https://r4ds.hadley.nz/data-transform) and [Chapter 5](https://r4ds.hadley.nz/data-tidy.html) in *R for Data Science* (2nd edition)
+
+```{r setup, include=F}
+library(tidyverse)
+```
+
+
+## Practice pivoting
+
+:::{.question}
+#### Question 1
+
+The code below creates a data frame called `df_1`:
+
+```{r}
+df_1 <- data.frame(
+  grp = c("A", "A", "B", "B"),
+  sex = c("F", "M", "F", "M"),
+  meanL = c(0.225, 0.47, 0.325, 0.547),
+  sdL = c(0.106, 0.325, 0.106, 0.308),
+  meanR = c(0.34, 0.57, 0.4, 0.647),
+  sdR = c(0.0849, 0.325, 0.0707, 0.274)
+)
+
+df_1
+```
+
+Using `pivot_longer` and `pivot_wider`, reshape `df_1` to produce the following output:
+
+```{r, echo=F}
+df_1 |>
+  pivot_longer(-c(grp, sex),
+               names_to = "stat", values_to = "value") |>
+  pivot_wider(id_cols = grp,
+              names_from = c(sex, stat),
+              names_sep = ".",
+              values_from = value)
+```
+
+Remember that the `?` provides documentation in R. For example, running `?pivot_wider` in the console gives helpful information about the `pivot_wider` function.
+:::
+
+## More practice pivoting
+
+The code below creates a data frame called `df_2`:
+
+```{r}
+df_2 <- data.frame(id = rep(c(1, 2, 3), 2),
+                  group = rep(c("T", "C"), each=3),
+                  vals = c(4, 6, 8, 5, 6, 10))
+
+df_2
+```
+
+An analyst wants to calculate the pairwise differences between the Treatment (T) and Control (C) values for each individual in this dataset. They use the following code:
+
+```{r}
+Treat <- filter(df_2, group == "T")
+Control <- filter(df_2, group == "C")
+all <- mutate(Treat, diff = Treat$vals - Control$vals)
+all
+```
+
+
+:::{.question}
+#### Question 2
+
+Verify that this code works for this example and generates the correct values of -1, 0, and -2. Describe two problems that might arise if the data set is not sorted in a particular order or if one of the observations is missing for one of the subjects.
+:::
+
+:::{.question}
+#### Question 3
+
+Provide an alternative approach to generate the `diff` variable, using `group_by` and `summarize` to produce the following output:
+
+```{r, echo=F}
+df_2 |>
+  group_by(id) |>
+  summarize(diff = vals[group == "T"] - vals[group == "C"])
+```
+
+:::
+
+:::{.question}
+#### Question 4
+
+Provide an alternative approach to generate the `diff` variable that uses `pivot_wider` and `mutate` to produce the following output:
+
+```{r, echo=F}
+df_2 |>
+  pivot_wider(id_cols = id,
+              names_from = group,
+              values_from = vals) |>
+  mutate(diff = T - C)
+```
+
+:::
+
+
+## Baseball data
+
+The `Teams` data in the `Lahman` package contains information on professional baseball teams since 1871. 
+
+:::{.question}
+#### Question 5
+
+Using the `Teams` data, create a plot of the number of home runs scored (`HR`) and allowed (`HRA`) by the Chicago Cubs (`teamID` CHN) in each season. Your plot should look like close to this:
+
+```{r, echo=F, message=F, warning=F}
+library(Lahman)
+
+Teams |>
+  filter(teamID == "CHN") |>
+  select(yearID, HR, HRA) |>
+  pivot_longer(-yearID,
+               names_to = "team",
+               values_to = "runs") |>
+  mutate(team = ifelse(team == "HR", "Cubs", "Opponent")) |>
+  ggplot(aes(x = yearID, y = runs, color = team)) +
+  geom_point() +
+  geom_line() +
+  labs(x = "Year", y = "Runs", color = "Team") +
+  theme_bw()
+```
+
+You may use whichever R functions you like to create the plot, but the axes and legend should be labeled as in the plot above.
+
+:::
+
+
+## Ethics, data wrangling, and reproducibility
+
+Because of the role that data plays in making decisions and informing experts, policy makers, and society as a whole, statisticians and data scientists have an ethical responsibility to make analyses clear, transparent, and understandable. An important component of a good analysis is that it should be *reproducible* -- that is, given the same initial data, an outside observer can reproduce the steps of the analysis and arrive at the same results (the same summary statistics, the same plots, the same models, etc.).
+
+You are already engaging in reproducible analyses by sharing code on GitHub and in your Quarto documents. When the code you used for an analysis is available to others, they are able to see exactly what you did and reproduce your work by re-running your code.
+
+In this assignment, you will think more about ethics and reproducibility in the context of *reproducible spreadsheet analysis*.
+
+Read the following material, then answer the questions below.
+
+* [Section 8.4.6](https://mdsr-book.github.io/mdsr3e/08-ethics.html#reproducible-spreadsheet-analysis) and [section 8.5.6](https://mdsr-book.github.io/mdsr3e/08-ethics.html#reproducible-spreadsheet-analysis-1) in *Modern Data Science with R*
+* [This](https://www.npr.org/sections/thesalt/2018/09/26/651849441/cornell-food-researchers-downfall-raises-larger-questions-for-science) NPR article on former Cornell professor Brian Wansink
+* [This](https://pmc.ncbi.nlm.nih.gov/articles/PMC7050813/) paper on data errors found in several of Brian Wansink's research papers (focus on the *Background*, *Granularity errors*, and *Inconsistent sample sizes within and between articles* sections)
+
+
+:::{.question}
+#### Question 6
+
+Summarize the different problems with Brian Wansink's research discussed in the NPR article.
+
+:::
+
+:::{.question}
+#### Question 7
+
+What are some similarities between the problems with Wansink's research, and the Rogoff and Reinhart paper discussed in MDSR?
+
+:::
+
+:::{.question}
+#### Question 8
+
+Give an example of a granularity error identified in the *Statistical heartburn* paper.
+
+:::
+
+:::{.question}
+#### Question 9
+
+What could Wansink and his colleagues have done differently to guard against the errors identified in the *Statistical heartburn* paper?
+
+:::
+
+
+
