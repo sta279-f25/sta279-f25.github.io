@@ -336,4 +336,4 @@ patients |>
 
 **For next time**, read:
 
-* Chapter Chapter 26.2 in *R for Data Science*
+* Chapter 26.2 in *R for Data Science*

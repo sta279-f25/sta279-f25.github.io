@@ -1,0 +1,38 @@
+---
+title: "Warmup: summary statistics"
+format: pdf
+editor: source
+---
+
+\vspace{-2.5cm}
+
+**Group members:**
+
+**Instructions:** Work with a neighbor on the following activity. I will collect the handout at the end of class, and it will be part of your class participation grade. You will be graded only on effort -- it is ok if you don't finish all the questions, or get them all correct.
+
+# Calculating summary statistics
+
+The `diamonds` dataset from the `ggplot2` package contains information on a variety of characteristics of different diamonds (cut, color, clarity, price, etc.). Here are the first few rows:
+
+```{r, echo=F, message=F}
+library(tidyverse)
+head(diamonds) |>
+  as.data.frame()
+```
+
+1. Write code using `dplyr` functions to calculate the mean and standard deviation of the `carat`, `depth`, and `price` columns, producing the output shown below:
+
+```{r, echo=F}
+diamonds |>
+  summarize(mean_carat = mean(carat),
+            sd_carat = sd(carat),
+            mean_depth = mean(depth),
+            sd_depth = sd(depth),
+            mean_price = mean(price),
+            sd_price = sd(price))
+```
+
+
+
+
+

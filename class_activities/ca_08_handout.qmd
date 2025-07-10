@@ -1,0 +1,41 @@
+---
+title: "Warmup: data wrangling across columns"
+format: pdf
+editor: source
+---
+
+\vspace{-2.5cm}
+
+**Group members:**
+
+**Instructions:** Work with a neighbor on the following activity. I will collect the handout at the end of class, and it will be part of your class participation grade. You will be graded only on effort -- it is ok if you don't finish all the questions, or get them all correct.
+
+
+## starwars data
+
+The `starwars` data (from the `dplyr` package) has information on characteristics (height, mass, birth year, etc.) for many different Star Wars characters. Here are the first few rows and columns of the data:
+
+```{r echo=F, message=F}
+library(tidyverse)
+
+head(starwars) |>
+  select(1:7) |>
+  as.data.frame()
+```
+
+1. Without listing any column names explicitly, write code to calculate the median of each numeric variable in the `starwars` dataset.
+
+\vspace{3cm}
+
+2. Your friend also writes code for question 1, which returns the following output. Explain why your friend is getting `NA` for each summary statistic.
+
+```{r, echo=F}
+starwars |>
+  summarize(across(where(is.numeric),
+                   list("median" = median),
+                   .names = "{.fn}_{.col}"))
+```
+
+
+
+

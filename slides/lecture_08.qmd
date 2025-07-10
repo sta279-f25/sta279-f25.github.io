@@ -1,0 +1,201 @@
+---
+title: "Data wrangling across columns"
+format: 
+  revealjs:
+    theme: theme.scss
+editor: source
+execute: 
+  echo: true
+editor_options: 
+  chunk_output_type: console
+---
+
+## Warmup activity
+
+Work on the activity (handout) with a neighbor, then we will discuss as a class
+
+## Warmup
+
+```{r setup, include=F}
+library(tidyverse)
+```
+
+Your friend writes the following code:
+
+```{r}
+starwars |>
+  summarize(across(where(is.numeric),
+                   list("median" = median),
+                   .names = "{.fn}_{.col}"))
+```
+
+Why are they getting `NA`s?
+
+## Ignoring NAs
+
+```{r}
+starwars |>
+  summarize(median_height = median(height))
+```
+
+What would I change to ignore missing values (`NA`s) when computing the median?
+
+
+## Ignoring NAs
+
+```{r}
+starwars |>
+  summarize(median_height = median(height, na.rm=T))
+```
+
+
+Now let's try with `across`...
+
+## Ignoring NAs
+
+```{r, error=T}
+starwars |>
+  summarize(across(where(is.numeric),
+                   list("median" = median(na.rm=T))))
+```
+
+Why is this code failing?
+
+## Ignoring NAs
+
+```{r, eval=F}
+starwars |>
+  summarize(across(where(is.numeric),
+                   list("median" = median(na.rm=T))))
+```
+
+`median` is a function:
+
+```{r}
+median
+```
+
+`median()` is *evaluating* (calling) the function:
+
+```{r, error=T}
+median()
+```
+
+## Ignoring NAs
+
+```{r, error=T}
+starwars |>
+  summarize(across(where(is.numeric),
+                   list("median" = median(na.rm=T))))
+```
+
+What should we do instead?
+
+## Writing a new function
+
+We want a function that calculates the median without the `NA`s, so we can do something like
+
+```{r, eval=F}
+starwars |>
+  summarize(across(where(is.numeric),
+                   list("median" = median_no_na)))
+```
+
+However, this `median_no_na` function doesn't exist. We have to write it ourselves!
+
+## Writing a new function
+
+```{r}
+median_no_na <- function(x) {
+  median(x, na.rm = T)
+}
+```
+
+## Writing a new function
+
+```{r, eval=F}
+median_no_na <- function(x) {
+  median(x, na.rm = T)
+}
+```
+
+What will each of the following lines return?
+
+```{r, eval=F}
+median(c(0, 1, 2, NA))
+```
+
+<br/>
+
+```{r, eval=F}
+median(c(0, 1, 2, NA), na.rm=T)
+```
+
+<br/>
+
+```{r, eval=F}
+median_no_na(c(0, 1, 2, NA))
+```
+
+
+
+## Writing a new function
+
+```{r}
+median_no_na <- function(x) {
+  median(x, na.rm = T)
+}
+
+median(c(0, 1, 2, NA))
+median(c(0, 1, 2, NA), na.rm=T)
+median_no_na(c(0, 1, 2, NA))
+```
+
+## Writing a new function
+
+```{r}
+median_no_na <- function(x) {
+  median(x, na.rm = T)
+}
+
+starwars |>
+  summarize(across(where(is.numeric),
+                   list("median" = median_no_na)))
+```
+
+What would I change if I want to calculate the mean instead of the median?
+
+## Writing a new function
+
+```{r}
+mean_no_na <- function(x) {
+  mean(x, na.rm = T)
+}
+
+starwars |>
+  summarize(across(where(is.numeric),
+                   list("mean" = mean_no_na)))
+```
+
+Will we need to use the `mean_no_na` or `median_no_na` functions many times?
+
+## Anonymous functions
+
+If we don't need a function repeatedly, we can make an *anonymous* function instead:
+
+**Anonymous function:**
+
+```{r}
+starwars |>
+  summarize(across(where(is.numeric),
+                   list("mean" = function(x) mean(x, na.rm=T))))
+```
+
+## Class activity
+
+[https://sta279-f25.github.io/class_activities/ca_08.html](https://sta279-f25.github.io/class_activities/ca_08.html)
+
+* Work with a neighbor on the class activity
+* At the end of class, submit your work as an HTML file on Canvas (one per group, list all your names)
+
+

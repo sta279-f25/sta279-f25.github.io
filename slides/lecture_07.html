@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-<script src="lecture_06_files/libs/clipboard/clipboard.min.js"></script>
-<script src="lecture_06_files/libs/quarto-html/tabby.min.js"></script>
-<script src="lecture_06_files/libs/quarto-html/popper.min.js"></script>
-<script src="lecture_06_files/libs/quarto-html/tippy.umd.min.js"></script>
-<link href="lecture_06_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="lecture_06_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="lecture_06_files/libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<script src="lecture_07_files/libs/clipboard/clipboard.min.js"></script>
+<script src="lecture_07_files/libs/quarto-html/tabby.min.js"></script>
+<script src="lecture_07_files/libs/quarto-html/popper.min.js"></script>
+<script src="lecture_07_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="lecture_07_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="lecture_07_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="lecture_07_files/libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.6.42">
 
-  <title>Joins</title>
+  <title>Data wrangling across columns</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="lecture_06_files/libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="lecture_06_files/libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="lecture_07_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="lecture_07_files/libs/revealjs/dist/reveal.css">
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -93,11 +93,11 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="lecture_06_files/libs/revealjs/dist/theme/quarto-cbf2ba4286dd3a13acaba70f185be045.css">
-  <link href="lecture_06_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="lecture_06_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="lecture_06_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="lecture_06_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link rel="stylesheet" href="lecture_07_files/libs/revealjs/dist/theme/quarto-cbf2ba4286dd3a13acaba70f185be045.css">
+  <link href="lecture_07_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="lecture_07_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="lecture_07_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="lecture_07_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
@@ -191,303 +191,238 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Joins</h1>
+  <h1 class="title">Data wrangling across columns</h1>
 
 <div class="quarto-title-authors">
 </div>
 
 </section>
-<section id="data-stored-in-multiple-tables" class="slide level2">
-<h2>Data stored in multiple tables</h2>
-<p>The <code>nycflights13</code> package contains information on flights from NYC airports in 2013. The data is stored across several data frames:</p>
-<ul>
-<li><code>airlines</code>: information on each airline</li>
-<li><code>airports</code>: information on each airport</li>
-<li><code>flights</code>: information on each flight</li>
-<li><code>planes</code>: information on each plane</li>
-<li><code>weather</code>: hourly weather data</li>
-</ul>
-<p><strong>Question:</strong> What is the advantage of storing this data in multiple tables, instead of one BIG table?</p>
+<section id="warmup-activity" class="slide level2">
+<h2>Warmup activity</h2>
+<p>Work on the activity (handout) with a neighbor, then we will discuss as a class</p>
 </section>
-<section id="data-stored-in-multiple-tables-1" class="slide level2">
-<h2>Data stored in multiple tables</h2>
-<ul>
-<li>Databases often contain different tables to store different information</li>
-<li>For example, a healthcare database could contain the following tables:
-<ul>
-<li><code>patients</code></li>
-<li><code>doctors</code></li>
-<li><code>offices</code></li>
-<li><code>insurance</code></li>
-</ul></li>
-</ul>
+<section id="warmup" class="slide level2">
+<h2>Warmup</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a>diamonds <span class="sc">|&gt;</span></span>
+<span id="cb1-2"><a href=""></a>  <span class="fu">summarize</span>(<span class="at">mean_carat =</span> <span class="fu">mean</span>(carat),</span>
+<span id="cb1-3"><a href=""></a>            <span class="at">sd_carat =</span> <span class="fu">sd</span>(carat),</span>
+<span id="cb1-4"><a href=""></a>            <span class="at">mean_depth =</span> <span class="fu">mean</span>(depth),</span>
+<span id="cb1-5"><a href=""></a>            <span class="at">sd_depth =</span> <span class="fu">sd</span>(depth),</span>
+<span id="cb1-6"><a href=""></a>            <span class="at">mean_price =</span> <span class="fu">mean</span>(price),</span>
+<span id="cb1-7"><a href=""></a>            <span class="at">sd_price =</span> <span class="fu">sd</span>(price))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 6
+  mean_carat sd_carat mean_depth sd_depth mean_price sd_price
+       &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;
+1      0.798    0.474       61.7     1.43      3933.    3989.</code></pre>
+</div>
+</div>
+<p>Are there any downsides to this code?</p>
 </section>
-<section id="joining-tables" class="slide level2">
-<h2>Joining tables</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
+<section id="warmup-1" class="slide level2">
+<h2>Warmup</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a>patients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>  age insurance  provider
-1  23     Aetna Dr. Zhang
-2  47      BCBS Dr. Foyle
-3  38  Medicaid Dr. Zhang</code></pre>
-</div>
-</div>
-</div><div class="column" style="width:50%;">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a>doctors</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>    provider      location
-1  Dr. Foyle    Greensboro
-2 Dr. Renard Winston-Salem
-3  Dr. Zhang Winston-Salem</code></pre>
-</div>
-</div>
-</div></div>
-<p>I want to add location information to the <code>patient</code> table. What should the resulting table look like?</p>
-</section>
-<section id="left-join" class="slide level2">
-<h2>Left join</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a>patients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>  age insurance  provider
-1  23     Aetna Dr. Zhang
-2  47      BCBS Dr. Foyle
-3  38  Medicaid Dr. Zhang</code></pre>
-</div>
-</div>
-</div><div class="column" style="width:50%;">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a>doctors</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>    provider      location
-1  Dr. Foyle    Greensboro
-2 Dr. Renard Winston-Salem
-3  Dr. Zhang Winston-Salem</code></pre>
-</div>
-</div>
-</div></div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a>patients <span class="sc">|&gt;</span></span>
-<span id="cb9-2"><a href=""></a>  <span class="fu">left_join</span>(doctors, <span class="fu">join_by</span>(provider))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>  age insurance  provider      location
-1  23     Aetna Dr. Zhang Winston-Salem
-2  47      BCBS Dr. Foyle    Greensboro
-3  38  Medicaid Dr. Zhang Winston-Salem</code></pre>
-</div>
-</div>
-</section>
-<section id="left-join-1" class="slide level2">
-<h2>Left join</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a>patients <span class="sc">|&gt;</span></span>
-<span id="cb11-2"><a href=""></a>  <span class="fu">left_join</span>(doctors, <span class="fu">join_by</span>(provider))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>  age insurance  provider      location
-1  23     Aetna Dr. Zhang Winston-Salem
-2  47      BCBS Dr. Foyle    Greensboro
-3  38  Medicaid Dr. Zhang Winston-Salem</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a>diamonds <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href=""></a>  <span class="fu">summarize</span>(<span class="at">mean_carat =</span> <span class="fu">mean</span>(carat),</span>
+<span id="cb3-3"><a href=""></a>            <span class="at">sd_carat =</span> <span class="fu">sd</span>(carat),</span>
+<span id="cb3-4"><a href=""></a>            <span class="at">mean_depth =</span> <span class="fu">mean</span>(depth),</span>
+<span id="cb3-5"><a href=""></a>            <span class="at">sd_depth =</span> <span class="fu">sd</span>(depth),</span>
+<span id="cb3-6"><a href=""></a>            <span class="at">mean_price =</span> <span class="fu">mean</span>(price),</span>
+<span id="cb3-7"><a href=""></a>            <span class="at">sd_price =</span> <span class="fu">sd</span>(price))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
-<li>Left joins are useful for adding additional information to a table</li>
-<li>Left joins (generally) keep the same rows as the initial dataframe (<code>patients</code>), and add more columns</li>
-<li><code>join_by</code> specifies how to link the tables</li>
+<li>more variables to summarize means longer code, harder to read</li>
+<li>requires a lot of copying and pasting</li>
+<li>more prone to errors when typing names of functions, variables, etc.</li>
 </ul>
 </section>
-<section id="joining-tables-1" class="slide level2">
-<h2>Joining tables</h2>
-<p>Flights information:</p>
+<section id="across-data-wrangling-across-columns" class="slide level2">
+<h2><code>across</code>: Data wrangling across columns</h2>
+<p>Instead of copying the same function multiple times for different columns, we can apply functions <em>across</em> the columns of a table:</p>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a>diamonds <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href=""></a>  <span class="fu">summarize</span>(<span class="fu">across</span>(<span class="fu">c</span>(carat, depth, price), </span>
+<span id="cb4-3"><a href=""></a>                   mean))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 3 × 5
-  time_hour           origin dest  tailnum carrier
-  &lt;dttm&gt;              &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;  
-1 2013-01-01 05:00:00 EWR    IAH   N14228  UA     
-2 2013-01-01 05:00:00 LGA    IAH   N24211  UA     
-3 2013-01-01 05:00:00 JFK    MIA   N619AA  AA     </code></pre>
-</div>
-</div>
-<p>Weather information</p>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 3 × 4
-  origin time_hour            temp wind_speed
-  &lt;chr&gt;  &lt;dttm&gt;              &lt;dbl&gt;      &lt;dbl&gt;
-1 EWR    2013-01-01 01:00:00  39.0      10.4 
-2 EWR    2013-01-01 02:00:00  39.0       8.06
-3 EWR    2013-01-01 03:00:00  39.0      11.5 </code></pre>
-</div>
-</div>
-<p><strong>Question:</strong> What if I want to get information about the weather for each flight?</p>
-</section>
-<section id="left-joins" class="slide level2">
-<h2>Left joins</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a>flights <span class="sc">|&gt;</span></span>
-<span id="cb15-2"><a href=""></a>  <span class="fu">left_join</span>(weather, <span class="fu">join_by</span>(origin, time_hour))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 × 7
-  time_hour           origin dest  tailnum carrier  temp wind_speed
-  &lt;dttm&gt;              &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;   &lt;dbl&gt;      &lt;dbl&gt;
-1 2013-01-01 05:00:00 EWR    IAH   N14228  UA       39.0       12.7
-2 2013-01-01 05:00:00 LGA    IAH   N24211  UA       39.9       15.0
-3 2013-01-01 05:00:00 JFK    MIA   N619AA  AA       39.0       15.0
-4 2013-01-01 05:00:00 JFK    BQN   N804JB  B6       39.0       15.0
-5 2013-01-01 06:00:00 LGA    ATL   N668DN  DL       39.9       16.1
-6 2013-01-01 05:00:00 EWR    ORD   N39463  UA       39.0       12.7</code></pre>
+<pre><code># A tibble: 1 × 3
+  carat depth price
+  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1 0.798  61.7 3933.</code></pre>
 </div>
 </div>
 </section>
-<section id="joining-with-different-names" class="slide level2">
-<h2>Joining with different names</h2>
-<p>Suppose our tables looked like this:</p>
-<div class="columns">
-<div class="column" style="width:50%;">
+<section id="across-data-wrangling-across-columns-1" class="slide level2">
+<h2><code>across</code>: Data wrangling across columns</h2>
+<p>Instead of copying the same function multiple times for different columns, we can apply functions <em>across</em> the columns of a table:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href=""></a>patients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a>diamonds <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href=""></a>  <span class="fu">summarize</span>(<span class="fu">across</span>(<span class="fu">c</span>(carat, depth, price), </span>
+<span id="cb6-3"><a href=""></a>                   mean))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  age insurance  provider
-1  23     Aetna Dr. Zhang
-2  47      BCBS Dr. Foyle
-3  38  Medicaid Dr. Zhang</code></pre>
+<pre><code># A tibble: 1 × 3
+  carat depth price
+  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1 0.798  61.7 3933.</code></pre>
 </div>
 </div>
-</div><div class="column" style="width:50%;">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href=""></a>doctors</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>        name      location
-1  Dr. Foyle    Greensboro
-2 Dr. Renard Winston-Salem
-3  Dr. Zhang Winston-Salem</code></pre>
-</div>
-</div>
-</div></div>
-<p>How would we specify the columns to link the tables?</p>
+<p>What if I want to calculate both the mean <em>and</em> the standard deviation of these columns?</p>
 </section>
-<section id="joining-with-different-names-1" class="slide level2">
-<h2>Joining with different names</h2>
-<p>Suppose our tables looked like this:</p>
-<div class="columns">
-<div class="column" style="width:50%;">
+<section id="across-with-multiple-functions" class="slide level2">
+<h2><code>across</code> with multiple functions</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href=""></a>patients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a>diamonds <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href=""></a>  <span class="fu">summarize</span>(<span class="fu">across</span>(<span class="fu">c</span>(carat, depth, price), </span>
+<span id="cb8-3"><a href=""></a>                   <span class="fu">list</span>(mean, sd)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  age insurance  provider
-1  23     Aetna Dr. Zhang
-2  47      BCBS Dr. Foyle
-3  38  Medicaid Dr. Zhang</code></pre>
+<pre><code># A tibble: 1 × 6
+  carat_1 carat_2 depth_1 depth_2 price_1 price_2
+    &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+1   0.798   0.474    61.7    1.43   3933.   3989.</code></pre>
 </div>
 </div>
-</div><div class="column" style="width:50%;">
+<p>What if I want to include the function name in the summary columns?</p>
+</section>
+<section id="across-with-multiple-functions-1" class="slide level2">
+<h2><code>across</code> with multiple functions</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href=""></a>doctors</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a>diamonds <span class="sc">|&gt;</span></span>
+<span id="cb10-2"><a href=""></a>  <span class="fu">summarize</span>(<span class="fu">across</span>(<span class="fu">c</span>(carat, depth, price), </span>
+<span id="cb10-3"><a href=""></a>                   <span class="fu">list</span>(<span class="st">"mean"</span> <span class="ot">=</span> mean, <span class="st">"sd"</span> <span class="ot">=</span> sd)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>        name      location
-1  Dr. Foyle    Greensboro
-2 Dr. Renard Winston-Salem
-3  Dr. Zhang Winston-Salem</code></pre>
+<pre><code># A tibble: 1 × 6
+  carat_mean carat_sd depth_mean depth_sd price_mean price_sd
+       &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;
+1      0.798    0.474       61.7     1.43      3933.    3989.</code></pre>
 </div>
 </div>
-</div></div>
+<p>What if I want to change the order of the column names (e.g.&nbsp;<code>mean_carat</code> vs.&nbsp;<code>carat_mean</code>)?</p>
+</section>
+<section id="across-with-multiple-functions-2" class="slide level2">
+<h2><code>across</code> with multiple functions</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href=""></a>patients <span class="sc">|&gt;</span></span>
-<span id="cb25-2"><a href=""></a>  <span class="fu">left_join</span>(doctors, <span class="fu">join_by</span>(provider <span class="sc">==</span> name))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a>diamonds <span class="sc">|&gt;</span></span>
+<span id="cb12-2"><a href=""></a>  <span class="fu">summarize</span>(<span class="fu">across</span>(<span class="fu">c</span>(carat, depth, price), </span>
+<span id="cb12-3"><a href=""></a>                   <span class="fu">list</span>(<span class="st">"mean"</span> <span class="ot">=</span> mean, <span class="st">"sd"</span> <span class="ot">=</span> sd),</span>
+<span id="cb12-4"><a href=""></a>                   <span class="at">.names =</span> <span class="st">"{.col}_{.fn}"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  age insurance  provider      location
-1  23     Aetna Dr. Zhang Winston-Salem
-2  47      BCBS Dr. Foyle    Greensboro
-3  38  Medicaid Dr. Zhang Winston-Salem</code></pre>
+<pre><code># A tibble: 1 × 6
+  carat_mean carat_sd depth_mean depth_sd price_mean price_sd
+       &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;
+1      0.798    0.474       61.7     1.43      3933.    3989.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a>diamonds <span class="sc">|&gt;</span></span>
+<span id="cb14-2"><a href=""></a>  <span class="fu">summarize</span>(<span class="fu">across</span>(<span class="fu">c</span>(carat, depth, price), </span>
+<span id="cb14-3"><a href=""></a>                   <span class="fu">list</span>(<span class="st">"mean"</span> <span class="ot">=</span> mean, <span class="st">"sd"</span> <span class="ot">=</span> sd),</span>
+<span id="cb14-4"><a href=""></a>                   <span class="at">.names =</span> <span class="st">"{.fn}_{.col}"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 6
+  mean_carat sd_carat mean_depth sd_depth mean_price sd_price
+       &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;
+1      0.798    0.474       61.7     1.43      3933.    3989.</code></pre>
 </div>
 </div>
 </section>
-<section id="another-join" class="slide level2">
-<h2>Another join</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p>Patients in the system:</p>
+<section id="summarizing-more-columns" class="slide level2">
+<h2>Summarizing more columns</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href=""></a>patients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a>diamonds <span class="sc">|&gt;</span></span>
+<span id="cb16-2"><a href=""></a>  <span class="fu">summarize</span>(<span class="fu">across</span>(<span class="fu">c</span>(carat, depth, price), </span>
+<span id="cb16-3"><a href=""></a>                   <span class="fu">list</span>(<span class="st">"mean"</span> <span class="ot">=</span> mean)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  age insurance   provider
-1  23     Aetna  Dr. Zhang
-2  47      BCBS  Dr. Foyle
-3  38  Medicaid  Dr. Zhang
-4  54    Humana Dr. Renard</code></pre>
+<pre><code># A tibble: 1 × 3
+  carat_mean depth_mean price_mean
+       &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;
+1      0.798       61.7      3933.</code></pre>
 </div>
 </div>
-</div><div class="column" style="width:50%;">
-<p>Accepted insurance:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href=""></a>insurance</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   company        phone
-1   Anthem 800-676-2583
-2     BCBS 877-258-3334
-3   Kaiser 800-810-4766
-4 Medicaid 877-201-3750</code></pre>
-</div>
-</div>
-</div></div>
-<p>Suppose I want insurance information only for the patients who have an accepted insurance. What should the final table look like?</p>
+<p>How would I modify this code to calculate the mean for <em>all</em> the numeric variables (<code>carat</code>, <code>depth</code>, <code>table</code>, <code>price</code>, <code>x</code>, <code>y</code>, <code>z</code>)?</p>
 </section>
-<section id="inner-join" class="slide level2">
-<h2>Inner join</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p>Patients in the system:</p>
+<section id="summarizing-more-columns-1" class="slide level2">
+<h2>Summarizing more columns</h2>
+<p>Option 1:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href=""></a>patients</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a>diamonds <span class="sc">|&gt;</span></span>
+<span id="cb18-2"><a href=""></a>  <span class="fu">summarize</span>(<span class="fu">across</span>(<span class="fu">c</span>(carat, depth, table, price, x, y, z), </span>
+<span id="cb18-3"><a href=""></a>                   <span class="fu">list</span>(<span class="st">"mean"</span> <span class="ot">=</span> mean)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  age insurance   provider
-1  23     Aetna  Dr. Zhang
-2  47      BCBS  Dr. Foyle
-3  38  Medicaid  Dr. Zhang
-4  54    Humana Dr. Renard</code></pre>
+<pre><code># A tibble: 1 × 7
+  carat_mean depth_mean table_mean price_mean x_mean y_mean z_mean
+       &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+1      0.798       61.7       57.5      3933.   5.73   5.73   3.54</code></pre>
 </div>
 </div>
-</div><div class="column" style="width:50%;">
-<p>Accepted insurance:</p>
+<p>Are there any issues with this approach?</p>
+</section>
+<section id="efficiently-summarizing-more-columns" class="slide level2">
+<h2><em>Efficiently</em> summarizing more columns</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href=""></a>insurance</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href=""></a>diamonds <span class="sc">|&gt;</span></span>
+<span id="cb20-2"><a href=""></a>  <span class="fu">summarize</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric),</span>
+<span id="cb20-3"><a href=""></a>                   <span class="fu">list</span>(<span class="st">"mean"</span> <span class="ot">=</span> mean)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>   company        phone
-1   Anthem 800-676-2583
-2     BCBS 877-258-3334
-3   Kaiser 800-810-4766
-4 Medicaid 877-201-3750</code></pre>
+<pre><code># A tibble: 1 × 7
+  carat_mean depth_mean table_mean price_mean x_mean y_mean z_mean
+       &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+1      0.798       61.7       57.5      3933.   5.73   5.73   3.54</code></pre>
 </div>
 </div>
-</div></div>
+</section>
+<section id="efficiently-summarizing-more-columns-1" class="slide level2">
+<h2><em>Efficiently</em> summarizing more columns</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href=""></a>patients <span class="sc">|&gt;</span></span>
-<span id="cb35-2"><a href=""></a>  <span class="fu">inner_join</span>(insurance, <span class="fu">join_by</span>(insurance <span class="sc">==</span> company))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href=""></a>diamonds <span class="sc">|&gt;</span></span>
+<span id="cb22-2"><a href=""></a>  <span class="fu">summarize</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.numeric),</span>
+<span id="cb22-3"><a href=""></a>                   <span class="fu">list</span>(<span class="st">"mean"</span> <span class="ot">=</span> mean)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  age insurance  provider        phone
-1  47      BCBS Dr. Foyle 877-258-3334
-2  38  Medicaid Dr. Zhang 877-201-3750</code></pre>
+<pre><code># A tibble: 1 × 7
+  carat_mean depth_mean table_mean price_mean x_mean y_mean z_mean
+       &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+1      0.798       61.7       57.5      3933.   5.73   5.73   3.54</code></pre>
 </div>
 </div>
+<p><code>where(is.numeric)</code> returns the columns which are numeric:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href=""></a><span class="fu">is.numeric</span>(diamonds<span class="sc">$</span>carat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href=""></a><span class="fu">is.numeric</span>(diamonds<span class="sc">$</span>price)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href=""></a><span class="fu">is.numeric</span>(diamonds<span class="sc">$</span>clarity)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE</code></pre>
+</div>
+</div>
+</section>
+<section id="efficiently-summarizing-more-columns-2" class="slide level2">
+<h2><em>Efficiently</em> summarizing more columns</h2>
+<p>We can use <code>where</code> with other functions too. For example:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href=""></a>diamonds <span class="sc">|&gt;</span></span>
+<span id="cb30-2"><a href=""></a>  <span class="fu">summarize</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.factor),</span>
+<span id="cb30-3"><a href=""></a>                   <span class="fu">list</span>(<span class="st">"num_categories"</span> <span class="ot">=</span> n_distinct)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  cut_num_categories color_num_categories clarity_num_categories
+               &lt;int&gt;                &lt;int&gt;                  &lt;int&gt;
+1                  5                    7                      8</code></pre>
+</div>
+</div>
+<p>What do you think this code is doing?</p>
 </section>
 <section id="class-activity" class="slide level2">
 <h2>Class activity</h2>
-<p><a href="https://sta279-f25.github.io/class_activities/ca_06.html">https://sta279-f25.github.io/class_activities/ca_06.html</a></p>
+<p><a href="https://sta279-f25.github.io/class_activities/ca_07.html">https://sta279-f25.github.io/class_activities/ca_07.html</a></p>
 <ul>
 <li>Work with a neighbor on the class activity</li>
 <li>At the end of class, submit your work as an HTML file on Canvas (one per group, list all your names)</li>
 </ul>
 <p><strong>For next time</strong>, read:</p>
 <ul>
-<li>Chapter 26.2 in <em>R for Data Science</em></li>
+<li>Chapter 25.2 in <em>R for Data Science</em></li>
 </ul>
 
 </section>
@@ -499,19 +434,19 @@
 </div></div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="lecture_06_files/libs/revealjs/dist/reveal.js"></script>
+  <script src="lecture_07_files/libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="lecture_06_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="lecture_06_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="lecture_06_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="lecture_06_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="lecture_06_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="lecture_07_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="lecture_07_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="lecture_07_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="lecture_07_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="lecture_07_files/libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="lecture_06_files/libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="lecture_06_files/libs/revealjs/plugin/search/search.js"></script>
-  <script src="lecture_06_files/libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="lecture_06_files/libs/revealjs/plugin/math/math.js"></script>
+  <script src="lecture_07_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="lecture_07_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="lecture_07_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="lecture_07_files/libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>

@@ -1,0 +1,180 @@
+---
+title: "Data wrangling across columns"
+format: 
+  revealjs:
+    theme: theme.scss
+editor: source
+execute: 
+  echo: true
+editor_options: 
+  chunk_output_type: console
+---
+
+## Warmup activity
+
+Work on the activity (handout) with a neighbor, then we will discuss as a class
+
+## Warmup
+
+```{r setup, include=F}
+library(tidyverse)
+```
+
+```{r}
+diamonds |>
+  summarize(mean_carat = mean(carat),
+            sd_carat = sd(carat),
+            mean_depth = mean(depth),
+            sd_depth = sd(depth),
+            mean_price = mean(price),
+            sd_price = sd(price))
+```
+
+Are there any downsides to this code?
+
+## Warmup
+
+```{r, eval=F}
+diamonds |>
+  summarize(mean_carat = mean(carat),
+            sd_carat = sd(carat),
+            mean_depth = mean(depth),
+            sd_depth = sd(depth),
+            mean_price = mean(price),
+            sd_price = sd(price))
+```
+
+* more variables to summarize means longer code, harder to read
+* requires a lot of copying and pasting
+* more prone to errors when typing names of functions, variables, etc.
+
+
+## `across`: Data wrangling across columns
+
+Instead of copying the same function multiple times for different columns, we can apply functions *across* the columns of a table:
+
+```{r}
+diamonds |>
+  summarize(across(c(carat, depth, price), 
+                   mean))
+```
+
+## `across`: Data wrangling across columns
+
+Instead of copying the same function multiple times for different columns, we can apply functions *across* the columns of a table:
+
+```{r}
+diamonds |>
+  summarize(across(c(carat, depth, price), 
+                   mean))
+```
+
+What if I want to calculate both the mean *and* the standard deviation of these columns?
+
+## `across` with multiple functions
+
+```{r}
+diamonds |>
+  summarize(across(c(carat, depth, price), 
+                   list(mean, sd)))
+```
+
+What if I want to include the function name in the summary columns?
+
+## `across` with multiple functions
+
+```{r}
+diamonds |>
+  summarize(across(c(carat, depth, price), 
+                   list("mean" = mean, "sd" = sd)))
+```
+
+What if I want to change the order of the column names (e.g. `mean_carat` vs. `carat_mean`)?
+
+## `across` with multiple functions
+
+```{r}
+diamonds |>
+  summarize(across(c(carat, depth, price), 
+                   list("mean" = mean, "sd" = sd),
+                   .names = "{.col}_{.fn}"))
+
+
+diamonds |>
+  summarize(across(c(carat, depth, price), 
+                   list("mean" = mean, "sd" = sd),
+                   .names = "{.fn}_{.col}"))
+```
+
+## Summarizing more columns
+
+```{r}
+diamonds |>
+  summarize(across(c(carat, depth, price), 
+                   list("mean" = mean)))
+```
+
+How would I modify this code to calculate the mean for *all* the numeric variables (`carat`, `depth`, `table`, `price`, `x`, `y`, `z`)?
+
+## Summarizing more columns
+
+Option 1:
+
+```{r}
+diamonds |>
+  summarize(across(c(carat, depth, table, price, x, y, z), 
+                   list("mean" = mean)))
+```
+
+Are there any issues with this approach?
+
+
+## *Efficiently* summarizing more columns
+
+```{r}
+diamonds |>
+  summarize(across(where(is.numeric),
+                   list("mean" = mean)))
+```
+
+
+## *Efficiently* summarizing more columns
+
+```{r}
+diamonds |>
+  summarize(across(where(is.numeric),
+                   list("mean" = mean)))
+```
+
+`where(is.numeric)` returns the columns which are numeric:
+
+```{r}
+is.numeric(diamonds$carat)
+is.numeric(diamonds$price)
+is.numeric(diamonds$clarity)
+```
+
+
+## *Efficiently* summarizing more columns
+
+We can use `where` with other functions too. For example:
+
+```{r}
+diamonds |>
+  summarize(across(where(is.factor),
+                   list("num_categories" = n_distinct)))
+```
+
+What do you think this code is doing?
+
+
+## Class activity
+
+[https://sta279-f25.github.io/class_activities/ca_07.html](https://sta279-f25.github.io/class_activities/ca_07.html)
+
+* Work with a neighbor on the class activity
+* At the end of class, submit your work as an HTML file on Canvas (one per group, list all your names)
+
+**For next time**, read:
+
+* Chapter 25.2 in *R for Data Science*
