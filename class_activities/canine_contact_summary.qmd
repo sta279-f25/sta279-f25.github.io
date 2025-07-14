@@ -1,0 +1,67 @@
+---
+title: "Does interacting with dogs help relieve exam stress?"
+format: html
+editor: source
+---
+
+# Background
+
+With the goal of helping students manage stress, many colleges and universities provide the opportunity for students to interact with animals (dogs, goats, rabbits, etc), particularly during final exam season. While these sessions are often popular, however, we may wonder whether they do really help reduce feelings of stress.
+
+To investigate this question, a 2022 paper analyzed the results of an experiment in which students interacted with dogs, and reported their feelings of stress before and after the interaction. Students were randomly assigned to one of three groups with different levels of dog interaction, and the researchers hypothesized that students who interacted directly with a dog would benefit more.
+
+# The data
+
+To download the data, run the following chunk of code in R:
+
+```{r, message=F, warning=F}
+library(tidyverse)
+
+raw_data <- read_csv("https://sta279-f25.github.io/class_activities/canine_raw.csv")
+```
+
+You can then inspect the data, for example by running `View(raw_data)` or `glimpse(raw_data)`.
+
+Each row of the data represents one student who particpated in the study. You will notice that there are many columns (210, in fact!). Several columns give some information about the student in the experiment (their age, their year in school, etc.). The remainder of the columns record measurements of the participant's well-being and ill-being before and after the intervention.
+
+## Variables
+
+**Demographic variables:**
+
+* `Age_Yrs`: the student's age in years
+* `Year_of_Study`: The participants year in college. First (1), second (1), third (3), fourth (4), fifth or more (5).
+* `Live_Pets`: Pets back home (1), or no pets back home (2).
+* `Consumer_BARK`: Low (1), medium (2), or high (3) consumer of the BARK program
+
+**Study variables:** Each participant was randomly assigned to one of three treatment groups. Their well-being and ill-being was measured before and after the treatment, using a set of Likert items. These Likert items correspond to different well-being/ill-being scales. For example, there are four items related to happiness (`HA`), which are then averaged to produce pre-test and post-test levels of happiness.
+
+* `GroupAssignment`: the treatment group to which the student was randomly assigned: Control (the student did not interact with a dog), Indirect (a dog was present but the student didn't pet them), and Direct (a dog was present and the student could interact directly with the dog)
+* `PN1_*`: Positive and negative affect item responses on the pre-test. There are 10 positive/negative affect items. Pre-test positive affect scores can be calculated from `PN1_3`, `PN1_5`, `PN1_7`, `PN1_8`, `PN1_10`. Pre-test negative affect scores can be calculated from `PN1_1`, `PN1_2`, `PN1_4`, `PN1_6`, `PN1_9`.
+* `PN2_*`: Positive and negative affect item responses on the post-test. There are 10 positive/negative affect items. Post-test positive affect scores can be calculated from `PN2_3`, `PN2_5`, `PN2_7`, `PN2_8`, `PN2_10`. Post-test negative affect scores can be calculated from `PN2_1`, `PN2_2`, `PN2_4`, `PN2_6`, `PN2_9`.
+* `HA1_*`: Happiness item responses on the pre-test. There are 4 happiness items. Pre-test happiness scores can be calculated from `HA1_1`, `HA1_2`, `HA1_3`, `HA1_4`.
+* `HA2_*`: Happiness item responses on the post-test. There are 4 happiness items. Post-test happiness scores can be calculated from `HA2_1`, `HA2_2`, `HA2_3`, `HA2_4`.
+* `F1_*`: Flourishing scale item responses on the pre-test. There are 8 flourishing items. Pre-test flourishing scores can be calculated from `F1_1,..., F1_8`.
+* `F2_*`: Flourishing scale item responses on the post-test. There are 8 flourishing items. Post-test flourishing scores can be calculated from `F2_1,..., F2_8`.
+* `SC1_*`: Social connectedness scale item responses on the pre-test. There are 20 social connectedness items, and the pre-test social connectedness score can be calculated from `SC1_1,..., SC1_20`.
+* `SC2_*`: Social connectedness scale item responses on the post-test. There are 20 social connectedness items, and the post-test social connectedness score can be calculated from `SC2_1,..., SC2_20`.
+* `S1_1`: Stress scale response on the pre-test. Only one item is used to measure stress.
+* `S2_1`: Stress scale response on the post-test. Only one item is used to measure stress.
+* `HO1_1`: Homesickness scale response on the pre-test. Only one item is used to
+measure homesickness.
+* `HO2_1`: Homesickness scale response on the post-test. Only one item is used to measure homesickness.
+* `HO1_2`: Integration scale response on the pre-test. Only one item is used to measure integration
+* `HO2_2`: Integration scale response on the post-test. Only one item is used to measure
+integration.
+* `L1_*`: Loneliness scale item responses on the pre-test. There are 20 loneliness items. The pre-test loneliness score can be calculated from `L1_1,..., L1_20`.
+* `L2_*`: Loneliness scale item responses on the post-test. There are 20 loneliness items. The post-test loneliness score can be calculated from `L2_1,..., L2_20`.
+
+## Averaging Likert items
+
+As you can see in the variable descriptions above, most of the well-being/ill-being scales consist of multiple Likert items (e.g., 4 Happiness items, 8 Flourishing items, etc). Rather than focus on individual items, researchers combine the items within a group (e.g., Happiness) to produce a single pre- or post-test measurement. For example, overall pre- and post-test happiness for a participant would be calculated by
+
+$$\text{HA1} = \dfrac{\text{HA1_1 + HA1_2 + HA1_3 + HA1_4}}{4}$$
+
+$$\text{HA2} = \dfrac{\text{HA2_1 + HA2_2 + HA2_3 + HA2_4}}{4}$$
+
+
+
