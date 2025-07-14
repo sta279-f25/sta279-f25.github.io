@@ -59,9 +59,14 @@ integration.
 
 As you can see in the variable descriptions above, most of the well-being/ill-being scales consist of multiple Likert items (e.g., 4 Happiness items, 8 Flourishing items, etc). Rather than focus on individual items, researchers combine the items within a group (e.g., Happiness) to produce a single pre- or post-test measurement. For example, overall pre- and post-test happiness for a participant would be calculated by
 
-$$\text{HA1} = \dfrac{\text{HA1_1 + HA1_2 + HA1_3 + HA1_4}}{4}$$
+$$HA1 = \dfrac{HA1\_1 + HA1\_2 + HA1\_3 + HA1\_4}{4}$$
 
-$$\text{HA2} = \dfrac{\text{HA2_1 + HA2_2 + HA2_3 + HA2_4}}{4}$$
+$$HA2 = \dfrac{HA2\_1 + HA2\_2 + HA2\_3 + HA2\_4}{4}$$
 
+# Research question
+
+The researchers hypothesize that interacting with a dog (directly or indirectly) results in higher measures of well-being and lower measures of ill-being compared to the handler-only treatment.
+
+How would you use the available data to answer this research question? Describe any data cleaning, visualization, statistical modeling, and hypothesis testing needed.
 
 
