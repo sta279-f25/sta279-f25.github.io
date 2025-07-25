@@ -1,0 +1,145 @@
+---
+title: "Homework 3"
+output: 
+  rmdformats::robobook:
+    css: "homework.css"
+    highlight: pygments
+link-citations: yes
+---
+
+**Due:** Friday, September 19, 10:00pm on Canvas
+
+**Instructions:** 
+
+1. Go to Canvas -> Assignments -> HW 3. Open the GitHub Classroom assignment link
+2. Follow the [instructions](https://sta279-f25.github.io/resources/github_instructions/) to accept the assignment and clone the repository to your local computer
+3. The repository contains the file `hw_03.qmd`, and several CSV files containing data for the different questions. Write your code and answers to the questions in the Quarto document. Commit and push to GitHub regularly.
+4. When you are finished, make sure to Render your Quarto document; this will produce a `hw_03.md` file which is easy to view on GitHub. Commit and push both the `hw_03.qmd` and `hw_03.md` files to GitHub
+5. Finally, [request feedback](https://sta279-f25.github.io/resources/github_instructions/#step-10-request-feedback) on your assignment on the "Feedback" pull request on your HW 3 repository
+
+**Code guidelines:**
+
+* If a question requires code, and code is not provided, you will not receive full credit
+* You will be graded on the quality of your code. In addition to being correct, your code should also be easy to read
+  
+**Resources:**
+
+## Course evals and exam grades
+
+You work in the Office of Institutional Research at a large university, and your boss asks you to investigate the relationship between student evaluations and scores on the final exam in introductory statistics courses.
+
+The assignment repository contains two CSV files to investigate this question. The `exam_grades.csv` file contains last semester's final exam scores for 800 students taking introductory statistics across 30 different sections. The columns include:
+
+* `student_id`: a unique 4-digit identifier for each student
+* `classid`: which of the 30 sections the student was enrolled in
+* `professor_name`: the name of the professor which whom the student took the class. Each professor teaches several sections
+* `exam_score`: the student's score on the final exam. All introductory students take the same final exam, regardless of course section
+
+Your boss also provides you with information on each professor's course evaluations. The `professor_evals.csv` file contains evaluations for each of the 10 professor teaching introductory statistics. The `classid_1`, `classid_2`, and `classid_3` columns identify the 3 sections taught by each professor, while the three `evalscore` columns contain the professor's corresponding course evaluation scores (out of 5) for each class.
+
+:::{.question}
+#### Question 1
+
+**Research question:** Do higher course evaluation scores for a professor correspond to better performance by their students on the intro stats final?
+
+Use the two datasets provided to answer this question and prepare a short summary for your boss. Your summary should include:
+
+* at least one visualization
+* at least one relevant summary statistic
+* at least one statistical model (such as a linear regression model)
+* brief interpretation and discussion of the above
+:::
+
+## Assigning course grades
+
+For the second part of this assignment, you are a TA for a statistics course. At the end of the semester, the instructor asks you to calculate each student's overall grade in the course. 
+
+You are provided with a CSV file (`student_grades.csv`), from Canvas, containing the grades for each student on each assignment in the course. Here are the instructions the professor gives you:
+
+* There are 6 homeworks, 2 midterms, a final exam, and a project
+* Each homework is scored out of 10. All other assignments are scored out of 100
+* If a student did not submit an assignment, it is marked as `NA` in the CSV file. These missing assignments should receive a score of 0
+* Homework is worth 15% of the course grade; midterm 1 is worth 15%; midterm 2 is worth 15%; the final exam is worth 25%; and the project is worth 30%
+* The possible letter grades at the university are A, B, C, D, and F. There are no plus/minus options. Grades are assigned on a standard scale: 
+    * < 60 is F
+    * 60 - 69 is D
+    * 70 - 79 is C
+    * 80 - 89 is B
+    * 90+ is A
+
+Your task is to calculate the overall course grade, reporting both the percentage and the letter grade.
+
+**Row-wise operations:** Each row in the `student_grades.csv` file represents one student. To compute a grade for each student, you will want to combine scores within each row. To do this efficiently (without having to write out every homework column, e.g.), I recommend you look into *row-wise* `dplyr` operations. A good vignette is provided [here](https://dplyr.tidyverse.org/articles/rowwise.html).
+
+Here is an example data frame adapted from the vignette:
+
+```{r, include=F}
+library(tidyverse)
+
+df <- tibble(name = c("Alice", "Bob"), x = 1:2, y = 3:4, z = 5:6)
+```
+
+```{r}
+df
+```
+
+Now suppose we want to compute the mean of the `x`, `y`, and `z` columns for each *row*. I can do this with a simple mutate call:
+
+```{r}
+df |>
+  mutate(row_mean = (x + y + z)/3)
+```
+
+Alternatively, I can compute the mean by first calling `rowwise` and then using the `mean` function:
+
+```{r}
+df |>
+  rowwise() |>
+  mutate(row_mean = mean(c(x, y, z)))
+```
+
+
+However, it gets a bit tedious writing out all the column names explicitly! By leveraging `rowwise` and the `c_across` function, I can easily get the mean of, for example, all the numeric columns:
+
+```{r}
+df |>
+  rowwise() |>
+  mutate(row_mean = mean(c_across(where(is.numeric))))
+```
+
+Here I haven't had to list any of the columns explicitly, which is particularly nice when I have a lot of columns to work with. Note that if I want to avoid listing columns explicitly, I do need to use `rowwise` -- the first solution, involving `(x + y + z)/3`, requires the explicit column names.
+
+
+
+
+
+
+:::{.question}
+#### Question 2
+
+Calculate the overall course grade for each student. Report your results as a data table with three columns: the student ID, the student's course percentage, and the student's letter grade.
+
+*Hints:* 
+
+* Consider row-wise operations for calculating components such as the overall homework grade
+* If you find yourself writing out a lot of column names (e.g. `hw_1`, `hw_2`, etc.), there may be a better solution
+* For assigning the letter grades, I recommend taking a look at the `case_when` function
+:::
+
+
+## Student phone use
+
+For the final part of this assignment, you are analyzing data from a study which investigates the amount of time students spend on their phone. Each student was asked to record their phone use (in hours) over the course of 5 days.
+
+The `phone_data.csv` file contains the study data. `year_in_school` is the student's year in college (1, 2, 3, or 4), and `phone_hours` contains the number of hours of phone use on each day. For example, `4, 6, 10, 7, 5` means 4 hours the first day, 6 the second day, etc.
+
+:::{.question}
+#### Question 3
+
+**Research question:** Is there a relationship between a student's year in school and the total number of hours they used their phone?
+
+Create a visualization in R to answer this question. You will need to figure out how to convert the entries in the `phone_hours` column into a total number of hours for the week. There are several different ways this could be done; you are welcome to use any resources you like (Google, Stack Exchange, AI, course textbooks, etc.) to search for ideas.
+:::
+
+
+

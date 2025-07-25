@@ -199,4 +199,62 @@ What could Wansink and his colleagues have done differently to guard against the
 :::
 
 
+## Learning something new
+
+No class in computing or data science can include a comprehensive list of every function or package you will ever need to work with. Rather, it is important to learn how to search for solutions on your own. 
+
+Your friend is working with data from the General Social Survey, which contains information on respondents' demographics, habits, and political affiliation. Using the R code below, they produce the following plot:
+
+```{r, message=F, warning=F}
+library(tidyverse)
+
+gss_cat |>
+  ggplot(aes(x = partyid,
+             y = tvhours)) +
+  geom_boxplot() +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 45, hjust=1)) +
+  labs(x = "Party affiliation",
+       y = "Hours of TV per day")
+```
+
+They like the idea of using a boxplot, but they're not happy with how many different categories there are for party affiliation. Instead, they want to group some of the levels together and rename others:
+
+* "No answer" and "Don't know" should be **"missing"**
+* "Other party" should be **"other"**
+* "Strong republican", "Not str republican" should be **"republican"**
+* "Ind,near rep", "Independent", and "Ind,near dem" should all become **"independent"**
+* "Not str democrat", "Strong democrat" should be **"democrat"**
+
+Your friend remembers there is an R package called `forcats` which is useful for working with categorical variables, but they don't remember which function(s) to use here.
+
+:::{.question}
+#### Question 10
+
+Find a function in the `forcats` package which allows you to combine the categories of `partyid` as described above, then remake the boxplot. Your final boxplot should look like this:
+
+```{r, message=F, warning=F, echo=F}
+gss_cat |>
+  mutate(partyid = fct_collapse(partyid,
+                                missing = c("No answer", "Don't know"),
+                                other = "Other party",
+                                republican = c("Strong republican", "Not str republican"),
+                                independent = c("Ind,near rep", "Independent", "Ind,near dem"),
+                                democrat = c("Not str democrat", "Strong democrat")
+  )) |>
+  ggplot(aes(x = partyid,
+             y = tvhours)) +
+  geom_boxplot() +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 45, hjust=1)) +
+  labs(x = "Party affiliation",
+       y = "Hours of TV per day")
+```
+
+
+:::
+
+
+
+
 

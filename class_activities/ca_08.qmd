@@ -9,3 +9,16 @@ editor: source
 * Work with a neighbor to answer the following questions 
 * To get started, download the [class activity template](https://sta279-f25.github.io/class_activities/ca_08_template.qmd) file
 * When you are finished, render the file as an HTML and submit the HTML to Canvas (let me know if you encounter any problems)
+
+## Student grades
+
+You are a TA for a statistics course. The instructor of the course is interested in assessing how students performed on each assignment in the class.
+
+You are provided with a CSV file (`student_grades.csv`), from Canvas, containing the grades for each student on each assignment in the course. Here are the instructions the professor gives you:
+
+* There are 6 homeworks, 2 midterms, a final exam, and a project
+* Each homework is scored out of 10. All other assignments are scored out of 100
+* If a student did not submit an assignment, it is marked as `NA` in the CSV file. These missing assignments should receive a score of 0
+
+The 
+
