@@ -20,5 +20,27 @@ You are provided with a CSV file (`student_grades.csv`), from Canvas, containing
 * Each homework is scored out of 10. All other assignments are scored out of 100
 * If a student did not submit an assignment, it is marked as `NA` in the CSV file. These missing assignments should receive a score of 0
 
-The 
+The data can be imported into R with the following code:
+
+```{r, eval=F}
+library(tidyverse)
+
+student_grades <- read_csv("https://sta279-f25.github.io/data/student_grades.csv")
+```
+
+### Questions
+
+Your answers to these questions should involve functions like `starts_with`, `where`, `across`, etc. You should not list all of the homework columns explicitly, e.g.
+
+1. What was the average exam score for each midterm?
+
+2. What fraction of students failed each midterm (a grade less than 60%)?
+
+3. What was the average score for each homework, if you ignore missing submissions?
+
+4. What was the average score for each homework, if you treat missing assignment as 0? *Hint:* One approach could use the `replace_na` function
+
+5. For each homework assignment, how many students failed to submit?
+
+
 
