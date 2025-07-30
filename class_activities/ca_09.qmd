@@ -1,0 +1,30 @@
+---
+title: "Activity: Data wrangling across columns and functions"
+format: html
+editor: source
+---
+
+**Instructions:** 
+
+* Work with a neighbor to answer the following questions 
+* To get started, download the [class activity template](https://sta279-f25.github.io/class_activities/ca_09_template.qmd) file
+* When you are finished, render the file as an HTML and submit the HTML to Canvas (let me know if you encounter any problems)
+
+## Computing sample variance
+
+In statistics, we often summarize the variability or spread of a numeric variable by calculating the *sample variance*. Given $n$ observations $x_1,...,x_n$, the sample variance $s^2$ is defined by
+
+$$s^2 = \frac{1}{n-1} \sum \limits_{i=1}^n (x_i - \overline{x})^2$$
+
+In R, this can be done with the `var` function. For example:
+
+```{r}
+var(1:10)
+```
+
+1. Write your own function to compute the sample variance, called `my_var`. You may use standard arithmetic operations in R, but do not use any existing implementations of the sample variance or standard deviation (e.g., don't use `var` or `sd` when writing your function).
+
+2. Using your `my_var` function, compute the variance for the all the numeric columns in the `diamonds` data.
+
+
+

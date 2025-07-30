@@ -1,0 +1,240 @@
+---
+title: "Functions"
+format: 
+  revealjs:
+    theme: theme.scss
+editor: source
+execute: 
+  echo: true
+editor_options: 
+  chunk_output_type: console
+---
+
+## Warmup activity
+
+Work on the activity (handout) with a neighbor, then we will discuss as a class
+
+## Warmup
+
+```{r, eval=F}
+z_score <- function(x) {
+  (x - mean(x, na.rm = TRUE)) / sd(x, na.rm = TRUE)
+}
+
+diamonds_new <- diamonds |>
+  mutate(carat_z = z_score(carat))
+```
+
+What does this code do?
+
+## Warmup
+
+```{r, eval=F}
+z_score <- function(x) {
+  (x - mean(x, na.rm = TRUE)) / sd(x, na.rm = TRUE)
+}
+
+diamonds_new <- diamonds |>
+  mutate(carat_z = z_score(carat))
+```
+
+The `diamonds` dataset has 53940 rows and 10 columns. What will be the dimensions of the `diamonds_new` dataset?
+
+## Warmup
+
+```{r, include=F}
+library(tidyverse)
+```
+
+```{r}
+z_score <- function(x) {
+  (x - mean(x, na.rm = TRUE)) / sd(x, na.rm = TRUE)
+}
+
+diamonds_new <- diamonds |>
+  mutate(carat_z = z_score(carat))
+
+glimpse(diamonds_new)
+```
+
+## Functions
+
+```{r, include=F}
+# note to self: put this on the screen, and annotate to describe what each
+# piece of the function is doing
+```
+
+
+```{r}
+z_score <- function(x) {
+  (x - mean(x, na.rm = TRUE)) / sd(x, na.rm = TRUE)
+}
+```
+
+
+## Functions
+
+```{r, eval=F}
+z_score <- function(x) {
+  (x - mean(x, na.rm = TRUE)) / sd(x, na.rm = TRUE)
+}
+
+diamonds_new <- diamonds |>
+  mutate(carat_z = z_score(carat))
+```
+
+*R for Data Science* calls the `z_score` function a "mutate" function. Why?
+
+## Another challenge
+
+```{r, echo=F}
+diamonds |>
+  ggplot(aes(x = carat)) +
+  geom_boxplot() +
+  theme_bw() +
+  labs(x = "Diamond weight (carats)")
+```
+
+What are the individual points on the right of the boxplot?
+
+## Another challenge: identifying outliers
+
+```{r, echo=F}
+diamonds |>
+  ggplot(aes(x = carat)) +
+  geom_boxplot() +
+  theme_bw() +
+  labs(x = "Diamond weight (carats)")
+```
+
+How do we identify outliers when constructing a boxplot?
+
+## Identifying outliers
+
+We wish to write a function that we can use to identify outliers in numeric variables.
+
+What should we name the function?
+
+## Identifying outliers
+
+We wish to write a function that we can use to identify outliers in numeric variables.
+
+What should the input to the function be?
+
+## Identifying outliers
+
+```{r}
+find_outliers <- function(x) {
+  
+}
+```
+
+What needs to happen inside the function?
+
+## Identifying outliers
+
+```{r}
+find_outliers <- function(x) {
+  
+}
+```
+
+(Switch to R Studio)
+
+## Identifying outliers
+
+```{r, echo=F}
+diamonds |>
+  ggplot(aes(x = carat)) +
+  geom_boxplot() +
+  theme_bw() +
+  labs(x = "Diamond weight (carats)")
+
+find_outliers <- function(x) {
+  q1 <- quantile(x, 0.25)
+  q3 <- quantile(x, 0.75)
+  iqr <- q3 - q1
+  (x > q3 + 1.5*iqr) | (x < q1 - 1.5*iqr)
+}
+```
+
+```{r}
+diamonds |>
+  mutate(carat_outliers = find_outliers(carat)) |>
+  filter(carat_outliers) |>
+  pull(carat) |>
+  head()
+```
+
+
+## Counting outliers
+
+```{r}
+find_outliers <- function(x) {
+  q1 <- quantile(x, 0.25)
+  q3 <- quantile(x, 0.75)
+  iqr <- q3 - q1
+  (x > q3 + 1.5*iqr) | (x < q1 - 1.5*iqr)
+}
+```
+
+What if we want to *count* the number of outliers?
+
+## Counting outliers
+
+```{r}
+find_outliers <- function(x) {
+  q1 <- quantile(x, 0.25)
+  q3 <- quantile(x, 0.75)
+  iqr <- q3 - q1
+  (x > q3 + 1.5*iqr) | (x < q1 - 1.5*iqr)
+}
+
+count_outliers <- function(x) {
+  sum(find_outliers(x))
+}
+```
+
+## Counting outliers
+
+```{r}
+diamonds |>
+  summarize(carat_outliers = count_outliers(carat))
+```
+
+*R for Data Science* would call the `count_outliers` function a "summarize" function. Why?
+
+## Counting outliers
+
+```{r}
+diamonds |>
+  summarize(carat_outliers = count_outliers(carat))
+```
+
+What if I want to count outliers for multiple variables?
+
+## Counting outliers
+
+```{r}
+diamonds |>
+  summarize(across(c(carat, depth, price),
+                   list("outliers" = count_outliers)))
+```
+
+
+## Class activity
+
+[https://sta279-f25.github.io/class_activities/ca_09.html](https://sta279-f25.github.io/class_activities/ca_09.html)
+
+* Work with a neighbor on the class activity
+* At the end of class, submit your work as an HTML file on Canvas (one per group, list all your names)
+
+
+**For next time**, read:
+
+* Chapter 25.3 in *R for Data Science*
+
+
+
+
+

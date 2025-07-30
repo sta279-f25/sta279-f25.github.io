@@ -1,0 +1,38 @@
+---
+title: "Warmup: functions"
+format: pdf
+editor: source
+---
+
+\vspace{-2.5cm}
+
+**Group members:**
+
+**Instructions:** Work with a neighbor on the following activity. I will collect the handout at the end of class, and it will be part of your class participation grade. You will be graded only on effort -- it is ok if you don't finish all the questions, or get them all correct.
+
+
+## diamonds data
+
+The `diamonds` dataset in the `ggplot2` package contains information on over 50000 rough cut diamonds.
+
+Your friend is working with the `diamonds` data, and sends you the following code:
+
+```{r, eval=F}
+library(tidyverse)
+
+z_score <- function(x) {
+  (x - mean(x, na.rm = TRUE)) / sd(x, na.rm = TRUE)
+}
+
+diamonds_new <- diamonds |>
+  mutate(carat_z = z_score(carat))
+```
+
+1. Explain what the code is doing.
+
+\vspace{3cm}
+
+2. The `diamonds` dataset has 53940 rows and 10 columns. What will be the dimensions of the `diamonds_new` dataset?
+
+
+
