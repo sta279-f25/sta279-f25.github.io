@@ -1,0 +1,51 @@
+---
+title: "Activity: Functions and data frames"
+format: html
+editor: source
+---
+
+**Instructions:** 
+
+* Work with a neighbor to answer the following questions 
+* To get started, download the [class activity template](https://sta279-f25.github.io/class_activities/ca_10_template.qmd) file
+* When you are finished, render the file as an HTML and submit the HTML to Canvas (let me know if you encounter any problems)
+
+## Creating a plot
+
+The code below creates side-by-side boxplots to show the distribution of carat for each different cut in the `diamonds` data:
+
+```{r, message=F, warning=F}
+library(tidyverse)
+
+diamonds |>
+  ggplot(aes(x = cut, y = carat)) +
+  geom_boxplot() +
+  theme_bw() +
+  labs(title = "Distribution of carat by cut in the diamonds data")
+```
+
+1. Adapting this code, write a function called `group_boxplot` which allows you to make side-by-side boxplots, given a data frame and the two variables to plot. Here are some examples of the function in action:
+
+
+```{r, include=F}
+group_boxplot <- function(df, x, y) {
+  label <- rlang::englue("Distribution of {{y}} by {{x}} in the {{df}} data")
+  
+  df |>
+    ggplot(aes(x = {{ x }}, y = {{ y }})) +
+    geom_boxplot() + 
+    theme_bw() +
+    labs(title = label)
+}
+```
+
+```{r, message=F, warning=F}
+library(palmerpenguins)
+
+group_boxplot(diamonds, cut, carat)
+group_boxplot(diamonds, carat, cut)
+group_boxplot(penguins, species, bill_depth_mm)
+```
+
+
+*Hint:* For titling the plots, see the examples with the `englue` function in [Section 25.4.3](https://r4ds.hadley.nz/functions.html#labeling) of *R for Data Science* (2nd edition).
