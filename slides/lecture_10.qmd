@@ -1,0 +1,369 @@
+---
+title: "Functions"
+format: 
+  revealjs:
+    theme: theme.scss
+editor: source
+execute: 
+  echo: true
+editor_options: 
+  chunk_output_type: console
+---
+
+## Warmup activity
+
+Work on the activity (handout) with a neighbor, then we will discuss as a class
+
+## Warmup
+
+```{r, include=F}
+library(tidyverse)
+library(palmerpenguins)
+```
+
+
+```{r, eval=F}
+grouped_max <- function(df, group_var, max_var) {
+  df |>
+    group_by(group_var) |>
+    summarize(max(max_var, na.rm=T))
+}
+
+grouped_max(penguins, species, bill_depth_mm)
+```
+
+What is this code *trying* to do?
+
+
+## Warmup
+
+```{r, error=T}
+grouped_max <- function(df, group_var, max_var) {
+  df |>
+    group_by(group_var) |>
+    summarize(max(max_var, na.rm=T))
+}
+
+grouped_max(penguins, species, bill_depth_mm)
+```
+
+What is causing the error?
+
+## Warmup
+
+```{r, error=T}
+grouped_max <- function(df, group_var, max_var) {
+  df |>
+    group_by(group_var) |>
+    summarize(max(max_var, na.rm=T))
+}
+
+grouped_max(penguins, species, bill_depth_mm)
+```
+
+What should we change so the code runs correctly?
+
+
+## Embracing
+
+```{r}
+grouped_max <- function(df, group_var, max_var) {
+  df |>
+    group_by({{ group_var }}) |>
+    summarize(max({{ max_var }}, na.rm=T))
+}
+
+grouped_max(penguins, species, bill_depth_mm)
+```
+
+## Why do we need embracing?
+
+```{r, eval=F}
+penguins |>
+  filter(species == "Adelie")
+```
+
+This code contains two different types of variables:
+
+* `penguins` is an **env-variable** (environment variable)
+* `species` is a **data-variable** (it makes sense only within the context of a data frame)
+
+## Env-variables
+
+Env-variables are objects in the R environment that we can interact with directly. For example:
+
+```{r}
+head(penguins)
+```
+
+## Data-variables
+
+Data-variables only exist in the context of a data frame:
+
+```{r, error=T}
+# R doesn't know what 'species' is:
+species
+```
+
+```{r}
+# R DOES understand species in the context of penguins:
+penguins$species
+```
+
+
+## Tidy evaluation
+
+Many `tidyverse` functions are nice and allow us to reference *data-variables*:
+
+```{r, eval=F}
+penguins |>
+  filter(species == "Adelie")
+```
+
+Here `filter` **knows** to look for a column called `species` in the `penguins` data.
+
+## Tidy evaluation
+
+Of course, you will get an error if you try to reference a data-variable that doesn't exist! E.g. if we mis-spell the name:
+
+```{r, error=T}
+penguins |>
+  filter(speices == "Adelie")
+```
+
+## Tidy evaluation
+
+Of course, you will get an error if you try to reference a data-variable that doesn't exist!
+
+```{r, error=T}
+penguins |>
+  group_by(group_var) |>
+  summarize(max(max_var, na.rm=T))
+```
+
+**The problem:** `group_var` and `max_var` are not columns in the `penguins` data!
+
+## Tidy evaluation
+
+```{r, error=T}
+grouped_max <- function(df, group_var, max_var) {
+  df |>
+    group_by(group_var) |>
+    summarize(max(max_var, na.rm=T))
+}
+
+grouped_max(penguins, species, bill_depth_mm)
+```
+
+What we **want** R to run:
+
+```{r}
+penguins |>
+  group_by(species) |>
+  summarize(max(bill_depth_mm, na.rm=T))
+```
+
+## Tidy evaluation
+
+```{r, error=T}
+grouped_max <- function(df, group_var, max_var) {
+  df |>
+    group_by(group_var) |>
+    summarize(max(max_var, na.rm=T))
+}
+
+grouped_max(penguins, species, bill_depth_mm)
+```
+
+What R is **actually** running:
+
+```{r, error=T}
+penguins |>
+  group_by(group_var) |>
+  summarize(max(max_var, na.rm=T))
+```
+
+## The solution: embracing
+
+```{r, error=T}
+grouped_max <- function(df, group_var, max_var) {
+  df |>
+    group_by({{ group_var }}) |>
+    summarize(max({{ max_var }}, na.rm=T))
+}
+
+grouped_max(penguins, species, bill_depth_mm)
+```
+
+What R is running now:
+
+```{r}
+penguins |>
+  group_by(species) |>
+  summarize(max(bill_depth_mm, na.rm=T))
+```
+
+## Another example
+
+Suppose we want to fit a simple linear regression model:
+
+```{r}
+penguins |>
+  lm(bill_length_mm ~ bill_depth_mm, data = _) |>
+  coef()
+```
+
+
+## Another example
+
+```{r}
+penguins |>
+  lm(bill_length_mm ~ bill_depth_mm, data = _) |>
+  coef()
+```
+
+```{r, eval=F}
+lm_coef <- function(df, x, y) {
+  df |>
+    lm({{ y }} ~ {{ x }}, data = _) |>
+    coef()
+}
+
+lm_coef(penguins, bill_depth_mm, bill_length_mm)
+```
+
+Do you think this code will work?
+
+## Another example
+
+```{r}
+penguins |>
+  lm(bill_length_mm ~ bill_depth_mm, data = _) |>
+  coef()
+```
+
+```{r, error=T}
+lm_coef <- function(df, x, y) {
+  df |>
+    lm({{ y }} ~ {{ x }}, data = _) |>
+    coef()
+}
+
+lm_coef(penguins, bill_depth_mm, bill_length_mm)
+```
+
+Why does this code fail?
+
+## Another example
+
+```{r}
+penguins |>
+  lm(bill_length_mm ~ bill_depth_mm, data = _) |>
+  coef()
+```
+
+```{r, error=T}
+lm_coef <- function(df, x, y) {
+  df |>
+    lm({{ y }} ~ {{ x }}, data = _) |>
+    coef()
+}
+
+lm_coef(penguins, bill_depth_mm, bill_length_mm)
+```
+
+**Problem:** The `lm` function does not support tidy evaluation! (To see if a function does support tidy evaluation, look for keywords like "data masking" or "tidy selection" in the documentation.)
+
+## Fixing the issue
+
+```{r}
+penguins |>
+  lm(bill_length_mm ~ bill_depth_mm, data = _) |>
+  coef()
+```
+
+```{r, error=T}
+lm_coef <- function(df, x, y) {
+  df |>
+    lm({{ y }} ~ {{ x }}, data = _) |>
+    coef()
+}
+
+lm_coef(penguins, bill_depth_mm, bill_length_mm)
+```
+
+If `lm` doesn't support tidy evaluation, what could we do differently?
+
+## Fixing the issue
+
+SLR slope: $\widehat{\beta}_1 = \frac{\sum \limits_{i=1}^n (x_i - \overline{x})(y_i - \overline{y})}{\sum \limits_{i=1}^n (x_i - \overline{x})^2}$
+
+```{r}
+penguins |>
+  lm(bill_length_mm ~ bill_depth_mm, data = _) |>
+  coef()
+```
+
+```{r, eval=F}
+penguins |>
+  summarize(slope = cov(bill_depth_mm, bill_length_mm, 
+                        use="complete.obs")/
+              var(bill_depth_mm, na.rm=T))
+```
+
+```{r, echo=F}
+penguins |>
+  summarize(slope = cov(bill_depth_mm, bill_length_mm, 
+                        use="complete.obs")/
+              var(bill_depth_mm, na.rm=T)) |>
+  pull(slope)
+```
+
+## Fixing the issue
+
+```{r, eval=F}
+penguins |>
+  summarize(slope = cov(bill_depth_mm, bill_length_mm, 
+                        use="complete.obs")/
+              var(bill_depth_mm, na.rm=T))
+```
+
+How would I turn this into a function?
+
+```{r, eval=F}
+slr_slope <- function(df, x, y) {
+  
+  
+  
+  
+}
+```
+
+## Fixing the issue
+
+```{r}
+slr_slope <- function(df, x, y) {
+  df |>
+    summarize(slope = cov({{ x }}, {{ y }}, use="complete.obs")/
+                var({{ x }}, na.rm=T))
+}
+
+slr_slope(penguins, bill_depth_mm, bill_length_mm)
+slr_slope(penguins, flipper_length_mm, bill_length_mm)
+```
+
+
+## Class activity
+
+[https://sta279-f25.github.io/class_activities/ca_10.html](https://sta279-f25.github.io/class_activities/ca_10.html)
+
+* Work with a neighbor on the class activity
+* At the end of class, submit your work as an HTML file on Canvas (one per group, list all your names)
+
+
+**For next time**, read:
+
+* Chapter 26.3 in *R for Data Science*
+
+
+

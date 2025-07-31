@@ -1,0 +1,35 @@
+---
+title: "Warmup: functions and data frames"
+format: pdf
+editor: source
+---
+
+\vspace{-2.5cm}
+
+**Group members:**
+
+**Instructions:** Work with a neighbor on the following activity. I will collect the handout at the end of class, and it will be part of your class participation grade. You will be graded only on effort -- it is ok if you don't finish all the questions, or get them all correct.
+
+## Writing a data frame function
+
+Your friend is trying to write some code, but unfortunately they are encountering some issues. Below is the code they have written, and the error message in R:
+
+```{r, message=F, error=T}
+library(tidyverse)
+library(palmerpenguins)
+
+grouped_max <- function(df, group_var, max_var) {
+  df |>
+    group_by(group_var) |>
+    summarize(max(max_var, na.rm=T))
+}
+
+grouped_max(penguins, species, bill_depth_mm)
+```
+
+1. What is the code *trying* to do?
+
+\vspace{3cm}
+
+2. What does your friend need to change for the code to work?
+
