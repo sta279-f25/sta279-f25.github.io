@@ -34,6 +34,19 @@ Welcome to STA 279! This course is an introduction to statistical computing. Our
 
 **Email:** evansc@wfu.edu *(please allow 24 hours for email responses, and longer on weekends)*
 
+## Learning outcomes
+
+By the end of this course, you will be able to:
+
+* Clean, transform, and wrangle data in a variety of formats, to both explore characteristics of the data and prepare the data for future analysis and modeling
+* Write functions to accomplish key steps in a data processing workflow
+* Employ iteration to efficiently apply data processing steps to many inputs
+* Query large relational databases (using SQL)
+* Scrape, process, and clean data from the web
+* Write clear, readable, idiomatic code
+* Identify and implement all necessary data processing steps, from data import to modeling, to tackle challenging, open-ended questions
+* Communicate data-driven decisions
+
 ## Course materials
 
 **Laptops:** You will need a laptop for this class, and must bring it every day.
@@ -93,16 +106,44 @@ Counseling Center: 336-758-5273
 If the situation is life threatening, call the police: 
 911 or 336-758-5911 (campus police)
 
+### AI policy, use of outside resources, and collaboration
+
+Coding and data science do not exist in a vacuum, and practicing statisticians and data scientists rarely find themselves in a situation in which it is impossible to use any outside resources. Unless otherwise stated, on **homework assignments** and **class activities** you are therefore free (and encouraged!) to:
+
+* use AI tools (e.g. ChatGPT, Gemini, Claude, etc.)
+* use online resources such as freely available textbooks (both those for our class and others you find helpful), vignettes, lecture notes, and examples
+* use online resources for sharing code, such as StackOverflow
+* collaborate with other students
+
+However, please be cautious and avoid over-reliance on these resources. Your use of these resources should *assist* your own work, not *replace* it. In STA 279, any homework you are given is designed to help you practice and learn the material, as well as to prepare you for exams. You will do a disservice to your preparation for future study and employment, as well as to your own exam grades, if you rely too heavily on AI or on others.
+
+Here are a few examples of *good* questions you might ask Google, an AI tool, or a classmate:
+
+* "What does this error message mean?"
+* "What input types does this function accept?"
+* "How do I use a map variant to iterate a function with multiple arguments?"
+* "What does it mean for an R function to support tidy evaluation?"
+* "Explain what this chunk of code is doing"
+
+And here are a few examples of questions you should generally avoid:
+
+* "Write a solution to this homework problem"
+* "Fix this code"
+
+**Class rules for AI, outside resources, and collaboration:**
+
+* These resources may be used, unless otherwise stated, on homework and class activities
+* These resources may *not* be used on exams
+* Rules for the projects will be specified in the project descriptions
+* If you have obtained code from the internet or an AI tool, you must **explicitly cite** where you have obtained the code (both code you used directly and code used as an inspiration). Any reused code that is not explicitly cited will be treated as plagiarism and may result in a grade of 0. 
+    * If the code was obtained from a site like StackOverflow, provide a URL to the post
+    * If the code was generated with help from an AI tool, provide the name of the tool and the queries you used
+* While you are encouraged to collaborate with other students on homework assignments, you may not copy code and/or answers directly from another student. If the code was written with help from another student, acknowledge your collaborator(s) at the top of the assignment. Failure to acknowledge collaborators will be treated as plagiarism and may result in a grade of 0. If you copy someone else's work, both parties may receive a grade of 0.
+* Rather than copying someone else's work, ask for help. You are not alone in this course!
+
 ### Academic integrity
 
 I expect and require that students conduct themselves in a manner according to the Wake Forest standard for academic integrity. Cheating or academic dishonesty of any kind will not be tolerated. For other information on these matters, please consult the [Code of Conduct](https://studentconduct.wfu.edu/). For Academic issues please see the [College Judicial System](https://studentconduct.wfu.edu/the-judicial-council/).
-
-**Sharing code and resources:**
-* There are many online resources for sharing code, such as StackOverflow. Unless otherwise stated, you are free (and encouraged!) to use these resources for help on assignments. However, you must **explicitly cite** where you have obtained the code (both code you used directly and code used as an inspiration). Any reused code that is not explicitly cited will be treated as plagiarism.
-
-* Unless otherwise stated, you are encouraged to collaborate with other students on homework assignments (not projects). If you do so, please acknowledge your collaborator(s) at the top of your assignment. Failure to acknowledge collaborators may result in a grade of 0. You may not copy code and/or answers directly from another student. If you copy someone else's work, both parties may receive a grade of 0.
-
-* Rather than copying someone else's work, ask for help. You are not alone in this course!
 
 ### Professionalism
 
@@ -112,10 +153,9 @@ Laptops will be used regularly in class, and you must bring one each day. You ma
 
 ### Class participation
 
-In general, I expect you to come to class and participate in the lecture and activities. Your class participation grade will consist of class activities, concept check quizzes, and attendance at departmental seminars.
+In general, I expect you to come to class and participate in the lecture and activities. Your class participation grade will consist of class activities and attendance at departmental seminars.
 
-* **Class activities:** This course includes regular, short activities during class time to help your learning. Participation in class activities is expected, and you will submit your work on these activities at the end of class. Class activities will be graded for effort, not for completeness or correctness.
-* **Concept checks:** Occasionally, we will have concept check quizzes at the beginning of class. These quizzes help me to gauge your understanding of the material, and will also help you prepare for the exams. Like class activities, the quizzes will be graded only for effort.
+* **Class activities:** This course includes regular, short activities during class time to help your learning. Participation in class activities is expected, and you will submit your work on these activities at the end of class. Most class periods will have at least one activity; some class periods will have multiple activities. Class activities will be graded for effort, not for completeness or correctness.
 * **Department seminars:** Throughout the semester, the department will host visiting speakers who will give talks on a range of statistical topics. You will attend these seminars and submit a short (one or two paragraph) reflection on the talk and how it relates to material you have learned in your statistics courses. If you cannot attend the seminars due to a conflict, I will provide alternative talks available on YouTube.
 
 If you are unable to attend class due to illness or extenuating circumstances, please let me know. Class activities and quizzes may be made up at a later date at the instructor's discretion. Persistent absences, however, will not be permitted except in special circumstances such as a medical or family emergency.
@@ -129,11 +169,11 @@ You are welcomed, and encouraged, to work with each other on homework assignment
 Submission instructions and due dates will be provided on each assignment. Grading will be based on both completeness and accuracy. 
 
 
-### Project
+### Projects
 
 Statistics and data science in the real world often involves implementing complex methods and working with challenging, messy datasets. Projects provide an opportunity to develop these skills, and apply the tools you have learned in class and practiced on homework assignments.
 
-There will be one project in this course, due near the end of the semester. Instructions and grading rubrics will be provided on the course website.
+There will be two projects in this course. Instructions and grading rubrics will be provided on the course website.
 
 ### Exams
 
@@ -145,21 +185,20 @@ We will have two in-class exams (dates TBA) and one final exam.
 | Component | Weight |
 | --------- | ------ |
 | Participation | 5% |
-| Homework |  20%   |
+| Homework |  15%   |
 | Midterm exam 1    |  15%   |
 | Midterm exam 2 | 15% |
-| Final exam | 25% |
-| Project | 20% |
+| Project 1 | 15% |
+| Project 2 | 15% |
+| Final exam | 20% |
 
 I will use the standard grading scale (above a 93 is an A, above a 90 is an A-, above an 87 is a B+, etc.)
 
 ### Late work
 
-An assignment will be marked off 20% for every 24 hours it is late (after applying any extensions). Be aware I cannot give any points for an assignment that has already been graded and returned to other students.
-
-Example: If an assignment is turned in:
-* 30 minutes -- 24 hours late: lose 20% of points
-* 24 -- 48 hours late: lose 40% of points.
+* 30 minutes -- 24 hours late (after extensions): lose 20% of points
+* 24 -- 48 hours late (after extensions): lose 40% of points.
+* > 48 hours late (after extensions): no credit
 
 If you know you cannot turn in assignment (for instance, if you are ill or there is a family emergency), let me know before the assignment is due, and we will work something out. There will be no grade changes after our last day of class.
 
