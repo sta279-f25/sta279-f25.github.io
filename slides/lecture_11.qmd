@@ -1,0 +1,327 @@
+---
+title: "Intro to Iteration"
+format: 
+  revealjs:
+    theme: theme.scss
+editor: source
+execute: 
+  echo: true
+editor_options: 
+  chunk_output_type: console
+---
+
+## Class activity
+
+[https://sta279-f25.github.io/class_activities/ca_11.html](https://sta279-f25.github.io/class_activities/ca_11.html)
+
+* Work with a neighbor on the class activity
+* We will spend the first portion of today on the activity, then we will discuss as a class
+* At the end of class, submit your work as an HTML file on Canvas (one per group, list all your names)
+
+## Iteration motivation
+
+What are some potential issues with the following code?
+
+```{r, eval=F}
+read_csv("intro_stats_grades/section_1.csv") |>
+  slr_slope(midterm_1, midterm_2)
+
+read_csv("intro_stats_grades/section_2.csv") |>
+  slr_slope(midterm_1, midterm_2)
+
+read_csv("intro_stats_grades/section_3.csv") |>
+  slr_slope(midterm_1, midterm_2)
+```
+
+## `purrr::map`
+
+```{r, eval=F}
+grade_files <- list.files("intro_stats_grades", full.names=T)
+grade_tables <- map(grade_files, read_csv)
+```
+
+What is the `map` function doing here?
+
+## `purrr::map`
+
+```{r, eval=F}
+grade_tables <- map(grade_files, read_csv)
+```
+
+`map`: apply a function to each element of a list or vector
+
+* first argument: a list or vector
+    * `grade_files`: a vector of CSV file names to read into R
+* second argument: the function to apply
+    * `read_csv`: function to read a CSV file into R
+    
+"For each file in `grade_files`, apply the `read_csv` function to read it into R"
+
+## `purrr::map`
+
+```{r, eval=F}
+grade_tables <- map(grade_files, read_csv)
+```
+
+![](https://adv-r.hadley.nz/diagrams/functionals/map.png)
+
+(Image from *Advanced R* (2nd edition), Chapter 9)
+
+
+## `purrr::map`
+
+```{r, eval=F}
+grade_files <- list.files("intro_stats_grades", full.names=T)
+grade_tables <- map(grade_files, read_csv)
+```
+
+`map`: apply a function to each element of a list or vector
+
+Output: a list
+
+```{r, include=F}
+library(tidyverse)
+
+grade_files <- list.files("~/Documents/Teaching/statistical_computing/classroom-f25/ca11/intro_stats_grades", full.names=T)
+grade_tables <- map(grade_files, read_csv)
+```
+
+```{r}
+typeof(grade_tables)
+length(grade_tables)
+glimpse(grade_tables[[1]])
+```
+
+## `purrr::map`
+
+```{r, eval=F}
+grade_files <- list.files("intro_stats_grades", full.names=T)
+grade_tables <- map(grade_files, read_csv)
+```
+
+`map`: apply a function to each element of a list or vector
+
+Output: a list
+
+```{r}
+glimpse(grade_tables[[2]])
+```
+
+
+## Another example
+
+```{r, eval=F}
+x <- c(1, 4, 9, 16, 25)
+map(x, sqrt)
+```
+
+What will this code produce?
+
+## Another example
+
+```{r}
+x <- c(1, 4, 9, 16, 25)
+map(x, sqrt)
+```
+
+## `map` variants
+
+If we want to return a vector instead of a list, we can use one of the `map` variants. E.g.:
+
+```{r}
+x <- c(1, 4, 9, 16, 25)
+map_dbl(x, sqrt)
+```
+
+## Another example
+
+```{r, eval=F}
+map_dbl(1:10, function(x) x + 1)
+```
+
+What will this code produce?
+
+
+## Another example
+
+```{r}
+map_dbl(1:10, function(x) x + 1)
+```
+
+## Class activity
+
+```{r, eval=F}
+slr_slope <- function(df, x, y) {
+  df |>
+    summarize(slope = cov({{ x }}, {{ y }}, use="complete.obs")/
+                var({{ x }}, na.rm=T))
+}
+
+list.files("intro_stats_grades", full.names=T) |>
+  map(read_csv) |>
+  map(slr_slope)
+```
+
+```{r, error=T, echo=F}
+slr_slope <- function(df, x, y) {
+  df |>
+    summarize(slope = cov({{ x }}, {{ y }}, use="complete.obs")/
+                var({{ x }}, na.rm=T))
+}
+
+list.files("~/Documents/Teaching/statistical_computing/classroom-f25/ca11/intro_stats_grades", full.names=T) |>
+  map(read_csv) |>
+  map(slr_slope)
+```
+
+What is causing this error?
+
+
+## Class activity
+
+```{r, eval=F}
+slr_slope <- function(df, x, y) {
+  df |>
+    summarize(slope = cov({{ x }}, {{ y }}, use="complete.obs")/
+                var({{ x }}, na.rm=T))
+}
+
+list.files("intro_stats_grades", full.names=T) |>
+  map(read_csv) |>
+  map(function(df) slr_slope(df, midterm_1, midterm_2))
+```
+
+```{r, error=T, echo=F}
+slr_slope <- function(df, x, y) {
+  df |>
+    summarize(slope = cov({{ x }}, {{ y }}, use="complete.obs")/
+                var({{ x }}, na.rm=T))
+}
+
+list.files("~/Documents/Teaching/statistical_computing/classroom-f25/ca11/intro_stats_grades", full.names=T) |>
+  map(read_csv) |>
+  map(function(df) slr_slope(df, midterm_1, midterm_2))
+```
+
+
+## `purrr::map` 
+
+The function to be applied in `map` must take a single argument
+
+```{r, eval=F}
+# slr_slope takes THREE arguments:
+list.files("intro_stats_grades", full.names=T) |>
+  map(read_csv) |>
+  map(slr_slope)
+```
+
+```{r, eval=F}
+# the anonymous function takes only ONE argument:
+list.files("intro_stats_grades", full.names=T) |>
+  map(read_csv) |>
+  map(function(df) slr_slope(df, midterm_1, midterm_2))
+```
+
+## Another example
+
+```{r, eval=F}
+ex_list <- list(
+  c(1, 2, 3),
+  c(2, 3, 4)
+)
+
+map_dbl(ex_list, mean)
+```
+
+What do you think will be the output of this code?
+
+## Another example
+
+```{r}
+ex_list <- list(
+  c(1, 2, 3),
+  c(2, 3, 4)
+)
+
+map_dbl(ex_list, mean)
+```
+
+```{r}
+ex_list[[1]]
+mean(ex_list[[1]])
+
+ex_list[[2]]
+mean(ex_list[[2]])
+```
+
+
+## Another example
+
+```{r, eval=F}
+ex_list <- list(
+  c(1, 2, NA),
+  c(2, 3, 4)
+)
+
+map_dbl(ex_list, mean)
+```
+
+What do you think will be the output of this code?
+
+## Another example
+
+```{r}
+ex_list <- list(
+  c(1, 2, NA),
+  c(2, 3, 4)
+)
+
+map_dbl(ex_list, mean)
+```
+
+
+How do we ignore the NA when calculating the mean?
+
+## Another example
+
+```{r, eval=F}
+ex_list <- list(
+  c(1, 2, NA),
+  c(2, 3, 4)
+)
+
+map_dbl(ex_list, mean(na.rm=T))
+```
+
+
+Will this code work?
+
+
+## Another example
+
+```{r, error=T}
+ex_list <- list(
+  c(1, 2, NA),
+  c(2, 3, 4)
+)
+
+map_dbl(ex_list, mean(na.rm=T))
+```
+
+Problem: `mean(na.rm=T)` is not a function! It is a *call* to the `mean` function.
+
+Solution: use an anonymous function!
+
+
+## Another example
+
+```{r, error=T}
+ex_list <- list(
+  c(1, 2, NA),
+  c(2, 3, 4)
+)
+
+map_dbl(ex_list, function(x) mean(x, na.rm=T))
+```
+
+
