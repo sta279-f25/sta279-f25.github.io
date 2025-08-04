@@ -1,0 +1,188 @@
+---
+title: "Activity: Iteration"
+format: html
+editor: source
+---
+
+**Instructions:** 
+
+* Work with a neighbor to answer the following questions 
+* See below to get started
+* When you are finished, render the file as an HTML and submit the HTML to Canvas (let me know if you encounter any problems)
+
+## Getting started
+
+This class activity requires access to several CSV files. Rather than have you download them separately, it will be easiest if we use a GitHub classroom link. 
+
+**You do not need to submit the activity on GitHub classroom, only the HTML file on Canvas. The GitHub Classroom setup is just to make it easy for you to get a repository with the data files in the right place.**
+
+1. Go to Canvas -> Assignments -> Class Activity 11. Open the GitHub Classroom assignment link
+2. Follow the [instructions](https://sta279-f25.github.io/resources/github_instructions/) to accept the assignment and clone the repository to your local computer
+3. The repository contains the file `ca_11_template.qmd`, and a folder of CSV files called `intro_stats_grades`. Write your code and answers to the questions in the Quarto document.
+4. When you are finished, make sure to Render your Quarto document to HTML, then submit the HTML to Canvas
+
+## Intro stats grades
+
+The repository for this activity contains a folder called `intro_stats_grades`, which contains CSV files with gradebooks for several different sections of intro stats at a university. As the head TA for intro stats, it is your job to explore these intro stats grades for any important patterns. (You will work more with these grades on HW 4).
+
+### Examining the relationship between exam grades
+
+In a previous class, we wrote the following function to calculate the slope for a simple linear regression model:
+
+```{r, eval=F}
+library(tidyverse)
+
+slr_slope <- function(df, x, y) {
+  df |>
+    summarize(slope = cov({{ x }}, {{ y }}, use="complete.obs")/
+                var({{ x }}, na.rm=T))
+}
+```
+
+
+Let's use this function to calculate the slope for the relationship between student grades on midterm 1 and midterm 2 in the first section of intro stats:
+
+```{r, eval=F}
+read_csv("intro_stats_grades/section_1.csv") |>
+  slr_slope(midterm_1, midterm_2)
+```
+
+
+## Iterating
+
+Now we want to calculate the slope for *each* intro stats section, not just for section 1. One option is to copy and paste the code, and make the necessary changes:
+
+
+```{r, eval=F}
+read_csv("intro_stats_grades/section_1.csv") |>
+  slr_slope(midterm_1, midterm_2)
+
+read_csv("intro_stats_grades/section_2.csv") |>
+  slr_slope(midterm_1, midterm_2)
+
+read_csv("intro_stats_grades/section_3.csv") |>
+  slr_slope(midterm_1, midterm_2)
+
+# etc...
+```
+
+However, this is tedious and error-prone! It will be better if we can instead *iterate* through each of the sections, and apply the same function to the CSV file for each section.
+
+### Listing files
+
+To begin, we want to get all of the file names for the CSV files that we need to read in. Instead of writing them all out by hand, we will use the handy `list.files` function in R.
+
+1. Run the following code in R:
+
+```{r, eval=F}
+grade_files <- list.files("intro_stats_grades", full.names=T)
+```
+
+
+2. The resulting object, `grade_files`, is a *vector*. What type of data does `grade_files` contain? (*Hint*: use the `typeof` function!)
+
+3. *Without* counting manually or looking at the file names yourself, how many intro stats sections are there?
+
+
+### Applying a function to each file: first attempt
+
+Now we can use the `slr_slope` function on each CSV file, by accessing the file names from the `grade_files` vector:
+
+```{r, eval=F}
+read_csv(grade_files[1]) |>
+  slr_slope(midterm_1, midterm_2)
+
+read_csv(grade_files[2]) |>
+  slr_slope(midterm_1, midterm_2)
+
+# etc...
+```
+
+Hmmm... This isn't much better than what we had before! We still have to manually index each entry in `grade_files` to read it into R.
+
+### `purrr::map`
+
+Fortunately, there is a different way! The `map` function from the `purrr` package allows us to efficiently apply a function to *each* file in `grade_files`.
+
+4. Run the following code to read in each CSV file with `purrr::map`.
+
+```{r, eval=F}
+grade_tables <- map(grade_files, read_csv)
+```
+
+5. What type of object is `grade_tables`?
+
+We can access elements of a list with double square brackets. For example:
+
+```{r, eval=F}
+grade_tables[[1]]
+```
+
+6. What is stored in the `grade_tables` list?
+
+### Calculating the slopes
+
+Now we can calculate the slopes for each grade data frame:
+
+```{r, eval=F}
+grade_tables[[1]] |>
+  slr_slope(midterm_1, midterm_2)
+
+grade_tables[[2]] |>
+  slr_slope(midterm_1, midterm_2)
+
+# etc...
+```
+
+But this is still tedious! Instead, let's use `map` again. As a first attempt, we might try the following:
+
+
+```{r, eval=F}
+exam_slopes <- map(grade_tables, slr_slope)
+```
+
+7. What happens when we run this code? Why?
+
+To fix the issue, we need to specify which variables we want to calculate the slope for. It is simplest to do this with an anonymous function:
+
+```{r, eval=F}
+exam_slopes <- map(grade_tables, 
+                   function(df) slr_slope(df, midterm_1, midterm_2))
+```
+
+8. Run the code. What type of object is `exam_slopes`? What does it contain?
+
+### Putting everything together
+
+In the process here, we have saved several intermediate steps (`grade_files`, `grade_tables`) that we probably don't need to save. Fortunately, we can use the handy pipe `|>` and do everything in one nice chain!
+
+9. Run the following code:
+
+```{r, eval=F}
+exam_slopes <- list.files("intro_stats_grades", full.names=T) |>
+  map(read_csv) |>
+  map(function(df) slr_slope(df, midterm_1, midterm_2))
+```
+
+### Cleaning up
+
+Currently, `exam_slopes` is a list of data frames (each slope is stored as a 1x1 data frame from the `summarize` function in `slr_slope`). In R, lists are often a bit harder to work with than vectors, and it would be nice to avoid storing the slopes in data frames.
+
+To make these changes, we can adapt the `slr_slope` function so that it returns a number instead of a data frame. Then, we can use a variant of `map` called `map_dbl`, which returns a numeric vector instead of a list:
+
+```{r, eval=F}
+slr_slope <- function(df, x, y) {
+  df |>
+    summarize(slope = cov({{ x }}, {{ y }}, use="complete.obs")/
+                var({{ x }}, na.rm=T)) |>
+    pull(slope)
+}
+
+exam_slopes <- list.files("intro_stats_grades", full.names=T) |>
+  map(read_csv) |>
+  map_dbl(function(df) slr_slope(df, midterm_1, midterm_2))
+
+exam_slopes
+```
+
+10. Using the `typeof` function, confirm that `exam_slopes` is now a vector containing numeric values (i.e., "doubles").
