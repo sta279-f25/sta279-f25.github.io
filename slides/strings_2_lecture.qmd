@@ -1,0 +1,213 @@
+---
+title: "Regular expressions"
+format: 
+  revealjs:
+    theme: theme.scss
+editor: source
+execute: 
+  echo: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=F}
+library(tidyverse)
+
+headlines <- read_csv("https://sta279-f25.github.io/data/clickbait_headlines_small.csv")
+```
+
+## Last time
+
+```{r}
+headlines <- headlines |>
+  mutate(clickbait_guess = str_detect(tolower(headline), 
+                                      "\\byou\\b|^\\d+")) 
+
+table(headlines$clickbait_guess, headlines$clickbait)
+```
+
+What is this code doing?
+
+```{r, include=F}
+headlines <- headlines |>
+  pull(headline) |>
+  tolower()
+```
+
+## Regular expressions so far
+
+**Regular expression:** a tool for specifying a search pattern in text.
+
+Some regular expressions so far:
+
+* `\d` any digit
+* `+` one or more occurrences
+* `^` anchors at the beginning
+* `$` anchors at the end
+* `\b` word boundary
+* `|` alternation (this pattern OR that pattern)
+
+## More on clickbait headlines
+
+Headlines with "you" are written in second person:
+
+```{r}
+str_subset(headlines, "\\byou\\b")
+```
+
+## More on clickbait headlines
+
+Some other clickbait headlines are written in *first* person:
+
+* "6 things I wish I knew as a teen"
+* "I asked my mom for marriage advice and here's what happened"
+* "I wore food on my face instead of makeup to see if anyone would notice"
+
+**Question:** How would I detect these headlines?
+
+```{r, include=F}
+headlines <- c(headlines, 
+               "6 things i wish i knew as a teen", 
+               "i asked my mom for marriage advice and here's what happened",
+               "i wore food on my face instead of makeup to see if anyone would notice")
+```
+
+
+## Identifying first person headlines
+
+What's wrong with this code?
+
+```{r}
+str_subset(headlines, "i")
+```
+
+
+## Identifying first person headlines
+
+Adding word boundaries:
+
+```{r}
+str_subset(headlines, "\\bi\\b")
+```
+
+How else could we modify this pattern?
+
+## Identifying first person headlines
+
+The word "I" is likely to either *start* the headline, or be preceded by a *space*:
+
+```{r}
+str_subset(headlines, "(^|\\s)i\\b")
+```
+
+
+## Example 2: Cleaning phone numbers
+
+You are working with customer data in which customers have entered their phone numbers:
+
+```{r, include=F}
+phone_nums <- c("555 867-5309",
+                "555 123 1234",
+                "(555) 298-9090",
+                "(555) 095 9876",
+                "5553246789")
+```
+
+```{r, echo=F}
+phone_nums
+```
+
+You want to clean the numbers so they all have the same form. What would be the easiest approach?
+
+## Example 2: Cleaning phone numbers
+
+```{r}
+str_remove_all(phone_nums, "\\D")
+```
+
+* `str_remove_all` removes all matches to a pattern
+* `\d` matches any digit
+* `\D` matches any *non*-digit
+
+## Shorthand character classes
+
+* `\d` matches any digit
+* `\w` matches any "word character" (letters, digits, underline)
+* `\s` matches any "whitespace character" (space, tab, enter, new line)
+* `\D`, `\W`, and `\S` are negations of `\d`, `\w`, and `\s`
+
+## Example 3: Selecting files
+
+Here are a set of files that live on my computer:
+
+```{r, include=F}
+file_names <- c("research/project1/code.R",
+                "research/project1/data.csv",
+                "research/project2/sim_output.csv",
+                "teaching/sta279/lecture1.qmd",
+                "teaching/sta279/example_data.csv",
+                "teaching/sta279/research_project.html")
+```
+
+```{r}
+file_names
+```
+
+
+How would I select only the files that live in the *research* folder?
+
+## Example 3: Selecting files
+
+Here are a set of files that live on my computer:
+
+```{r}
+file_names
+```
+
+How would I select only the files that live in the *research* folder?
+
+```{r}
+str_subset(file_names, "^research")
+```
+
+
+## Example 3: Selecting files
+
+Here are a set of files that live on my computer:
+
+```{r}
+file_names
+```
+
+What about only *csv* files in the research folder?
+
+## Example 3: Selecting files
+
+Here are a set of files that live on my computer:
+
+```{r}
+file_names
+```
+
+What about only *csv* files in the research folder?
+
+```{r}
+str_subset(file_names, "^research.+\\.csv")
+```
+## Dot
+
+The `.` is a special character which matches (almost) any character:
+
+```{r}
+str_view("I like bananas.", ".")
+```
+
+If we want to match a *literal* period, we need to escape it:
+
+```{r}
+str_view("I like bananas.", "\\.")
+```
+
+## Example 4: Extracting LaTeX
+
+

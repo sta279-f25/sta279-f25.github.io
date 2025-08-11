@@ -1,0 +1,109 @@
+---
+title: "Activity: Strings and regular expressions I"
+format: html
+editor: source
+---
+
+**Instructions:** 
+
+* Work with a neighbor to answer the following questions 
+* Complete your work in a Quarto file
+* When you are finished, render the file as an HTML and submit the HTML to Canvas (let me know if you encounter any problems)
+
+## Clickbait headlines
+
+The following code imports a dataset with 30 different headlines from different websites. The `headline` column contains the text of the headline, and the `clickbait` column records whether the headline is from a clickbait article (1) or not (0).
+
+```{r, message=F, warning=F}
+library(tidyverse)
+
+headlines <- read_csv("https://sta279-f25.github.io/data/clickbait_headlines_small.csv")
+```
+
+1. The code below creates a new variable called `clickbait_guess`, in which we try to identify clickbait headlines using regular expressions. It then compares the clickbait predictions to the truth. Fill in the regular expression to predict that articles are clickbait if: *there is a number at the beginning of the headline*. How well does this work?
+
+```{r, eval=F}
+headlines <- headlines |>
+  mutate(clickbait_guess = str_detect(headline, "...")) # fill in
+
+table(headlines$clickbait_guess, headlines$clickbait)
+```
+
+```{r, include=F}
+headlines <- headlines |>
+  mutate(clickbait_guess = str_detect(headline, "^\\d+")) 
+
+table(headlines$clickbait_guess, headlines$clickbait)
+```
+
+2. We also noticed that headlines which are in second person tend to be clickbait. Fill in the regular expression to predict that articles are clickbait if: *the headline contains the word "you"*. Note that it is helpful to convert all the headlines to lower case first, so we don't have to worry about differences in capitalization.
+
+```{r, eval=F}
+headlines <- headlines |>
+  mutate(clickbait_guess = str_detect(tolower(headline), "...")) 
+
+table(headlines$clickbait_guess, headlines$clickbait)
+```
+
+### Word borders
+
+Depending on how you wrote the regular expression in question 2, you could pick up words that contain the letters "you", and not just the word "you" itself. Here is a concrete example:
+
+```{r}
+str_view("you are at Wake Forest", "you")
+str_view("born on the bayou", "you")
+```
+
+We can require "you" to be a word on its own by requiring a **word boundary** (the special character `\b`) on either side of "you":
+
+```{r}
+str_view("you are at Wake Forest", "\\byou\\b")
+str_view("born on the bayou", "\\byou\\b")
+```
+
+Here is another example of the word boundary in action:
+
+```{r}
+str_view("This island is beautiful", "is")
+str_view("This island is beautiful", "\\bis\\b")
+```
+
+3. Modify your code from question 2 to *only* match the word "you", using word boundaries. Did this help your clickbait classification? Why or why not?
+
+### Alternation
+
+Often, we may wish to match multiple patterns. For example, suppose we wish to identify strings which contain the words "cat" *or* "dog":
+
+```{r}
+str_view("I have two cats and one dog", "cat|dog")
+```
+
+The vertical bar `|` allows me to find matches to any one of the patterns separated by the bar.
+
+4. Modify your code from question 3 to predict that articles are clickbait if: *the headline contains the word "you", OR the headline begins with a number*. How well do we predict clickbait using this rule?
+
+
+
+```{r, include = F}
+headlines <- headlines |>
+  mutate(clickbait_guess = str_detect(tolower(headline), "you")) 
+
+table(headlines$clickbait_guess, headlines$clickbait)
+```
+
+```{r, include=F}
+headlines <- headlines |>
+  mutate(clickbait_guess = str_detect(tolower(headline), "\\byou\\b|^\\d+")) 
+
+table(headlines$clickbait_guess, headlines$clickbait)
+```
+
+```{r, include=F}
+headlines <- headlines |>
+  mutate(clickbait_guess = str_detect(tolower(headline), "you|(^|\\s)i\\b|^\\d+")) 
+
+table(headlines$clickbait_guess, headlines$clickbait)
+```
+
+
+
