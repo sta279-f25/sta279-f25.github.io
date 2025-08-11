@@ -1,0 +1,37 @@
+---
+title: "Warmup: clickbait headlines?"
+format: pdf
+editor: source
+---
+
+\vspace{-2.5cm}
+
+**Group members:**
+
+**Instructions:** Work with a neighbor on the following activity. I will collect the handout at the end of class, and it will be part of your class participation grade. You will be graded only on effort -- it is ok if you don't finish all the questions, or get them all correct.
+
+## Assessing headlines
+
+Consider the following random selection of headlines from several different online websites. Some of these headlines come from clickbait articles, and some don't.
+
+* Are You Pikachu Or Meowth
+* 23 Photos That Definitively Prove The Moon Landing Was Faked
+* Chinese Exports Fall 22.6% in April
+* From a Beijing Suburb, Vibrant Strings
+* 27 Happy Gifts For People Who Love Jamaica
+* Two largest known prime numbers discovered just two weeks apart, one qualifies for $100k prize
+* Pakistan : New policy on renewable energy launched
+* Strong earthquake hits Pakistan, north India, Afghanistan
+* National Debate About G.O.P. Hits Home in Utah
+* This 7-Picture Test Will Determine What Type Of Harry Potter Fan You Are
+* 22 Fred And George Weasley Moments That'll Make You Laugh, Cry, And Everything In Between
+* 21 Puppies Who Absolutely Cannot Be Trusted
+
+### Questions
+
+1. Which of these headlines do you think are clickbait?
+
+\vspace{3cm}
+
+2. From this (small) sample, what are some features of a clickbait headline?
+

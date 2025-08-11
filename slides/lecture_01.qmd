@@ -81,15 +81,30 @@ Are you familiar with any tools (e.g. R functions) that would allow you to carry
 
 The original data from the Binfet *et al.* paper actually includes a *lot* more demographic information on the students (their ethnicity, gender identity, etc.). Why do you think I removed these variables before sharing the data with you?
 
+## Class plan (tentative)
+
+* Unit 1: Fundamentals for working with data
+    * Data wrangling, functions, and iteration
+
+* Unit 2: More on computing
+    * Deeper dive on iteration, functions + function scoping, and objects in R
+
+* Unit 3: Other data types and importing
+    * Text as data, regular expressions, web scraping
+    
+* Unit 4: Beyond R
+    * SQL + relational data, Python
+
 ## Class plan
 
-Unit 1: data wrangling
+Unit 1: Fundamentals for working with data
 
 * tools for cleaning and processing data (modifying columns, creating new columns, subsetting rows, etc)
 * working with different variable types
 * reshaping data
 * wrangling with multiple tables
-* iteration across columns
+* iteration across columns and tables
+* writing functions for data wrangling
 
 ## Course goals
 
@@ -110,7 +125,7 @@ What this course isn't:
 * Complete any assigned reading ahead of class
 * Become comfortable finding and using unfamiliar functions on your own
 * Bring laptop each day
-* Submit class activities and occasional concept quizzes (graded for effort, not completeness or correctness)
+* Submit class activities (graded for effort, not completeness or correctness)
 * Attend department seminars (more info to follow)
 
 ## Course components
@@ -118,7 +133,9 @@ What this course isn't:
 * Class participation (graded for effort)
 * HW assignments (roughly one per week)
 * Exams (2 midterms, 1 final)
-* Project
+* Projects (2)
+
+## AI policy
 
 ## For next time
 
