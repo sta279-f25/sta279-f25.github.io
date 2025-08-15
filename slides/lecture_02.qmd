@@ -140,11 +140,11 @@ starwars |>
 
 ## Calculating summary statistics
 
-**Question:** What is the average body mass for *each* species?
+**Question:** What is the average height for *each* species?
 
 ## Calculating summary statistics
 
-**Question:** What is the average body mass for *each* species?
+**Question:** What is the average height for *each* species?
 
 ```{r}
 starwars |>
