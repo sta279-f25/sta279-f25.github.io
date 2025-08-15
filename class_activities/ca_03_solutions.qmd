@@ -1,0 +1,138 @@
+---
+title: "Activity: Data wrangling with Gapminder"
+format: html
+editor: source
+---
+
+## Data
+
+We will work with data on global health and economic development. The data is called `gapminder`, and is part of the `gapminder` package in R. You will need to install the `gapminder` package before beginning the questions.
+
+# dplyr practice with gapminder data
+
+In this activity, you will practice using the `dplyr` functions we learned in class. 
+
+1. Fill in the following code to create a new data frame, containing only countries in 2007 with life expectancy at least 70 years and GDP per capita at most $20000.
+
+```r
+new_gapminder <- gapminder |>
+  filter(year ..., 
+         lifeExp ..., 
+         gdpPercap ...)
+```
+
+**Solution:**
+
+```{r, message=F, warning=F}
+library(gapminder)
+library(tidyverse)
+
+new_gapminder <- gapminder |>
+  filter(year == 2007, 
+         lifeExp >= 70, 
+         gdpPercap <= 20000)
+```
+
+
+2. Fill in the following code to count the number of countries in each continent in the data for 2007.
+
+```r
+gapminder |>
+  filter(...) |>
+  count(...)
+```
+
+**Solution:** Note that when we look only at 2007, each row in the data represents exactly one country. When we count by the `continent` variable, we are asking for the number of rows -- that is, the number of countries -- for each continent.
+
+```{r}
+gapminder |>
+  filter(year == 2007) |>
+  count(continent)
+```
+
+
+3. Fill in the following code to create a data frame with a new column that is the natural log of GDP per capita. (Hint: in R, the natural log function is `log`).
+
+```r
+new_gapminder <- gapminder |>
+  mutate(log_gdp_percap = ...)
+```
+
+**Solution:** 
+
+```{r}
+new_gapminder <- gapminder |>
+  mutate(log_gdp_percap = log(gdpPercap))
+```
+
+
+
+4. Fill in the following code to calculate the median natural log of GDP per capita in countries with a life expectancy of at least 70 years in 2007. (Hint: in R, the median function is `median`).
+
+```r
+gapminder |>
+  mutate(log_gdp_percap = ...) |>
+  filter(...) |>
+  summarize(...)
+```
+
+**Solution:**
+
+```{r}
+gapminder |>
+  mutate(log_gdp_percap = log(gdpPercap)) |>
+  filter(year == 2007, lifeExp >= 70) |>
+  summarize(med_log_gdp = median(log_gdp_percap))
+```
+
+
+5. Fill in the following code to calculate the median natural log of GDP per capita in countries with a life expectancy of at least 70 years in 2007, broken down by continent.
+
+```r
+gapminder |>
+  mutate(...) |>
+  filter(...) |>
+  group_by(...) |>
+  summarize(...)
+```
+
+**Solution:**
+
+```{r}
+gapminder |>
+  mutate(log_gdp_percap = log(gdpPercap)) |>
+  filter(year == 2007, lifeExp >= 70) |>
+  group_by(continent) |>
+  summarize(med_log_gdp = median(log_gdp_percap))
+```
+
+
+6. Does it matter whether we `mutate` or `filter` first in question 5?
+
+**Solution:** No
+
+```{r}
+gapminder |>
+  filter(year == 2007, lifeExp >= 70) |>
+  mutate(log_gdp_percap = log(gdpPercap)) |>
+  group_by(continent) |>
+  summarize(med_log_gdp = median(log_gdp_percap))
+```
+
+7. Calculate the median life expectancy for each continent in 2007, and the correlation between log GDP per capita and life expectancy for each continent in 2007.
+
+**Solution:** Note that the correlation for Oceania is meaningless because there are only two points (and two points determine a line, hence a perfect correlation).
+
+```{r}
+gapminder |>
+  filter(year == 2007) |>
+  group_by(continent) |>
+  summarize(med_life = median(lifeExp),
+            cor_life_gdp = cor(log(gdpPercap), lifeExp),
+            N = n())
+```
+
+8. Using your summary statistics, describe the relationship between GDP per capita and life expectancy, and summarize the differences between continents.
+
+**Solution:** There tends to be a positive relationship between GDP per capita and life expectancy, though the relationship is weaker in Africa than in the other continents.
+
