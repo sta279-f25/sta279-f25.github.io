@@ -4,7 +4,7 @@ title: Beginning data wrangling
 
 August 25
 : Course introduction and motivation
-  : [slides (html)](https://sta279-f25.github.io/slides/lecture_01.html), [slides (pdf)](https://sta279-f25.github.io/slides/lecture_01.pdf), [Class Activity](https://sta279-f23.github.io/class_activities/ca_01.html)
+  : [slides (html)](https://sta279-f25.github.io/slides/lecture_01.html), [slides (pdf)](https://sta279-f25.github.io/slides/lecture_01.pdf), [Class Activity](https://sta279-f25.github.io/class_activities/ca_01_handout.pdf)
 
 : Install R, RStudio
   : [Software installation](https://sta279-f25.github.io/resources/r_installation/)
