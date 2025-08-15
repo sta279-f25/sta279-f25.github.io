@@ -10,6 +10,13 @@ editor_options:
   chunk_output_type: console
 ---
 
+## Agenda
+
+* Introductions
+* Motivating example/activity
+* Plan for week 1 and the semester
+* Syllabus highlights
+
 ## Animals and exam stress
 
 **Question:** Have you ever been to an event designed to help students reduce exam stress by interacting with animals (dog petting, goat yoga, etc.)?
@@ -133,9 +140,15 @@ What this course isn't:
 * Class participation (graded for effort)
 * HW assignments (roughly one per week)
 * Exams (2 midterms, 1 final)
-* Projects (2)
+* Project
 
 ## AI policy
+
+* I will *never* use AI to grade your work; all feedback you receive will be directly from me and the TA
+* Collaboration with other students, and AI assistance, is permitted on homework
+    * Assistance does *not* mean uploading the assignment to ChatGPT and copying the answers
+    * You must cite collaborators and external resources
+* See syllabus for further details
 
 ## For next time
 

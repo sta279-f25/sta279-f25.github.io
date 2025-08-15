@@ -134,7 +134,7 @@ And here are a few examples of questions you should generally avoid:
 
 * These resources may be used, unless otherwise stated, on homework and class activities
 * These resources may *not* be used on exams
-* Rules for the projects will be specified in the project descriptions
+* Rules for projects will be specified in the project descriptions
 * If you have obtained code from the internet or an AI tool, you must **explicitly cite** where you have obtained the code (both code you used directly and code used as an inspiration). Any reused code that is not explicitly cited will be treated as plagiarism and may result in a grade of 0. 
     * If the code was obtained from a site like StackOverflow, provide a URL to the post
     * If the code was generated with help from an AI tool, provide the name of the tool and the queries you used
@@ -169,11 +169,11 @@ You are welcomed, and encouraged, to work with each other on homework assignment
 Submission instructions and due dates will be provided on each assignment. Grading will be based on both completeness and accuracy. 
 
 
-### Projects
+### Project
 
 Statistics and data science in the real world often involves implementing complex methods and working with challenging, messy datasets. Projects provide an opportunity to develop these skills, and apply the tools you have learned in class and practiced on homework assignments.
 
-There will be two projects in this course. Instructions and grading rubrics will be provided on the course website.
+There will be one project in this course, due towards the end of the semester. Instructions and grading rubrics will be provided on the course website.
 
 ### Exams
 
@@ -188,9 +188,8 @@ We will have two in-class exams (dates TBA) and one final exam.
 | Homework |  15%   |
 | Midterm exam 1    |  15%   |
 | Midterm exam 2 | 15% |
-| Project 1 | 15% |
-| Project 2 | 15% |
-| Final exam | 20% |
+| Project | 25% |
+| Final exam | 25% |
 
 I will use the standard grading scale (above a 93 is an A, above a 90 is an A-, above an 87 is a B+, etc.)
 
