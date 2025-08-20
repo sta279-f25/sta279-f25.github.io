@@ -1,6 +1,8 @@
 ---
 title: "Activity: Data wrangling with Gapminder"
-format: html
+format: 
+  html:
+    embed-resources: true
 editor: source
 ---
 
