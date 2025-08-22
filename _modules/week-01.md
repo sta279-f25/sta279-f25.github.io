@@ -13,7 +13,7 @@ August 27
 : Data wrangling fundamentals
 
 : Reading for Friday's class
-  : [Chapter 3, R4DS](https://r4ds.hadley.nz/data-transform.html), [Chapter 4, MDSR](https://mdsr-book.github.io/mdsr3e/04-dataI.html)
+  : [Chapter 3, R4DS](https://r4ds.hadley.nz/data-transform.html), [Chapter 4.1, MDSR](https://mdsr-book.github.io/mdsr3e/04-dataI.html)
 
 August 29
 : Data wrangling fundamentals
