@@ -12,16 +12,31 @@ editor: source
 
 In this activity, you will practice using `dplyr` functions for data manipulation.
 
+## Packages
+
+For this activity, we will need the `nycflights13` and `tidyverse` package. Recall that you can load these packages with
+
+```{r, eval=F}
+library(nycflights13)
+library(tidyverse)
+```
+
+If a package is not installed, recall that you can install it with `install.packages`. For example:
+
+```{r, eval=F}
+install.packages("nycflights13")
+```
+
+**Important:** Never include `install.packages` in a Quarto or R Markdown file! This only needs to be run in the R console.
+
+
 ## Data
 
 You will work with the `flights` data from the `nycflights13` package. Run the following code in your console to learn more about the `flights` dataset:
 
 ```{r, eval=F}
-library(nycflights13)
 ?flights
 ```
-
-(You may need to install the `nycflights13` package first). You will also need to load the `tidyverse` package.
 
 ## Questions
 
