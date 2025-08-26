@@ -1,5 +1,5 @@
 ---
-title: Functions, exam 1
+title: Functions, Exam 1
 ---
 
 October 6
