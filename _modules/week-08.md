@@ -3,7 +3,7 @@ title: Functions and lists
 ---
 
 October 13
-: No class
+: **No class**{: .label .label-blue }
 
 October 15
 : Functions + unit testing

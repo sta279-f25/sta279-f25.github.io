@@ -9,4 +9,4 @@ November 12
 : Project work time
 
 November 14
-: Exam 2
+: **Exam 2**{: .label .label-red }

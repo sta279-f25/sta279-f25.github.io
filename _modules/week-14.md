@@ -6,7 +6,7 @@ November 24
 : Data wrangling in Python
 
 November 26
-: No class
+: **No class**{: .label .label-blue }
 
 November 28
-: No class
+: **No class**{: .label .label-blue }

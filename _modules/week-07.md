@@ -1,9 +1,9 @@
 ---
-title: Functions, exam 2
+title: Functions, exam 1
 ---
 
 October 6
-: Exam 2
+: **Exam 1**{: .label .label-red }
 
 October 8
 : Functions
