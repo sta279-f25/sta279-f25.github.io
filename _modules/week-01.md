@@ -18,7 +18,7 @@ August 27
 
 August 29
 : Data wrangling fundamentals
-  : [slides (html)](https://sta279-f25.github.io/slides/lecture_03.html), [slides (pdf)](https://sta279-f25.github.io/slides/lecture_03.pdf), [Warmup](https://sta279-f25.github.io/class_activities/ca_03_handout.pdf), [Class Activity](https://sta279-f25.github.io/class_activities/ca_03.html)
+  : [slides (html)](https://sta279-f25.github.io/slides/lecture_03.html), [slides (pdf)](https://sta279-f25.github.io/slides/lecture_03.pdf), [Warmup](https://sta279-f25.github.io/class_activities/ca_03_handout.pdf), [Class Activity](https://sta279-f25.github.io/class_activities/ca_03.html), [Class activity solutions](https://sta279-f25.github.io/class_activities/ca_03_solutions.html)
 
 : **Homework 1 released**{: .label .label-yellow }
   : [HW 1](https://sta279-f25.github.io/homework/hw_01.html)
