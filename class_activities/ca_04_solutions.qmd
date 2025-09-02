@@ -1,14 +1,10 @@
 ---
 title: "Activity: Practice pivoting"
-format: html
+format: 
+  html:
+    embed-resources: true
 editor: source
 ---
-
-**Instructions:** 
-
-* Work with a neighbor to answer the following questions 
-* To get started, download the [class activity template](https://sta279-f25.github.io/class_activities/ca_04_template.qmd) file
-* When you are finished, render the file as an HTML and submit the HTML to Canvas (let me know if you encounter any problems)
 
 # GDP data
 
@@ -35,7 +31,6 @@ head(gdp_data)
 
 ```{r, echo=F}
 gdp_data |>
-  rename(country = starts_with("Income")) |>
   pivot_longer(cols = -country,
                names_to = "year",
                values_to = "gdp",
@@ -44,6 +39,16 @@ gdp_data |>
 
 * There should be no NAs
 * There should be separate columns for `year` and `gdp`
+
+**Solution:**
+
+```{r}
+gdp_data |>
+  pivot_longer(cols = -country,
+               names_to = "year",
+               values_to = "gdp",
+               values_drop_na = T)
+```
 
 # WHO data
 
@@ -72,3 +77,13 @@ who2 |>
 * There should be separate columns for `diagnosis`, `sex`, and `age_group`
 * The `count` column contains the number of cases
 
+**Solution:**
+
+```{r}
+who2 |>
+  pivot_longer(cols = -c(country, year),
+               names_to = c("diagnosis", "sex", "age_group"),
+               names_sep = "_",
+               values_to = "count",
+               values_drop_na = T)
+```
