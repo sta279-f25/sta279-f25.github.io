@@ -1,0 +1,100 @@
+---
+title: "Activity: Practice pivoting with the dog data"
+format: 
+  html:
+    embed-resources: true
+editor: source
+---
+
+# Dog data
+
+On the first day of class, we discussed an experiment which investigated whether interacting with dogs can help exam stress for college students. After cleaning the raw measurements, the experiment data looks like this:
+
+```{r setup, include=F}
+library(readr)
+library(tidyverse)
+
+cleaned_data <- read_csv("https://sta279-f25.github.io/class_activities/cleaned_dog_data.csv")
+```
+
+```{r}
+head(cleaned_data)
+```
+
+Each row of the cleaned data represents one student, with columns for student ID (`RID`), their experimental group assignment (`Control` means handler-only contact, `Indirect` means a dog was present, `Direct` means direct contact with a dog), and their pre- and post-intervention scores for different wellbeing and illbeing measurements.
+
+For example, `happiness_pre` is the student's assessed happiness before the intervention, and `happiness_post` is the student's assessed happiness after the intervention.
+
+The data can be imported into R with the following code:
+
+
+```{r, eval=F}
+library(readr)
+
+cleaned_data <- read_csv("https://sta279-f25.github.io/class_activities/cleaned_dog_data.csv")
+```
+
+## Pivoting
+
+1. Reshape the `cleaned_data` in R so it looks like this (note that I am only displaying the first few rows):
+
+```{r, echo=F}
+cleaned_data |>
+  pivot_longer(cols = -c(RID, GroupAssignment),
+               names_to = c("measurement", "stage"),
+               names_sep = "_",
+               values_to = "score") |>
+  head() |>
+  as.data.frame()
+```
+
+**Solution:**
+
+```{r, eval=F}
+cleaned_data |>
+  pivot_longer(cols = -c(RID, GroupAssignment),
+               names_to = c("measurement", "stage"),
+               names_sep = "_",
+               values_to = "score")
+```
+
+
+2.
+
+Reshape the `cleaned_data` in R so it looks like this (note that I am only displaying the first few rows):
+
+```{r, echo=F}
+cleaned_data |>
+  pivot_longer(cols = -c(RID, GroupAssignment),
+               names_to = c(".value", "stage"),
+               names_sep = "_") |>
+  head() |>
+  as.data.frame()
+```
+
+**Solution:**
+
+```{r, eval=F}
+cleaned_data |>
+  pivot_longer(cols = -c(RID, GroupAssignment),
+               names_to = c(".value", "stage"),
+               names_sep = "_")
+```
+
+3. Using your reshaped data from question 2, fit a linear model with `happiness` as the response variable and `GroupAssignment` and `stage` as the explanatory variables. Would you have been able to fit this model without pivoting the data?
+
+**Solution:**
+
+```{r}
+cleaned_data <- cleaned_data |>
+  pivot_longer(cols = -c(RID, GroupAssignment),
+               names_to = c(".value", "stage"),
+               names_sep = "_")
+
+m1 <- lm(happiness ~ GroupAssignment + stage, data = cleaned_data)
+summary(m1)
+```
+
+We could not have fit this model without pivoting the data. Before pivoting, `stage` was not a variable in the data (rather, it was part of the column names), and so we could not have included `stage` as a variable in the regression model.
+
+
