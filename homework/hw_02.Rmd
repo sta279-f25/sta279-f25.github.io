@@ -52,7 +52,7 @@ df_1 <- data.frame(
 df_1
 ```
 
-Using `pivot_longer` and `pivot_wider`, reshape `df_1` to produce the following output:
+Using `pivot_longer` and/or `pivot_wider`, reshape `df_1` to produce the following output:
 
 ```{r, echo=F}
 df_1 |>
