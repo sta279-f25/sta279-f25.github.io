@@ -10,6 +10,24 @@ editor_options:
   chunk_output_type: console
 ---
 
+```{r, include=F}
+library(tidyverse)
+library(googlesheets4)
+gs4_deauth()
+litF <- read_sheet("https://docs.google.com/spreadsheets/d/1hDinTIRHQIaZg1RUn6Z_6mo12PtKwEPFIz_mJVF6P5I/pub?gid=0") |>
+  rename(country = starts_with("Adult"))
+```
+
+## Logistics and reminders
+
+* HW 1 due tonight
+* HW 2 released, due next Friday
+* Department seminar coming up on 9/11
+    * 11am in ZSR auditorium
+    * Speaker: Robert Langefeld
+    * Attendance part of class participation grade
+    * If you can't attend in person, can instead watch a seminar on YouTube
+
 ## Last time: `pivot_longer`
 
 ![](https://r4ds.hadley.nz/diagrams/tidy-data/variables.png)
@@ -23,11 +41,101 @@ df |>
   )
 ```
 
-## Example from last time
+## Why pivot?
+
+```{r, echo=F}
+litF
+```
+
+Challenge: a variable of interest (year) is contained in the column names!
+
+## Why pivot?
+
+Literacy data in narrow form:
+
+```{r}
+
+litF_long <- litF |>
+  pivot_longer(
+    cols = -country,
+    names_to = "year",
+    values_to = "literacy_rate",
+    values_drop_na = T
+  )
+
+litF_long
+```
+
+
+
+
+## Why pivot?{.small}
+
+
+:::: {.columns}
+
+::: {.column width="50%"}
+```{r, echo=F}
+litF_long <- litF_long |>
+  mutate(year = as.numeric(year))
+litF_long |>
+  as.data.frame()
+```
+:::
+
+::: {.column width="50%"}
+
+```{r, echo=F}
+litF_long |>
+  ggplot(aes(x = year, 
+             y = literacy_rate)) +
+  geom_point() +
+  theme(text = element_text(size = 25))
+```
+
+```{r, eval=F}
+litF_long |>
+  ggplot(aes(x = year, 
+             y = literacy_rate)) +
+  geom_point()
+```
+:::
+
+::::
+
+
+## Why pivot?{.small}
+
+
+:::: {.columns}
+
+::: {.column width="50%"}
+```{r, echo=F}
+litF_long <- litF_long |>
+  mutate(year = as.numeric(year))
+litF_long |>
+  as.data.frame()
+```
+:::
+
+::: {.column width="50%"}
+
+```{r, echo=F}
+lm(literacy_rate ~ year, data = litF_long) |>
+  coef()
+```
+
+```{r, eval=F}
+lm(literacy_rate ~ year, data = litF_long)
+```
+:::
+
+::::
+
+
+## Another example from last time
 
 ```{r, include=F}
-library(tidyverse)
-
 df_3 = data.frame(id = c(1, 2, 3),
                  bp_1 = c(100, 120, 125),
                  bp_2 = c(120, 115, 130),
@@ -35,16 +143,59 @@ df_3 = data.frame(id = c(1, 2, 3),
                  hr_2 = c(77, 81, 93))
 ```
 
-
 ```{r}
 df_3
+```
 
+## What we can do with the current data
+
+```{r, fig.width=6, fig.height=4}
 df_3 |>
+  ggplot(aes(x = bp_1, 
+             y = bp_2)) +
+  geom_point()
+```
+
+## What we can do with reshaped data
+
+:::: {.columns}
+
+::: {.column width="50%"}
+```{r, echo=F}
+df3_long <- df_3 |>
   pivot_longer(cols = -id, 
-               names_to = c("measurement", "stage"), 
+               names_to = c("measurement", 
+                            "stage"), 
                names_sep = "_", 
                values_to = "value")
+
+df3_long
 ```
+:::
+
+::: {.column width="50%"}
+
+```{r, echo=F}
+df3_long |>
+  ggplot(aes(x = stage, 
+             y = value)) +
+  geom_point() +
+  geom_line(aes(group = id)) +
+  facet_wrap(~measurement) +
+  theme(text = element_text(size = 25))
+```
+
+```{r, eval=F}
+df3_long |>
+  ggplot(aes(x = stage, 
+             y = value)) +
+  geom_point() +
+  geom_line(aes(group = id)) +
+  facet_wrap(~measurement)
+```
+:::
+
+::::
 
 
 ## Warmup activity
@@ -73,6 +224,35 @@ df_3 |>
 ```
 
 What is `names_to = c(".value", "stage")` doing?
+
+## What we can do with the reshaped data
+
+:::: {.columns}
+
+::: {.column width="45%"}
+```{r, echo=F}
+df3_new <- df_3 |>
+  pivot_longer(cols = -id,
+               names_to = c(".value", "stage"),
+               names_sep = "_")
+
+df3_new
+```
+:::
+
+::: {.column width="55%"}
+
+```{r, echo=F}
+lm(bp ~ hr + stage, data = df3_new)
+```
+
+```{r, eval=F}
+lm(bp ~ hr + stage, 
+   data = df3_new)
+```
+:::
+
+::::
 
 ## Going the other way
 
@@ -114,9 +294,9 @@ air_quality |>
 
 ```{r}
 air_quality |>
-  pivot_wider(id_cols = "date.utc",
-              names_from = "location",
-              values_from = "value")
+  pivot_wider(id_cols = date.utc,
+              names_from = location,
+              values_from = value)
 ```
 
 ## Class activity

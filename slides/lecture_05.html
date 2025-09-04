@@ -197,6 +197,20 @@
 </div>
 
 </section>
+<section id="logistics-and-reminders" class="slide level2">
+<h2>Logistics and reminders</h2>
+<ul>
+<li>HW 1 due tonight</li>
+<li>HW 2 released, due next Friday</li>
+<li>Department seminar coming up on 9/11
+<ul>
+<li>11am in ZSR auditorium</li>
+<li>Speaker: Robert Langefeld</li>
+<li>Attendance part of class participation grade</li>
+<li>If you can’t attend in person, can instead watch a seminar on YouTube</li>
+</ul></li>
+</ul>
+</section>
 <section id="last-time-pivot_longer" class="slide level2">
 <h2>Last time: <code>pivot_longer</code></h2>
 
@@ -209,21 +223,1282 @@
 <span id="cb1-6"><a href=""></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="example-from-last-time" class="slide level2">
-<h2>Example from last time</h2>
+<section id="why-pivot" class="slide level2">
+<h2>Why pivot?</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a>df_3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 260 × 38
+   country `1975` `1976` `1977` `1978` `1979` `1980` `1981` `1982` `1983` `1984`
+   &lt;chr&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+ 1 Afghan…     NA     NA     NA     NA   4.99   NA       NA     NA     NA   NA  
+ 2 Albania     NA     NA     NA     NA  NA      NA       NA     NA     NA   NA  
+ 3 Algeria     NA     NA     NA     NA  NA      NA       NA     NA     NA   NA  
+ 4 Andorra     NA     NA     NA     NA  NA      NA       NA     NA     NA   NA  
+ 5 Angola      NA     NA     NA     NA  NA      NA       NA     NA     NA   NA  
+ 6 Anguil…     NA     NA     NA     NA  NA      NA       NA     NA     NA   95.7
+ 7 Antigu…     NA     NA     NA     NA  NA      NA       NA     NA     NA   NA  
+ 8 Argent…     NA     NA     NA     NA  NA      93.6     NA     NA     NA   NA  
+ 9 Armenia     NA     NA     NA     NA  NA      NA       NA     NA     NA   NA  
+10 Aruba       NA     NA     NA     NA  NA      NA       NA     NA     NA   NA  
+# ℹ 250 more rows
+# ℹ 27 more variables: `1985` &lt;dbl&gt;, `1986` &lt;dbl&gt;, `1987` &lt;dbl&gt;, `1988` &lt;dbl&gt;,
+#   `1989` &lt;dbl&gt;, `1990` &lt;dbl&gt;, `1991` &lt;dbl&gt;, `1992` &lt;dbl&gt;, `1993` &lt;dbl&gt;,
+#   `1994` &lt;dbl&gt;, `1995` &lt;dbl&gt;, `1996` &lt;dbl&gt;, `1997` &lt;dbl&gt;, `1998` &lt;dbl&gt;,
+#   `1999` &lt;dbl&gt;, `2000` &lt;dbl&gt;, `2001` &lt;dbl&gt;, `2002` &lt;dbl&gt;, `2003` &lt;dbl&gt;,
+#   `2004` &lt;dbl&gt;, `2005` &lt;dbl&gt;, `2006` &lt;dbl&gt;, `2007` &lt;dbl&gt;, `2008` &lt;dbl&gt;,
+#   `2009` &lt;dbl&gt;, `2010` &lt;dbl&gt;, `2011` &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<p>Challenge: a variable of interest (year) is contained in the column names!</p>
+</section>
+<section id="why-pivot-1" class="slide level2">
+<h2>Why pivot?</h2>
+<p>Literacy data in narrow form:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a>litF_long <span class="ot">&lt;-</span> litF <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href=""></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb3-3"><a href=""></a>    <span class="at">cols =</span> <span class="sc">-</span>country,</span>
+<span id="cb3-4"><a href=""></a>    <span class="at">names_to =</span> <span class="st">"year"</span>,</span>
+<span id="cb3-5"><a href=""></a>    <span class="at">values_to =</span> <span class="st">"literacy_rate"</span>,</span>
+<span id="cb3-6"><a href=""></a>    <span class="at">values_drop_na =</span> T</span>
+<span id="cb3-7"><a href=""></a>  )</span>
+<span id="cb3-8"><a href=""></a></span>
+<span id="cb3-9"><a href=""></a>litF_long</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 571 × 3
+   country     year  literacy_rate
+   &lt;chr&gt;       &lt;chr&gt;         &lt;dbl&gt;
+ 1 Afghanistan 1979           4.99
+ 2 Afghanistan 2011          13   
+ 3 Albania     2001          98.3 
+ 4 Albania     2008          94.7 
+ 5 Albania     2011          95.7 
+ 6 Algeria     1987          35.8 
+ 7 Algeria     2002          60.1 
+ 8 Algeria     2006          63.9 
+ 9 Angola      2001          54.2 
+10 Angola      2011          58.6 
+# ℹ 561 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="why-pivot-2" class="slide level2 small">
+<h2>Why pivot?</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>                   country year literacy_rate
+1              Afghanistan 1979      4.987460
+2              Afghanistan 2011     13.000000
+3                  Albania 2001     98.252274
+4                  Albania 2008     94.681814
+5                  Albania 2011     95.691480
+6                  Algeria 1987     35.839915
+7                  Algeria 2002     60.075082
+8                  Algeria 2006     63.918785
+9                   Angola 2001     54.194488
+10                  Angola 2011     58.608460
+11                Anguilla 1984     95.714930
+12     Antigua and Barbuda 2001     99.420000
+13     Antigua and Barbuda 2011     99.420000
+14               Argentina 1980     93.580894
+15               Argentina 1991     96.041358
+16               Argentina 2001     97.193411
+17               Argentina 2011     97.890420
+18                 Armenia 1989     98.150136
+19                 Armenia 2001     99.161066
+20                 Armenia 2011     99.453760
+21                   Aruba 2000     97.071360
+22                   Aruba 2010     96.719777
+23              Azerbaijan 1999     98.174785
+24              Azerbaijan 2007     99.397876
+25              Azerbaijan 2009     99.682152
+26                 Bahrain 1981     58.591092
+27                 Bahrain 1991     76.932319
+28                 Bahrain 2001     83.557418
+29                 Bahrain 2010     91.612576
+30              Bangladesh 1981     17.971629
+31              Bangladesh 1991     25.838980
+32              Bangladesh 2001     40.823350
+33              Bangladesh 2011     53.410500
+34                 Belarus 1989     96.628221
+35                 Belarus 1999     99.419719
+36                 Belarus 2009     99.493993
+37                  Belize 1991     70.328394
+38                   Benin 1979      9.539080
+39                   Benin 1992     16.565239
+40                   Benin 2002     23.300138
+41                   Benin 2006     18.442914
+42                  Bhutan 2005     38.680657
+43                 Bolivia 1976     51.374645
+44                 Bolivia 1992     72.313217
+45                 Bolivia 2001     80.654383
+46                 Bolivia 2007     85.985939
+47                 Bolivia 2008     86.831754
+48                 Bolivia 2009     86.821457
+49  Bosnia and Herzegovina 2000     94.359945
+50  Bosnia and Herzegovina 2011     96.695260
+51                Botswana 1991     71.299236
+52                Botswana 2003     81.807948
+53                Botswana 2011     85.561560
+54                  Brazil 1980     72.853148
+55                  Brazil 2000     86.500048
+56                  Brazil 2004     88.806127
+57                  Brazil 2006     89.855592
+58                  Brazil 2007     90.228007
+59                  Brazil 2008     90.219555
+60                  Brazil 2009     90.411217
+61                  Brazil 2010     90.681695
+62                  Brunei 1981     68.982584
+63                  Brunei 1991     82.461356
+64                  Brunei 2001     90.161545
+65                  Brunei 2011     93.920810
+66                Bulgaria 2001     97.706486
+67                Bulgaria 2011     97.983897
+68            Burkina Faso 1975      3.182766
+69            Burkina Faso 1991      8.225427
+70            Burkina Faso 1996      8.057980
+71            Burkina Faso 2003     15.188768
+72            Burkina Faso 2005     16.622242
+73            Burkina Faso 2007     21.579565
+74                 Burundi 1979     11.983568
+75                 Burundi 1990     27.529298
+76                 Burundi 2000     52.237762
+77                 Burundi 2008     84.591468
+78                Cambodia 1998     56.992504
+79                Cambodia 2004     64.050990
+80                Cambodia 2008     70.858199
+81                Cambodia 2009     65.931248
+82                Cameroon 1976     29.116129
+83                Cameroon 2000     58.721762
+84                Cameroon 2007     63.022058
+85                Cameroon 2010     64.799498
+86              Cape Verde 1990     52.998616
+87              Cape Verde 2004     74.069260
+88              Cape Verde 2011     80.258240
+89          Cayman Islands 2007     99.021477
+90    Central African Rep. 1975      8.399576
+91    Central African Rep. 1988     20.336880
+92    Central African Rep. 2000     35.290904
+93    Central African Rep. 2011     44.177470
+94                    Chad 1993      4.591826
+95                    Chad 2000     12.796419
+96                    Chad 2004     17.980583
+97                    Chad 2011     25.398260
+98                   Chile 1982     90.800121
+99                   Chile 1992     94.036714
+100                  Chile 2002     95.640927
+101                  Chile 2008     98.695573
+102                  Chile 2009     98.491277
+103                  China 1982     51.136808
+104                  China 1990     68.072077
+105                  China 2000     86.526595
+106                  China 2010     92.711235
+107               Colombia 1993     81.235482
+108               Colombia 1996     91.314000
+109               Colombia 2004     92.714627
+110               Colombia 2005     92.911248
+111               Colombia 2006     92.220596
+112               Colombia 2007     92.845624
+113               Colombia 2008     93.435373
+114               Colombia 2009     93.415130
+115               Colombia 2010     93.486789
+116               Colombia 2011     93.667138
+117                Comoros 1980     40.317616
+118                Comoros 2000     63.459016
+119                Comoros 2011     70.570020
+120       Congo, Dem. Rep. 2001     54.060896
+121       Congo, Dem. Rep. 2007     46.104254
+122             Costa Rica 1984     92.577129
+123             Costa Rica 2000     95.080791
+124             Costa Rica 2011     96.478860
+125          Cote d'Ivoire 1988     23.433782
+126          Cote d'Ivoire 1998     28.476671
+127          Cote d'Ivoire 2000     38.614513
+128          Cote d'Ivoire 2011     47.583590
+129                Croatia 1991     94.817222
+130                Croatia 2001     97.083898
+131                Croatia 2011     98.311050
+132                   Cuba 2002     99.790922
+133                   Cuba 2011     99.826790
+134                 Cyprus 1992     91.001781
+135                 Cyprus 2001     95.079665
+136                 Cyprus 2011     98.116229
+137         Dominican Rep. 1981     72.536085
+138         Dominican Rep. 2002     87.177093
+139         Dominican Rep. 2007     88.277171
+140         Dominican Rep. 2010     89.697297
+141         Dominican Rep. 2011     90.225520
+142                Ecuador 1982     80.405227
+143                Ecuador 1990     86.193333
+144                Ecuador 2001     89.697087
+145                Ecuador 2007     81.680587
+146                Ecuador 2009     81.451195
+147                Ecuador 2010     90.470106
+148                Ecuador 2011     90.220825
+149                  Egypt 1976     22.438008
+150                  Egypt 1986     31.404191
+151                  Egypt 1996     43.595306
+152                  Egypt 2005     59.355576
+153                  Egypt 2006     57.811914
+154                  Egypt 2010     63.515813
+155                  Egypt 2011     64.636235
+156            El Salvador 1992     71.280532
+157            El Salvador 2004     78.358650
+158            El Salvador 2006     81.003825
+159            El Salvador 2007     79.662128
+160            El Salvador 2008     81.359502
+161            El Salvador 2009     81.817946
+162            El Salvador 2010     82.308023
+163      Equatorial Guinea 2000     81.622999
+164      Equatorial Guinea 2011     91.078680
+165                Eritrea 2002     40.224423
+166                Eritrea 2011     59.039920
+167                Estonia 1989     99.601483
+168                Estonia 2000     99.760061
+169                Estonia 2011     99.819710
+170               Ethiopia 1994     18.514981
+171               Ethiopia 2004     22.800000
+172               Ethiopia 2005     17.977197
+173               Ethiopia 2007     28.921636
+174                  Gabon 1993     65.326310
+175                  Gabon 2004     79.309270
+176                  Gabon 2011     85.638330
+177                 Gambia 2000     25.061546
+178                 Gambia 2011     41.887120
+179                Georgia 2002     99.552854
+180                Georgia 2011     99.686130
+181                  Ghana 2000     49.791962
+182                  Ghana 2010     65.294686
+183                 Greece 1981     85.319987
+184                 Greece 1991     89.353296
+185                 Greece 2001     94.239412
+186                 Greece 2011     96.278980
+187              Guatemala 1994     57.292661
+188              Guatemala 2002     63.341381
+189              Guatemala 2011     71.080820
+190                 Guinea 1996      9.743070
+191                 Guinea 2003     18.238683
+192                 Guinea 2010     12.191970
+193          Guinea-Bissau 1979      8.588262
+194          Guinea-Bissau 2000     27.494212
+195          Guinea-Bissau 2011     42.067040
+196                 Guyana 2009     87.251977
+197                  Haiti 1982     32.524956
+198                  Haiti 2003     54.861468
+199                  Haiti 2006     44.599454
+200               Honduras 2001     80.223602
+201               Honduras 2007     83.452774
+202               Honduras 2010     84.725034
+203               Honduras 2011     84.930350
+204                Hungary 1980     98.454130
+205                Hungary 1994     98.713100
+206                Hungary 2004     98.854110
+207                Hungary 2011     98.938700
+208                  India 1981     25.676252
+209                  India 1991     33.729527
+210                  India 2001     47.842099
+211                  India 2006     50.823756
+212              Indonesia 1980     57.694628
+213              Indonesia 1990     75.270119
+214              Indonesia 2004     86.799589
+215              Indonesia 2006     88.786984
+216              Indonesia 2008     89.101391
+217              Indonesia 2009     89.677117
+218              Indonesia 2011     90.068697
+219                   Iran 1976     24.423083
+220                   Iran 1986     41.033950
+221                   Iran 1991     56.156417
+222                   Iran 1996     66.067764
+223                   Iran 2002     70.400000
+224                   Iran 2005     76.802638
+225                   Iran 2006     77.240018
+226                   Iran 2008     80.655322
+227                   Iraq 2000     64.169502
+228                   Iraq 2011     71.207160
+229                 Israel 1983     88.674717
+230                  Italy 1981     95.536669
+231                  Italy 2001     98.042153
+232                  Italy 2011     98.741610
+233                Jamaica 1999     85.872082
+234                Jamaica 2011     91.765530
+235                 Jordan 1979     52.110613
+236                 Jordan 2003     84.713925
+237                 Jordan 2005     87.005809
+238                 Jordan 2007     88.903312
+239                 Jordan 2010     89.207744
+240                 Jordan 2011     93.933457
+241             Kazakhstan 1989     96.138771
+242             Kazakhstan 1999     99.289895
+243             Kazakhstan 2009     99.684290
+244                  Kenya 2000     77.892980
+245                  Kenya 2007     66.863118
+246       Korea, Dem. Rep. 2008     99.997615
+247                 Kuwait 1975     48.015214
+248                 Kuwait 1980     59.110502
+249                 Kuwait 1985     68.849366
+250                 Kuwait 1995     74.148717
+251                 Kuwait 2005     91.042500
+252                 Kuwait 2006     90.828634
+253                 Kuwait 2007     91.503495
+254                 Kuwait 2008     91.793021
+255             Kyrgyzstan 1999     98.130627
+256             Kyrgyzstan 2009     98.981213
+257                   Laos 1995     47.902362
+258                   Laos 2000     58.460699
+259                   Laos 2001     60.902520
+260                   Laos 2005     63.226986
+261                 Latvia 1989     99.202551
+262                 Latvia 2000     99.709731
+263                 Latvia 2011     99.797280
+264                Lebanon 2007     85.967782
+265                Lesotho 2000     92.046453
+266                Lesotho 2009     84.963959
+267                Liberia 1984     19.302791
+268                Liberia 1994     32.018520
+269                Liberia 2004     47.876330
+270                Liberia 2007     27.034907
+271                  Libya 1984     42.313554
+272                  Libya 1994     64.959310
+273                  Libya 2004     78.197820
+274                  Libya 2011     83.323030
+275              Lithuania 1989     97.781588
+276              Lithuania 2001     99.647943
+277              Lithuania 2011     99.720630
+278           Macao, China 1981     86.215884
+279           Macao, China 2001     87.774972
+280           Macao, China 2006     90.723589
+281           Macao, China 2011     93.731906
+282         Macedonia, FYR 1994     90.928024
+283         Macedonia, FYR 2002     94.056068
+284         Macedonia, FYR 2011     96.042520
+285             Madagascar 2000     65.278572
+286             Madagascar 2009     61.641406
+287                 Malawi 1987     33.523022
+288                 Malawi 1998     53.997116
+289                 Malawi 2010     51.251965
+290               Malaysia 1980     61.248496
+291               Malaysia 1991     77.283088
+292               Malaysia 2000     85.354224
+293               Malaysia 2010     90.747682
+294               Maldives 1977     82.178163
+295               Maldives 1985     92.359012
+296               Maldives 1990     96.146011
+297               Maldives 1995     96.442981
+298               Maldives 2000     96.442981
+299               Maldives 2006     98.429847
+300                   Mali 1976      5.735281
+301                   Mali 1998     11.893428
+302                   Mali 2003     15.900000
+303                   Mali 2006     18.190913
+304                   Mali 2010     20.287932
+305                   Mali 2011     24.567414
+306                  Malta 1985     88.292746
+307                  Malta 1995     89.242644
+308                  Malta 2005     93.504251
+309             Mauritania 2000     43.417359
+310             Mauritania 2011     51.977670
+311              Mauritius 1990     74.660887
+312              Mauritius 2000     80.500029
+313              Mauritius 2011     86.664070
+314                 Mexico 1980     79.890999
+315                 Mexico 1990     84.955907
+316                 Mexico 2000     88.682040
+317                 Mexico 2002     88.728630
+318                 Mexico 2004     89.631020
+319                 Mexico 2005     90.210413
+320                 Mexico 2006     89.834511
+321                 Mexico 2007     91.355551
+322                 Mexico 2008     91.453608
+323                 Mexico 2009     92.116246
+324                 Mexico 2010     91.853422
+325                 Mexico 2011     92.338282
+326                Moldova 1989     94.444478
+327                Moldova 2000     95.492298
+328                Moldova 2011     98.482890
+329               Mongolia 2000     97.528800
+330               Mongolia 2011     97.877140
+331             Montenegro 2011     97.589140
+332                Morocco 1982     17.514867
+333                Morocco 1994     28.725419
+334                Morocco 2004     39.619556
+335                Morocco 2008     42.587848
+336                Morocco 2009     43.921080
+337                Morocco 2011     57.639991
+338             Mozambique 1980     12.146315
+339             Mozambique 1997     24.964204
+340             Mozambique 2003     33.193959
+341             Mozambique 2009     36.452282
+342                Myanmar 1983     71.630874
+343                Myanmar 2000     86.415182
+344                Myanmar 2011     90.370640
+345                Namibia 1991     73.986597
+346                Namibia 2001     83.490088
+347                Namibia 2007     78.350978
+348                  Nepal 1981      9.153116
+349                  Nepal 1991     17.381793
+350                  Nepal 2001     34.886764
+351                  Nepal 2011     46.706098
+352   Netherlands Antilles 1992     95.010912
+353   Netherlands Antilles 2011     96.533810
+354              Nicaragua 2001     76.601656
+355              Nicaragua 2005     77.916042
+356                  Niger 2001      9.398724
+357                  Niger 2005     15.084138
+358                Nigeria 1991     43.729197
+359                Nigeria 2003     43.322054
+360                Nigeria 2008     41.386756
+361                   Oman 2003     73.531714
+362                   Oman 2008     80.872258
+363                   Oman 2010     81.803227
+364               Pakistan 1981     14.771552
+365               Pakistan 1998     29.043839
+366               Pakistan 2005     35.367520
+367               Pakistan 2006     39.613234
+368               Pakistan 2008     40.081179
+369               Pakistan 2009     40.314619
+370                  Palau 1980     90.503238
+371                 Panama 1980     88.046528
+372                 Panama 1990     88.214846
+373                 Panama 2000     91.247179
+374                 Panama 2010     93.485262
+375       Papua New Guinea 2000     50.917736
+376       Papua New Guinea 2011     59.401460
+377               Paraguay 1982     75.852982
+378               Paraguay 1992     88.558712
+379               Paraguay 2007     93.453270
+380               Paraguay 2008     92.494428
+381               Paraguay 2009     93.144014
+382               Paraguay 2010     92.925745
+383                   Peru 1981     73.858337
+384                   Peru 1993     81.658753
+385                   Peru 2004     82.062620
+386                   Peru 2005     82.454367
+387                   Peru 2006     83.454865
+388                   Peru 2007     84.646878
+389            Philippines 1980     82.762148
+390            Philippines 1990     93.180725
+391            Philippines 2000     92.654907
+392            Philippines 2003     93.564533
+393            Philippines 2008     95.825633
+394                 Poland 1978     98.251980
+395                 Poland 1994     99.118490
+396                 Poland 2004     99.422290
+397                 Poland 2011     99.584860
+398               Portugal 1981     74.607990
+399               Portugal 1991     84.658214
+400               Portugal 2011     93.957120
+401            Puerto Rico 1980     85.850339
+402            Puerto Rico 1990     89.730961
+403            Puerto Rico 2004     90.957980
+404            Puerto Rico 2011     90.913960
+405                  Qatar 1986     72.458947
+406                  Qatar 1997     80.888683
+407                  Qatar 2004     88.609219
+408                  Qatar 2007     90.436121
+409                  Qatar 2008     92.663825
+410                  Qatar 2009     92.910178
+411                  Qatar 2010     95.401856
+412                Romania 1992     94.982691
+413                Romania 2002     96.266316
+414                Romania 2011     97.145310
+415                 Russia 1989     96.758170
+416                 Russia 2002     99.228357
+417                 Russia 2010     99.647776
+418                 Rwanda 1978     26.573577
+419                 Rwanda 2000     59.750337
+420                 Rwanda 2010     61.548613
+421                  Samoa 1991     97.421739
+422                  Samoa 2004     98.246410
+423                  Samoa 2011     98.617210
+424  Sao Tome and Principe 1981     42.363383
+425  Sao Tome and Principe 1991     61.920478
+426  Sao Tome and Principe 2001     77.949235
+427  Sao Tome and Principe 2008     60.083026
+428           Saudi Arabia 1992     57.277841
+429           Saudi Arabia 2000     69.291193
+430           Saudi Arabia 2004     76.335155
+431           Saudi Arabia 2011     82.236730
+432                Senegal 1988     17.863266
+433                Senegal 2002     29.247343
+434                Senegal 2006     32.987585
+435                Senegal 2009     38.666249
+436                 Serbia 2011     96.870490
+437             Seychelles 1987     85.489304
+438             Seychelles 1994     88.586598
+439             Seychelles 2002     92.258980
+440             Seychelles 2011     92.258980
+441           Sierra Leone 2004     24.158927
+442           Sierra Leone 2011     32.628910
+443              Singapore 1980     73.968537
+444              Singapore 1990     83.026848
+445              Singapore 2000     88.645175
+446              Singapore 2010     93.774814
+447               Slovenia 1991     99.453752
+448               Slovenia 2004     99.615970
+449               Slovenia 2011     99.671430
+450           South Africa 1980     74.807189
+451           South Africa 1996     80.928629
+452           South Africa 2007     87.043102
+453           South Africa 2011     92.183714
+454                  Spain 1981     89.936922
+455                  Spain 1991     95.050996
+456                  Spain 2005     96.925155
+457                  Spain 2007     97.260323
+458                  Spain 2008     96.886839
+459                  Spain 2009     96.925968
+460                  Spain 2010     97.004504
+461              Sri Lanka 1981     82.021974
+462              Sri Lanka 2001     89.135764
+463              Sri Lanka 2006     89.091352
+464              Sri Lanka 2008     89.073472
+465              Sri Lanka 2010     89.958678
+466                  Sudan 2000     52.146397
+467                  Sudan 2011     63.160230
+468               Suriname 2004     87.197436
+469               Suriname 2008     93.765371
+470               Suriname 2010     94.003541
+471              Swaziland 1976     53.665959
+472              Swaziland 1986     65.222882
+473              Swaziland 2000     80.328752
+474              Swaziland 2011     87.327460
+475                  Syria 1981     37.059159
+476                  Syria 2002     74.240440
+477                  Syria 2004     73.626561
+478                  Syria 2011     77.749850
+479             Tajikistan 1989     96.641803
+480             Tajikistan 2000     99.221736
+481             Tajikistan 2011     99.615330
+482               Tanzania 1988     48.088024
+483               Tanzania 2002     62.172318
+484               Tanzania 2010     60.752618
+485               Thailand 1980     83.893354
+486               Thailand 2000     90.516017
+487               Thailand 2005     91.529549
+488            Timor-Leste 2001     30.000000
+489            Timor-Leste 2007     42.500000
+490            Timor-Leste 2010     52.959000
+491                   Togo 2000     38.453292
+492                   Togo 2006     44.376626
+493                   Togo 2009     43.606898
+494                   Togo 2011     47.977387
+495                  Tonga 1976     99.525535
+496                  Tonga 1996     98.975550
+497                  Tonga 2006     99.082511
+498    Trinidad and Tobago 1980     93.464165
+499    Trinidad and Tobago 1990     95.661794
+500    Trinidad and Tobago 2004     97.810300
+501    Trinidad and Tobago 2011     98.486900
+502                Tunisia 1984     35.767567
+503                Tunisia 1994     48.240960
+504                Tunisia 2004     65.347859
+505                Tunisia 2007     68.509379
+506                Tunisia 2008     70.964177
+507                Tunisia 2010     71.088212
+508                 Turkey 1975     45.098921
+509                 Turkey 1980     49.806407
+510                 Turkey 1985     64.231724
+511                 Turkey 1990     68.519655
+512                 Turkey 2004     79.581693
+513                 Turkey 2005     80.548953
+514                 Turkey 2006     80.385161
+515                 Turkey 2007     81.263827
+516                 Turkey 2009     85.347157
+517                 Turkey 2010     88.073171
+518                 Turkey 2011     90.310105
+519           Turkmenistan 1995     98.261765
+520           Turkmenistan 2011     99.494220
+521                 Uganda 1991     44.826692
+522                 Uganda 2002     58.909883
+523                 Uganda 2006     62.078969
+524                 Uganda 2010     64.591451
+525                Ukraine 2001     99.171572
+526                Ukraine 2011     99.660400
+527   United Arab Emirates 1975     38.124870
+528   United Arab Emirates 1985     68.661283
+529   United Arab Emirates 2005     91.474749
+530                Uruguay 1975     94.304522
+531                Uruguay 1985     95.881538
+532                Uruguay 1996     97.270960
+533                Uruguay 2006     98.084359
+534                Uruguay 2007     98.241933
+535                Uruguay 2008     98.463660
+536                Uruguay 2009     98.606016
+537                Uruguay 2010     98.490953
+538             Uzbekistan 2000     98.138584
+539             Uzbekistan 2011     99.231960
+540                Vanuatu 1979     47.782592
+541                Vanuatu 1994     65.453710
+542                Vanuatu 2004     76.046360
+543                Vanuatu 2011     81.553540
+544              Venezuela 1981     83.004664
+545              Venezuela 1990     89.004855
+546              Venezuela 2001     92.715979
+547              Venezuela 2007     94.929643
+548              Venezuela 2009     95.350398
+549     West Bank and Gaza 1997     79.726622
+550     West Bank and Gaza 2004     87.951736
+551     West Bank and Gaza 2006     89.756918
+552     West Bank and Gaza 2007     90.465184
+553     West Bank and Gaza 2008     90.902854
+554     West Bank and Gaza 2009     91.704532
+555     West Bank and Gaza 2010     92.172796
+556     West Bank and Gaza 2011     92.616180
+557                Vietnam 1979     78.140390
+558                Vietnam 1989     82.829392
+559                Vietnam 1999     86.920080
+560                Vietnam 2000     86.610113
+561                Vietnam 2011     91.383460
+562            Yemen, Rep. 1994     17.059565
+563            Yemen, Rep. 2004     35.485490
+564            Yemen, Rep. 2011     48.539050
+565                 Zambia 1990     57.357722
+566                 Zambia 1999     59.802846
+567                 Zambia 2002     61.839278
+568                 Zambia 2007     51.786967
+569               Zimbabwe 1982     71.853928
+570               Zimbabwe 1992     78.517018
+571               Zimbabwe 2011     80.065659</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="lecture_05_files/figure-revealjs/unnamed-chunk-6-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a>litF_long <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href=""></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> year, </span>
+<span id="cb6-3"><a href=""></a>             <span class="at">y =</span> literacy_rate)) <span class="sc">+</span></span>
+<span id="cb6-4"><a href=""></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div></div>
+</section>
+<section id="why-pivot-3" class="slide level2 small">
+<h2>Why pivot?</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>                   country year literacy_rate
+1              Afghanistan 1979      4.987460
+2              Afghanistan 2011     13.000000
+3                  Albania 2001     98.252274
+4                  Albania 2008     94.681814
+5                  Albania 2011     95.691480
+6                  Algeria 1987     35.839915
+7                  Algeria 2002     60.075082
+8                  Algeria 2006     63.918785
+9                   Angola 2001     54.194488
+10                  Angola 2011     58.608460
+11                Anguilla 1984     95.714930
+12     Antigua and Barbuda 2001     99.420000
+13     Antigua and Barbuda 2011     99.420000
+14               Argentina 1980     93.580894
+15               Argentina 1991     96.041358
+16               Argentina 2001     97.193411
+17               Argentina 2011     97.890420
+18                 Armenia 1989     98.150136
+19                 Armenia 2001     99.161066
+20                 Armenia 2011     99.453760
+21                   Aruba 2000     97.071360
+22                   Aruba 2010     96.719777
+23              Azerbaijan 1999     98.174785
+24              Azerbaijan 2007     99.397876
+25              Azerbaijan 2009     99.682152
+26                 Bahrain 1981     58.591092
+27                 Bahrain 1991     76.932319
+28                 Bahrain 2001     83.557418
+29                 Bahrain 2010     91.612576
+30              Bangladesh 1981     17.971629
+31              Bangladesh 1991     25.838980
+32              Bangladesh 2001     40.823350
+33              Bangladesh 2011     53.410500
+34                 Belarus 1989     96.628221
+35                 Belarus 1999     99.419719
+36                 Belarus 2009     99.493993
+37                  Belize 1991     70.328394
+38                   Benin 1979      9.539080
+39                   Benin 1992     16.565239
+40                   Benin 2002     23.300138
+41                   Benin 2006     18.442914
+42                  Bhutan 2005     38.680657
+43                 Bolivia 1976     51.374645
+44                 Bolivia 1992     72.313217
+45                 Bolivia 2001     80.654383
+46                 Bolivia 2007     85.985939
+47                 Bolivia 2008     86.831754
+48                 Bolivia 2009     86.821457
+49  Bosnia and Herzegovina 2000     94.359945
+50  Bosnia and Herzegovina 2011     96.695260
+51                Botswana 1991     71.299236
+52                Botswana 2003     81.807948
+53                Botswana 2011     85.561560
+54                  Brazil 1980     72.853148
+55                  Brazil 2000     86.500048
+56                  Brazil 2004     88.806127
+57                  Brazil 2006     89.855592
+58                  Brazil 2007     90.228007
+59                  Brazil 2008     90.219555
+60                  Brazil 2009     90.411217
+61                  Brazil 2010     90.681695
+62                  Brunei 1981     68.982584
+63                  Brunei 1991     82.461356
+64                  Brunei 2001     90.161545
+65                  Brunei 2011     93.920810
+66                Bulgaria 2001     97.706486
+67                Bulgaria 2011     97.983897
+68            Burkina Faso 1975      3.182766
+69            Burkina Faso 1991      8.225427
+70            Burkina Faso 1996      8.057980
+71            Burkina Faso 2003     15.188768
+72            Burkina Faso 2005     16.622242
+73            Burkina Faso 2007     21.579565
+74                 Burundi 1979     11.983568
+75                 Burundi 1990     27.529298
+76                 Burundi 2000     52.237762
+77                 Burundi 2008     84.591468
+78                Cambodia 1998     56.992504
+79                Cambodia 2004     64.050990
+80                Cambodia 2008     70.858199
+81                Cambodia 2009     65.931248
+82                Cameroon 1976     29.116129
+83                Cameroon 2000     58.721762
+84                Cameroon 2007     63.022058
+85                Cameroon 2010     64.799498
+86              Cape Verde 1990     52.998616
+87              Cape Verde 2004     74.069260
+88              Cape Verde 2011     80.258240
+89          Cayman Islands 2007     99.021477
+90    Central African Rep. 1975      8.399576
+91    Central African Rep. 1988     20.336880
+92    Central African Rep. 2000     35.290904
+93    Central African Rep. 2011     44.177470
+94                    Chad 1993      4.591826
+95                    Chad 2000     12.796419
+96                    Chad 2004     17.980583
+97                    Chad 2011     25.398260
+98                   Chile 1982     90.800121
+99                   Chile 1992     94.036714
+100                  Chile 2002     95.640927
+101                  Chile 2008     98.695573
+102                  Chile 2009     98.491277
+103                  China 1982     51.136808
+104                  China 1990     68.072077
+105                  China 2000     86.526595
+106                  China 2010     92.711235
+107               Colombia 1993     81.235482
+108               Colombia 1996     91.314000
+109               Colombia 2004     92.714627
+110               Colombia 2005     92.911248
+111               Colombia 2006     92.220596
+112               Colombia 2007     92.845624
+113               Colombia 2008     93.435373
+114               Colombia 2009     93.415130
+115               Colombia 2010     93.486789
+116               Colombia 2011     93.667138
+117                Comoros 1980     40.317616
+118                Comoros 2000     63.459016
+119                Comoros 2011     70.570020
+120       Congo, Dem. Rep. 2001     54.060896
+121       Congo, Dem. Rep. 2007     46.104254
+122             Costa Rica 1984     92.577129
+123             Costa Rica 2000     95.080791
+124             Costa Rica 2011     96.478860
+125          Cote d'Ivoire 1988     23.433782
+126          Cote d'Ivoire 1998     28.476671
+127          Cote d'Ivoire 2000     38.614513
+128          Cote d'Ivoire 2011     47.583590
+129                Croatia 1991     94.817222
+130                Croatia 2001     97.083898
+131                Croatia 2011     98.311050
+132                   Cuba 2002     99.790922
+133                   Cuba 2011     99.826790
+134                 Cyprus 1992     91.001781
+135                 Cyprus 2001     95.079665
+136                 Cyprus 2011     98.116229
+137         Dominican Rep. 1981     72.536085
+138         Dominican Rep. 2002     87.177093
+139         Dominican Rep. 2007     88.277171
+140         Dominican Rep. 2010     89.697297
+141         Dominican Rep. 2011     90.225520
+142                Ecuador 1982     80.405227
+143                Ecuador 1990     86.193333
+144                Ecuador 2001     89.697087
+145                Ecuador 2007     81.680587
+146                Ecuador 2009     81.451195
+147                Ecuador 2010     90.470106
+148                Ecuador 2011     90.220825
+149                  Egypt 1976     22.438008
+150                  Egypt 1986     31.404191
+151                  Egypt 1996     43.595306
+152                  Egypt 2005     59.355576
+153                  Egypt 2006     57.811914
+154                  Egypt 2010     63.515813
+155                  Egypt 2011     64.636235
+156            El Salvador 1992     71.280532
+157            El Salvador 2004     78.358650
+158            El Salvador 2006     81.003825
+159            El Salvador 2007     79.662128
+160            El Salvador 2008     81.359502
+161            El Salvador 2009     81.817946
+162            El Salvador 2010     82.308023
+163      Equatorial Guinea 2000     81.622999
+164      Equatorial Guinea 2011     91.078680
+165                Eritrea 2002     40.224423
+166                Eritrea 2011     59.039920
+167                Estonia 1989     99.601483
+168                Estonia 2000     99.760061
+169                Estonia 2011     99.819710
+170               Ethiopia 1994     18.514981
+171               Ethiopia 2004     22.800000
+172               Ethiopia 2005     17.977197
+173               Ethiopia 2007     28.921636
+174                  Gabon 1993     65.326310
+175                  Gabon 2004     79.309270
+176                  Gabon 2011     85.638330
+177                 Gambia 2000     25.061546
+178                 Gambia 2011     41.887120
+179                Georgia 2002     99.552854
+180                Georgia 2011     99.686130
+181                  Ghana 2000     49.791962
+182                  Ghana 2010     65.294686
+183                 Greece 1981     85.319987
+184                 Greece 1991     89.353296
+185                 Greece 2001     94.239412
+186                 Greece 2011     96.278980
+187              Guatemala 1994     57.292661
+188              Guatemala 2002     63.341381
+189              Guatemala 2011     71.080820
+190                 Guinea 1996      9.743070
+191                 Guinea 2003     18.238683
+192                 Guinea 2010     12.191970
+193          Guinea-Bissau 1979      8.588262
+194          Guinea-Bissau 2000     27.494212
+195          Guinea-Bissau 2011     42.067040
+196                 Guyana 2009     87.251977
+197                  Haiti 1982     32.524956
+198                  Haiti 2003     54.861468
+199                  Haiti 2006     44.599454
+200               Honduras 2001     80.223602
+201               Honduras 2007     83.452774
+202               Honduras 2010     84.725034
+203               Honduras 2011     84.930350
+204                Hungary 1980     98.454130
+205                Hungary 1994     98.713100
+206                Hungary 2004     98.854110
+207                Hungary 2011     98.938700
+208                  India 1981     25.676252
+209                  India 1991     33.729527
+210                  India 2001     47.842099
+211                  India 2006     50.823756
+212              Indonesia 1980     57.694628
+213              Indonesia 1990     75.270119
+214              Indonesia 2004     86.799589
+215              Indonesia 2006     88.786984
+216              Indonesia 2008     89.101391
+217              Indonesia 2009     89.677117
+218              Indonesia 2011     90.068697
+219                   Iran 1976     24.423083
+220                   Iran 1986     41.033950
+221                   Iran 1991     56.156417
+222                   Iran 1996     66.067764
+223                   Iran 2002     70.400000
+224                   Iran 2005     76.802638
+225                   Iran 2006     77.240018
+226                   Iran 2008     80.655322
+227                   Iraq 2000     64.169502
+228                   Iraq 2011     71.207160
+229                 Israel 1983     88.674717
+230                  Italy 1981     95.536669
+231                  Italy 2001     98.042153
+232                  Italy 2011     98.741610
+233                Jamaica 1999     85.872082
+234                Jamaica 2011     91.765530
+235                 Jordan 1979     52.110613
+236                 Jordan 2003     84.713925
+237                 Jordan 2005     87.005809
+238                 Jordan 2007     88.903312
+239                 Jordan 2010     89.207744
+240                 Jordan 2011     93.933457
+241             Kazakhstan 1989     96.138771
+242             Kazakhstan 1999     99.289895
+243             Kazakhstan 2009     99.684290
+244                  Kenya 2000     77.892980
+245                  Kenya 2007     66.863118
+246       Korea, Dem. Rep. 2008     99.997615
+247                 Kuwait 1975     48.015214
+248                 Kuwait 1980     59.110502
+249                 Kuwait 1985     68.849366
+250                 Kuwait 1995     74.148717
+251                 Kuwait 2005     91.042500
+252                 Kuwait 2006     90.828634
+253                 Kuwait 2007     91.503495
+254                 Kuwait 2008     91.793021
+255             Kyrgyzstan 1999     98.130627
+256             Kyrgyzstan 2009     98.981213
+257                   Laos 1995     47.902362
+258                   Laos 2000     58.460699
+259                   Laos 2001     60.902520
+260                   Laos 2005     63.226986
+261                 Latvia 1989     99.202551
+262                 Latvia 2000     99.709731
+263                 Latvia 2011     99.797280
+264                Lebanon 2007     85.967782
+265                Lesotho 2000     92.046453
+266                Lesotho 2009     84.963959
+267                Liberia 1984     19.302791
+268                Liberia 1994     32.018520
+269                Liberia 2004     47.876330
+270                Liberia 2007     27.034907
+271                  Libya 1984     42.313554
+272                  Libya 1994     64.959310
+273                  Libya 2004     78.197820
+274                  Libya 2011     83.323030
+275              Lithuania 1989     97.781588
+276              Lithuania 2001     99.647943
+277              Lithuania 2011     99.720630
+278           Macao, China 1981     86.215884
+279           Macao, China 2001     87.774972
+280           Macao, China 2006     90.723589
+281           Macao, China 2011     93.731906
+282         Macedonia, FYR 1994     90.928024
+283         Macedonia, FYR 2002     94.056068
+284         Macedonia, FYR 2011     96.042520
+285             Madagascar 2000     65.278572
+286             Madagascar 2009     61.641406
+287                 Malawi 1987     33.523022
+288                 Malawi 1998     53.997116
+289                 Malawi 2010     51.251965
+290               Malaysia 1980     61.248496
+291               Malaysia 1991     77.283088
+292               Malaysia 2000     85.354224
+293               Malaysia 2010     90.747682
+294               Maldives 1977     82.178163
+295               Maldives 1985     92.359012
+296               Maldives 1990     96.146011
+297               Maldives 1995     96.442981
+298               Maldives 2000     96.442981
+299               Maldives 2006     98.429847
+300                   Mali 1976      5.735281
+301                   Mali 1998     11.893428
+302                   Mali 2003     15.900000
+303                   Mali 2006     18.190913
+304                   Mali 2010     20.287932
+305                   Mali 2011     24.567414
+306                  Malta 1985     88.292746
+307                  Malta 1995     89.242644
+308                  Malta 2005     93.504251
+309             Mauritania 2000     43.417359
+310             Mauritania 2011     51.977670
+311              Mauritius 1990     74.660887
+312              Mauritius 2000     80.500029
+313              Mauritius 2011     86.664070
+314                 Mexico 1980     79.890999
+315                 Mexico 1990     84.955907
+316                 Mexico 2000     88.682040
+317                 Mexico 2002     88.728630
+318                 Mexico 2004     89.631020
+319                 Mexico 2005     90.210413
+320                 Mexico 2006     89.834511
+321                 Mexico 2007     91.355551
+322                 Mexico 2008     91.453608
+323                 Mexico 2009     92.116246
+324                 Mexico 2010     91.853422
+325                 Mexico 2011     92.338282
+326                Moldova 1989     94.444478
+327                Moldova 2000     95.492298
+328                Moldova 2011     98.482890
+329               Mongolia 2000     97.528800
+330               Mongolia 2011     97.877140
+331             Montenegro 2011     97.589140
+332                Morocco 1982     17.514867
+333                Morocco 1994     28.725419
+334                Morocco 2004     39.619556
+335                Morocco 2008     42.587848
+336                Morocco 2009     43.921080
+337                Morocco 2011     57.639991
+338             Mozambique 1980     12.146315
+339             Mozambique 1997     24.964204
+340             Mozambique 2003     33.193959
+341             Mozambique 2009     36.452282
+342                Myanmar 1983     71.630874
+343                Myanmar 2000     86.415182
+344                Myanmar 2011     90.370640
+345                Namibia 1991     73.986597
+346                Namibia 2001     83.490088
+347                Namibia 2007     78.350978
+348                  Nepal 1981      9.153116
+349                  Nepal 1991     17.381793
+350                  Nepal 2001     34.886764
+351                  Nepal 2011     46.706098
+352   Netherlands Antilles 1992     95.010912
+353   Netherlands Antilles 2011     96.533810
+354              Nicaragua 2001     76.601656
+355              Nicaragua 2005     77.916042
+356                  Niger 2001      9.398724
+357                  Niger 2005     15.084138
+358                Nigeria 1991     43.729197
+359                Nigeria 2003     43.322054
+360                Nigeria 2008     41.386756
+361                   Oman 2003     73.531714
+362                   Oman 2008     80.872258
+363                   Oman 2010     81.803227
+364               Pakistan 1981     14.771552
+365               Pakistan 1998     29.043839
+366               Pakistan 2005     35.367520
+367               Pakistan 2006     39.613234
+368               Pakistan 2008     40.081179
+369               Pakistan 2009     40.314619
+370                  Palau 1980     90.503238
+371                 Panama 1980     88.046528
+372                 Panama 1990     88.214846
+373                 Panama 2000     91.247179
+374                 Panama 2010     93.485262
+375       Papua New Guinea 2000     50.917736
+376       Papua New Guinea 2011     59.401460
+377               Paraguay 1982     75.852982
+378               Paraguay 1992     88.558712
+379               Paraguay 2007     93.453270
+380               Paraguay 2008     92.494428
+381               Paraguay 2009     93.144014
+382               Paraguay 2010     92.925745
+383                   Peru 1981     73.858337
+384                   Peru 1993     81.658753
+385                   Peru 2004     82.062620
+386                   Peru 2005     82.454367
+387                   Peru 2006     83.454865
+388                   Peru 2007     84.646878
+389            Philippines 1980     82.762148
+390            Philippines 1990     93.180725
+391            Philippines 2000     92.654907
+392            Philippines 2003     93.564533
+393            Philippines 2008     95.825633
+394                 Poland 1978     98.251980
+395                 Poland 1994     99.118490
+396                 Poland 2004     99.422290
+397                 Poland 2011     99.584860
+398               Portugal 1981     74.607990
+399               Portugal 1991     84.658214
+400               Portugal 2011     93.957120
+401            Puerto Rico 1980     85.850339
+402            Puerto Rico 1990     89.730961
+403            Puerto Rico 2004     90.957980
+404            Puerto Rico 2011     90.913960
+405                  Qatar 1986     72.458947
+406                  Qatar 1997     80.888683
+407                  Qatar 2004     88.609219
+408                  Qatar 2007     90.436121
+409                  Qatar 2008     92.663825
+410                  Qatar 2009     92.910178
+411                  Qatar 2010     95.401856
+412                Romania 1992     94.982691
+413                Romania 2002     96.266316
+414                Romania 2011     97.145310
+415                 Russia 1989     96.758170
+416                 Russia 2002     99.228357
+417                 Russia 2010     99.647776
+418                 Rwanda 1978     26.573577
+419                 Rwanda 2000     59.750337
+420                 Rwanda 2010     61.548613
+421                  Samoa 1991     97.421739
+422                  Samoa 2004     98.246410
+423                  Samoa 2011     98.617210
+424  Sao Tome and Principe 1981     42.363383
+425  Sao Tome and Principe 1991     61.920478
+426  Sao Tome and Principe 2001     77.949235
+427  Sao Tome and Principe 2008     60.083026
+428           Saudi Arabia 1992     57.277841
+429           Saudi Arabia 2000     69.291193
+430           Saudi Arabia 2004     76.335155
+431           Saudi Arabia 2011     82.236730
+432                Senegal 1988     17.863266
+433                Senegal 2002     29.247343
+434                Senegal 2006     32.987585
+435                Senegal 2009     38.666249
+436                 Serbia 2011     96.870490
+437             Seychelles 1987     85.489304
+438             Seychelles 1994     88.586598
+439             Seychelles 2002     92.258980
+440             Seychelles 2011     92.258980
+441           Sierra Leone 2004     24.158927
+442           Sierra Leone 2011     32.628910
+443              Singapore 1980     73.968537
+444              Singapore 1990     83.026848
+445              Singapore 2000     88.645175
+446              Singapore 2010     93.774814
+447               Slovenia 1991     99.453752
+448               Slovenia 2004     99.615970
+449               Slovenia 2011     99.671430
+450           South Africa 1980     74.807189
+451           South Africa 1996     80.928629
+452           South Africa 2007     87.043102
+453           South Africa 2011     92.183714
+454                  Spain 1981     89.936922
+455                  Spain 1991     95.050996
+456                  Spain 2005     96.925155
+457                  Spain 2007     97.260323
+458                  Spain 2008     96.886839
+459                  Spain 2009     96.925968
+460                  Spain 2010     97.004504
+461              Sri Lanka 1981     82.021974
+462              Sri Lanka 2001     89.135764
+463              Sri Lanka 2006     89.091352
+464              Sri Lanka 2008     89.073472
+465              Sri Lanka 2010     89.958678
+466                  Sudan 2000     52.146397
+467                  Sudan 2011     63.160230
+468               Suriname 2004     87.197436
+469               Suriname 2008     93.765371
+470               Suriname 2010     94.003541
+471              Swaziland 1976     53.665959
+472              Swaziland 1986     65.222882
+473              Swaziland 2000     80.328752
+474              Swaziland 2011     87.327460
+475                  Syria 1981     37.059159
+476                  Syria 2002     74.240440
+477                  Syria 2004     73.626561
+478                  Syria 2011     77.749850
+479             Tajikistan 1989     96.641803
+480             Tajikistan 2000     99.221736
+481             Tajikistan 2011     99.615330
+482               Tanzania 1988     48.088024
+483               Tanzania 2002     62.172318
+484               Tanzania 2010     60.752618
+485               Thailand 1980     83.893354
+486               Thailand 2000     90.516017
+487               Thailand 2005     91.529549
+488            Timor-Leste 2001     30.000000
+489            Timor-Leste 2007     42.500000
+490            Timor-Leste 2010     52.959000
+491                   Togo 2000     38.453292
+492                   Togo 2006     44.376626
+493                   Togo 2009     43.606898
+494                   Togo 2011     47.977387
+495                  Tonga 1976     99.525535
+496                  Tonga 1996     98.975550
+497                  Tonga 2006     99.082511
+498    Trinidad and Tobago 1980     93.464165
+499    Trinidad and Tobago 1990     95.661794
+500    Trinidad and Tobago 2004     97.810300
+501    Trinidad and Tobago 2011     98.486900
+502                Tunisia 1984     35.767567
+503                Tunisia 1994     48.240960
+504                Tunisia 2004     65.347859
+505                Tunisia 2007     68.509379
+506                Tunisia 2008     70.964177
+507                Tunisia 2010     71.088212
+508                 Turkey 1975     45.098921
+509                 Turkey 1980     49.806407
+510                 Turkey 1985     64.231724
+511                 Turkey 1990     68.519655
+512                 Turkey 2004     79.581693
+513                 Turkey 2005     80.548953
+514                 Turkey 2006     80.385161
+515                 Turkey 2007     81.263827
+516                 Turkey 2009     85.347157
+517                 Turkey 2010     88.073171
+518                 Turkey 2011     90.310105
+519           Turkmenistan 1995     98.261765
+520           Turkmenistan 2011     99.494220
+521                 Uganda 1991     44.826692
+522                 Uganda 2002     58.909883
+523                 Uganda 2006     62.078969
+524                 Uganda 2010     64.591451
+525                Ukraine 2001     99.171572
+526                Ukraine 2011     99.660400
+527   United Arab Emirates 1975     38.124870
+528   United Arab Emirates 1985     68.661283
+529   United Arab Emirates 2005     91.474749
+530                Uruguay 1975     94.304522
+531                Uruguay 1985     95.881538
+532                Uruguay 1996     97.270960
+533                Uruguay 2006     98.084359
+534                Uruguay 2007     98.241933
+535                Uruguay 2008     98.463660
+536                Uruguay 2009     98.606016
+537                Uruguay 2010     98.490953
+538             Uzbekistan 2000     98.138584
+539             Uzbekistan 2011     99.231960
+540                Vanuatu 1979     47.782592
+541                Vanuatu 1994     65.453710
+542                Vanuatu 2004     76.046360
+543                Vanuatu 2011     81.553540
+544              Venezuela 1981     83.004664
+545              Venezuela 1990     89.004855
+546              Venezuela 2001     92.715979
+547              Venezuela 2007     94.929643
+548              Venezuela 2009     95.350398
+549     West Bank and Gaza 1997     79.726622
+550     West Bank and Gaza 2004     87.951736
+551     West Bank and Gaza 2006     89.756918
+552     West Bank and Gaza 2007     90.465184
+553     West Bank and Gaza 2008     90.902854
+554     West Bank and Gaza 2009     91.704532
+555     West Bank and Gaza 2010     92.172796
+556     West Bank and Gaza 2011     92.616180
+557                Vietnam 1979     78.140390
+558                Vietnam 1989     82.829392
+559                Vietnam 1999     86.920080
+560                Vietnam 2000     86.610113
+561                Vietnam 2011     91.383460
+562            Yemen, Rep. 1994     17.059565
+563            Yemen, Rep. 2004     35.485490
+564            Yemen, Rep. 2011     48.539050
+565                 Zambia 1990     57.357722
+566                 Zambia 1999     59.802846
+567                 Zambia 2002     61.839278
+568                 Zambia 2007     51.786967
+569               Zimbabwe 1982     71.853928
+570               Zimbabwe 1992     78.517018
+571               Zimbabwe 2011     80.065659</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>  (Intercept)          year 
+-1323.2098674     0.6979597 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a><span class="fu">lm</span>(literacy_rate <span class="sc">~</span> year, <span class="at">data =</span> litF_long)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div></div>
+</section>
+<section id="another-example-from-last-time" class="slide level2">
+<h2>Another example from last time</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a>df_3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  id bp_1 bp_2 hr_1 hr_2
 1  1  100  120   60   77
 2  2  120  115   75   81
 3  3  125  130   80   93</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a>df_3 <span class="sc">|&gt;</span></span>
-<span id="cb4-2"><a href=""></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="sc">-</span>id, </span>
-<span id="cb4-3"><a href=""></a>               <span class="at">names_to =</span> <span class="fu">c</span>(<span class="st">"measurement"</span>, <span class="st">"stage"</span>), </span>
-<span id="cb4-4"><a href=""></a>               <span class="at">names_sep =</span> <span class="st">"_"</span>, </span>
-<span id="cb4-5"><a href=""></a>               <span class="at">values_to =</span> <span class="st">"value"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="what-we-can-do-with-the-current-data" class="slide level2">
+<h2>What we can do with the current data</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a>df_3 <span class="sc">|&gt;</span></span>
+<span id="cb12-2"><a href=""></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> bp_1, </span>
+<span id="cb12-3"><a href=""></a>             <span class="at">y =</span> bp_2)) <span class="sc">+</span></span>
+<span id="cb12-4"><a href=""></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="lecture_05_files/figure-revealjs/unnamed-chunk-13-1.png" width="576" class="r-stretch"></section>
+<section id="what-we-can-do-with-reshaped-data" class="slide level2">
+<h2>What we can do with reshaped data</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 12 × 4
       id measurement stage value
@@ -242,6 +1517,25 @@
 12     3 hr          2        93</code></pre>
 </div>
 </div>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="lecture_05_files/figure-revealjs/unnamed-chunk-15-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a>df3_long <span class="sc">|&gt;</span></span>
+<span id="cb14-2"><a href=""></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> stage, </span>
+<span id="cb14-3"><a href=""></a>             <span class="at">y =</span> value)) <span class="sc">+</span></span>
+<span id="cb14-4"><a href=""></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb14-5"><a href=""></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">group =</span> id)) <span class="sc">+</span></span>
+<span id="cb14-6"><a href=""></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>measurement)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div></div>
 </section>
 <section id="warmup-activity" class="slide level2">
 <h2>Warmup activity</h2>
@@ -250,12 +1544,12 @@
 <section id="warmup" class="slide level2">
 <h2>Warmup</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a>df_3</span>
-<span id="cb6-2"><a href=""></a></span>
-<span id="cb6-3"><a href=""></a>df_3 <span class="sc">|&gt;</span></span>
-<span id="cb6-4"><a href=""></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="sc">-</span>id,</span>
-<span id="cb6-5"><a href=""></a>               <span class="at">names_to =</span> <span class="fu">c</span>(<span class="st">".value"</span>, <span class="st">"stage"</span>),</span>
-<span id="cb6-6"><a href=""></a>               <span class="at">names_sep =</span> <span class="st">"_"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a>df_3</span>
+<span id="cb15-2"><a href=""></a></span>
+<span id="cb15-3"><a href=""></a>df_3 <span class="sc">|&gt;</span></span>
+<span id="cb15-4"><a href=""></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="sc">-</span>id,</span>
+<span id="cb15-5"><a href=""></a>               <span class="at">names_to =</span> <span class="fu">c</span>(<span class="st">".value"</span>, <span class="st">"stage"</span>),</span>
+<span id="cb15-6"><a href=""></a>               <span class="at">names_sep =</span> <span class="st">"_"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
@@ -276,11 +1570,46 @@
 </div>
 <p>What is <code>names_to = c(".value", "stage")</code> doing?</p>
 </section>
+<section id="what-we-can-do-with-the-reshaped-data" class="slide level2">
+<h2>What we can do with the reshaped data</h2>
+<div class="columns">
+<div class="column" style="width:45%;">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 4
+     id stage    bp    hr
+  &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;
+1     1 1       100    60
+2     1 2       120    77
+3     2 1       120    75
+4     2 2       115    81
+5     3 1       125    80
+6     3 2       130    93</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:55%;">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = bp ~ hr + stage, data = df3_new)
+
+Coefficients:
+(Intercept)           hr       stage2  
+     38.022        1.074       -6.223  </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href=""></a><span class="fu">lm</span>(bp <span class="sc">~</span> hr <span class="sc">+</span> stage, </span>
+<span id="cb20-2"><a href=""></a>   <span class="at">data =</span> df3_new)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div></div>
+</section>
 <section id="going-the-other-way" class="slide level2">
 <h2>Going the other way</h2>
 <p>Data on air quality in two locations (BETR801, London Westminster) on different days:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a>air_quality</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href=""></a>air_quality</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1,825 × 3
    date.utc            location value
@@ -313,10 +1642,10 @@
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a>air_quality <span class="sc">|&gt;</span></span>
-<span id="cb12-2"><a href=""></a>  <span class="fu">pivot_wider</span>(<span class="at">id_cols =</span> ...,</span>
-<span id="cb12-3"><a href=""></a>              <span class="at">names_from =</span> ...,</span>
-<span id="cb12-4"><a href=""></a>              <span class="at">values_from =</span> ...)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href=""></a>air_quality <span class="sc">|&gt;</span></span>
+<span id="cb24-2"><a href=""></a>  <span class="fu">pivot_wider</span>(<span class="at">id_cols =</span> ...,</span>
+<span id="cb24-3"><a href=""></a>              <span class="at">names_from =</span> ...,</span>
+<span id="cb24-4"><a href=""></a>              <span class="at">values_from =</span> ...)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="pivot_wider-1" class="slide level2">
@@ -332,10 +1661,10 @@
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a>air_quality <span class="sc">|&gt;</span></span>
-<span id="cb14-2"><a href=""></a>  <span class="fu">pivot_wider</span>(<span class="at">id_cols =</span> <span class="st">"date.utc"</span>,</span>
-<span id="cb14-3"><a href=""></a>              <span class="at">names_from =</span> <span class="st">"location"</span>,</span>
-<span id="cb14-4"><a href=""></a>              <span class="at">values_from =</span> <span class="st">"value"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href=""></a>air_quality <span class="sc">|&gt;</span></span>
+<span id="cb26-2"><a href=""></a>  <span class="fu">pivot_wider</span>(<span class="at">id_cols =</span> date.utc,</span>
+<span id="cb26-3"><a href=""></a>              <span class="at">names_from =</span> location,</span>
+<span id="cb26-4"><a href=""></a>              <span class="at">values_from =</span> value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1,670 × 3
    date.utc            BETR801 `London Westminster`
