@@ -18,8 +18,10 @@ September 3
 September 5
 
 : Reshaping data (pivoting)
+  : [slides (html)](https://sta279-f25.github.io/slides/lecture_05.html), [slides (pdf)](https://sta279-f25.github.io/slides/lecture_05.pdf), [Warmup](https://sta279-f25.github.io/class_activities/ca_05_handout.pdf), [Class Activity](https://sta279-f25.github.io/class_activities/ca_05.html)
 
 : Reading for Monday's class
   : [Chapter 5, MDSR](https://mdsr-book.github.io/mdsr3e/05-joins.html)
 
 : **Homework 2 released**{: .label .label-yellow }
+  : [HW 2](https://sta279-f25.github.io/homework/hw_02.html)
