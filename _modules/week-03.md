@@ -4,6 +4,7 @@ title: Joins and beginning iteration
 
 September 8
 : Joins
+  : [slides (html)](https://sta279-f25.github.io/slides/lecture_06.html), [slides (pdf)](https://sta279-f25.github.io/slides/lecture_06.pdf), [Class Activity](https://sta279-f25.github.io/class_activities/ca_06.html)
 
 : Reading for Wednesday's class
   : [Chapter 26.2, R4DS](https://r4ds.hadley.nz/iteration.html#sec-across)
