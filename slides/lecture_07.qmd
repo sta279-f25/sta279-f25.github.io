@@ -10,6 +10,15 @@ editor_options:
   chunk_output_type: console
 ---
 
+## Agenda and reminders
+
+* HW 2 due Friday **on GitHub classroom**
+    * Commit early and often, let me know if you have any technical problems
+    * Make sure to submit both the `.qmd` **and** `md` files
+* Department seminar tomorrow (9/11) at 11am in ZSR auditorium
+    * please refrain from wearing colognes, perfumes, and/or heavily scented body and hair products
+* Today: data wrangling across columns
+
 ## Warmup activity
 
 Work on the activity (handout) with a neighbor, then we will discuss as a class
