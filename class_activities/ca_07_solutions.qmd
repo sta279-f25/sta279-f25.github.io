@@ -1,0 +1,81 @@
+---
+title: "Activity: data wrangling across columns"
+format: 
+  html:
+    embed-resources: true
+editor: source
+---
+
+## diamonds data
+
+1. Modify the code from class to calculate the mean of each numeric variable in the `diamonds` data, for each different cut and color, producing the following output. (The `diamonds` data is contained in the `ggplot2` package).
+
+```{r, echo=F, message=F}
+library(tidyverse)
+
+diamonds |>
+  group_by(cut, color) |>
+  summarize(across(where(is.numeric),
+                   list("mean" = mean),
+                   .names = "{.fn}_{.col}"))
+```
+
+**Solution:**
+
+```{r}
+diamonds |>
+  group_by(cut, color) |>
+  summarize(across(where(is.numeric),
+                   list("mean" = mean),
+                   .names = "{.fn}_{.col}"))
+```
+
+
+## Selecting multiple columns based on name
+
+For the second part of this class activity, we will create our own small toy dataset, so that we can explore data wrangling functions with a dataset that is easy to view and work with.
+
+Run the following code in R to create the toy dataset:
+
+```{r, message=F}
+library(tidyverse)
+
+example_df <- data.frame(
+  x1 = c(1, 2, 3),
+  x2 = c("a", "b", "c"),
+  x3 = c(5, 1, 2),
+  y1 = c(0, 9, 2),
+  y2 = c(2, 7, 9),
+  z = c(0, 0, 0)
+)
+
+example_df
+```
+
+
+Notice that here we have three columns which start with `x`, and two columns which start with `y`. If I want to focus only on the `x` columns, I can use the `starts_with` function:
+
+```{r}
+example_df |>
+  select(starts_with("x"))
+```
+
+2. Use the `starts_with` function to compute the mean of each column beginning with `y`, *without* listing any of the column names explicitly. (*Hint*: use `starts_with(...)` instead of `where(...)` in the `across` function).
+
+**Solution:**
+
+```{r}
+example_df |>
+  summarize(across(starts_with("y"), mean))
+```
+
+
+3. Use both `starts_with` and `where` to compute the mean of each *numeric* column beginning with `x`, *without* listing any of the column names explicitly.
+
+**Solution:**
+
+```{r}
+example_df |>
+  summarize(across(where(is.numeric) & starts_with("x"), mean))
+```
+
