@@ -17,12 +17,12 @@ link-citations: yes
 4. When you are finished, make sure to Render your Quarto document; this will produce a `hw_03.md` file which is easy to view on GitHub. Commit and push both the `hw_03.qmd` and `hw_03.md` files to GitHub
 5. Finally, [request feedback](https://sta279-f25.github.io/resources/github_instructions/#step-10-request-feedback) on your assignment on the "Feedback" pull request on your HW 3 repository
 
+**Important:** Make sure to include both the `.qmd` and `.md` files when you submit to receive full credit
+
 **Code guidelines:**
 
 * If a question requires code, and code is not provided, you will not receive full credit
 * You will be graded on the quality of your code. In addition to being correct, your code should also be easy to read
-  
-**Resources:**
 
 ## Course evals and exam grades
 
@@ -35,7 +35,7 @@ The assignment repository contains two CSV files to investigate this question. T
 * `professor_name`: the name of the professor which whom the student took the class. Each professor teaches several sections
 * `exam_score`: the student's score on the final exam. All introductory students take the same final exam, regardless of course section
 
-Your boss also provides you with information on each professor's course evaluations. The `professor_evals.csv` file contains evaluations for each of the 10 professor teaching introductory statistics. The `classid_1`, `classid_2`, and `classid_3` columns identify the 3 sections taught by each professor, while the three `evalscore` columns contain the professor's corresponding course evaluation scores (out of 5) for each class.
+Your boss also provides you with information on each professor's course evaluations. The `professor_evals.csv` file contains evaluations for each of the 10 professors teaching introductory statistics. The `classid_1`, `classid_2`, and `classid_3` columns identify the 3 sections taught by each professor, while the three `evalscore` columns contain the professor's corresponding course evaluation scores (out of 5) for each class.
 
 :::{.question}
 #### Question 1
