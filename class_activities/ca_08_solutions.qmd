@@ -1,0 +1,142 @@
+---
+title: "Activity: Data wrangling across columns and functions"
+format: html
+editor: source
+---
+
+## Student grades
+
+You are a TA for a statistics course. The instructor of the course is interested in assessing how students performed on each assignment in the class.
+
+You are provided with a CSV file (`student_grades.csv`), from Canvas, containing the grades for each student on each assignment in the course. Here are the instructions the professor gives you:
+
+* There are 6 homeworks, 2 midterms, a final exam, and a project
+* Each homework is scored out of 10. All other assignments are scored out of 100
+* If a student did not submit an assignment, it is marked as `NA` in the CSV file. These missing assignments should receive a score of 0
+
+The data can be imported into R with the following code:
+
+```{r, message=F, warning=F}
+library(tidyverse)
+
+student_grades <- read_csv("https://sta279-f25.github.io/data/student_grades.csv")
+```
+
+### Questions
+
+Your answers to these questions should involve functions like `starts_with`, `where`, `across`, etc. You should not list all of the homework columns explicitly, e.g.
+
+1. What was the average exam score for each midterm?
+
+**Solution:**
+
+```{r}
+student_grades |>
+  summarize(across(starts_with("midterm"), mean))
+```
+
+
+2. What fraction of students failed each midterm (a grade less than 60%)?
+
+**Solution:**
+
+One option:
+
+```{r}
+failure_rate <- function(x){
+  mean(x < 60)
+}
+
+student_grades |>
+  summarize(across(starts_with("midterm"), failure_rate))
+```
+
+Another option:
+
+```{r}
+student_grades |>
+  summarize(across(starts_with("midterm"), function(x) mean(x < 60)))
+```
+
+
+
+3. What was the average score for each homework, if you ignore missing submissions?
+
+**Solution:**
+
+One option:
+
+```{r}
+mean_no_na <- function (x) {
+  mean(x, na.rm=T)
+}
+
+student_grades |>
+  summarize(across(starts_with("hw"), mean_no_na))
+```
+
+Another option:
+
+```{r}
+student_grades |>
+  summarize(across(starts_with("hw"), function(x) mean(x, na.rm=T)))
+```
+
+
+4. What was the average score for each homework, if you treat missing assignment as 0? *Hint:* One approach could use the `replace_na` function
+
+**Solution:**
+
+One option:
+
+```{r}
+mean_missing <- function (x) {
+  x[is.na(x)] <- 0
+  mean(x)
+}
+
+student_grades |>
+  summarize(across(starts_with("hw"), mean_missing))
+```
+
+Another option:
+
+```{r}
+student_grades |>
+  summarize(across(starts_with("hw"), 
+                   function(x) mean(replace_na(x, 0))))
+```
+
+
+Another option:
+
+```{r}
+student_grades |>
+  mutate(across(everything(), function(x) replace_na(x, 0))) |>
+  summarize(across(starts_with("hw"), mean))
+```
+
+
+5. For each homework assignment, how many students failed to submit?
+
+**Solution:**
+
+One option:
+
+```{r}
+count_na <- function (x) {
+  sum(is.na(x))
+}
+
+student_grades |>
+  summarize(across(starts_with("hw"), count_na))
+```
+
+Another option:
+
+```{r}
+student_grades |>
+  summarize(across(starts_with("hw"), function(x) sum(is.na(x))))
+```
+
+
