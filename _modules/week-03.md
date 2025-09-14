@@ -18,7 +18,7 @@ September 10
 
 September 12
 : Data wrangling across columns, functions
-  : [slides (html)](https://sta279-f25.github.io/slides/lecture_08.html), [slides (pdf)](https://sta279-f25.github.io/slides/lecture_08.pdf), [warmup](https://sta279-f25.github.io/class_activities/ca_08_handout.pdf), [Class Activity](https://sta279-f25.github.io/class_activities/ca_08.html)
+  : [slides (html)](https://sta279-f25.github.io/slides/lecture_08.html), [slides (pdf)](https://sta279-f25.github.io/slides/lecture_08.pdf), [warmup](https://sta279-f25.github.io/class_activities/ca_08_handout.pdf), [Class Activity](https://sta279-f25.github.io/class_activities/ca_08.html), [Class Activity solutions](https://sta279-f25.github.io/class_activities/ca_08_solutions.html)
 
 : **Homework 3 released**{: .label .label-yellow }
   : [HW 3](https://sta279-f25.github.io/homework/hw_03.html)
