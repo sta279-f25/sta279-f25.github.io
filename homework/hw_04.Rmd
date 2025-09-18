@@ -15,7 +15,10 @@ link-citations: yes
 2. Follow the [instructions](https://sta279-f25.github.io/resources/github_instructions/) to accept the assignment and clone the repository to your local computer
 3. The repository contains the file `hw_04.qmd`, and several CSV files containing data for the different questions. Write your code and answers to the questions in the Quarto document. Commit and push to GitHub regularly.
 4. When you are finished, make sure to Render your Quarto document; this will produce a `hw_04.md` file which is easy to view on GitHub. Commit and push both the `hw_04.qmd` and `hw_04.md` files to GitHub
-5. Finally, [request feedback](https://sta279-f25.github.io/resources/github_instructions/#step-10-request-feedback) on your assignment on the "Feedback" pull request on your HW 4 repository
+5. The final question in the assignment will also have you create 10 CSV files of course grades. Make sure to commit and push those CSV files too!
+6. Finally, [request feedback](https://sta279-f25.github.io/resources/github_instructions/#step-10-request-feedback) on your assignment on the "Feedback" pull request on your HW 4 repository
+
+**Important:** Make sure to include both the `.qmd` and `.md` files, and the CSV files from the last question, when you submit to receive full credit
 
 **Code guidelines:**
 
