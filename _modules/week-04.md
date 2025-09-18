@@ -21,3 +21,4 @@ September 19
   : [slides (html)](https://sta279-f25.github.io/slides/lecture_11.html), [slides (pdf)](https://sta279-f25.github.io/slides/lecture_11.pdf), [Class Activity](https://sta279-f25.github.io/class_activities/ca_11.html)
 
 : **Homework 4 released**{: .label .label-yellow }
+  : [HW 4](https://sta279-f25.github.io/homework/hw_04.html)
