@@ -1,12 +1,16 @@
 ---
-title: Putting everything together
+title: Simulation and iteration
 ---
 
 September 22
-: Data wrangling wrap-up
+: Introduction to simulation
+  : [slides (html)](https://sta279-f25.github.io/slides/lecture_12.html), [slides (pdf)](https://sta279-f25.github.io/slides/lecture_12.pdf), [Class Activity](https://sta279-f25.github.io/class_activities/ca_12.html)
+
+: Reading for Wednesday's class
+  : [Section 27.5, R4DS](https://r4ds.hadley.nz/base-R.html#for-loops), [Chapter 5, Advanced R](https://adv-r.hadley.nz/control-flow.html#control-flow)
 
 September 24
-: Data wrangling wrap-up
+: Probability simulations
 
 September 26
-: Data wrangling wrap-up
+: Statistical simulations

@@ -1,0 +1,72 @@
+---
+title: "Activity: simulation"
+format: html
+editor: source
+---
+
+## Probability simulation: the birthday problem
+
+Suppose we have a class of 30 students. What is the probability that there is at least one shared birthday?
+
+* Assume there are 365 days in a year
+* Assume that each day is equally likely as a birthday
+* Assume there are no multiple-birth siblings (e.g. twins, triplets, etc.) in the class
+
+1. Write a simulation to estimate this probability, and report your estimate.
+
+**Solution:**
+
+For loop approach:
+
+```{r, message=F}
+library(tidyverse)
+
+set.seed(213)
+
+days <- 1:365 # days of the year
+n_students <- 30
+
+nsim <- 10000
+results <- rep(NA, nsim) # store the simulation results
+for(i in 1:nsim){
+  birthdays <- sample(days, n_students, replace=TRUE)
+  results[i] <- length(unique(birthdays)) < n_students
+}
+
+mean(results)
+```
+
+Map approach:
+
+```{r}
+set.seed(213)
+
+nsim <- 10000
+n_students <- 30
+
+birthday_match <- function(n){
+  days <- 1:365
+  birthdays <- sample(days, n, replace=T)
+  length(unique(birthdays)) < n
+}
+
+map_lgl(1:nsim, function(i) birthday_match(n_students)) |>
+  mean()
+```
+
+
+2. How many students do we need for the probability to be approximately 50%?
+
+**Solution:** 23
+
+```{r}
+map_lgl(1:nsim, function(i) birthday_match(22)) |>
+  mean()
+
+map_lgl(1:nsim, function(i) birthday_match(23)) |>
+  mean()
+
+map_lgl(1:nsim, function(i) birthday_match(24)) |>
+  mean()
+```
+

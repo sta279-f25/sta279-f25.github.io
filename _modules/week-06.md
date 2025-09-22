@@ -1,15 +1,15 @@
 ---
-title: Simulation and iteration
+title: Functions
 ---
 
 September 29
-: Introduction to simulation
+: Functions
+
+: Reading for Wednesday's class
+  : [Section C.2, MDSE](https://mdsr-book.github.io/mdsr3e/C-algorithmic.html#simple-example), [Sections 6.1 - 6.4, Advanced R](https://adv-r.hadley.nz/functions.html)
 
 October 1
-: Probability simulations
-
-: Reading for Friday's class
-  : [Section 27.5, R4DS](https://r4ds.hadley.nz/base-R.html#for-loops), [Chapter 5, Advanced R](https://adv-r.hadley.nz/control-flow.html#control-flow)
+: Functions + function scoping
 
 October 3
-: Iteration in R
+: Exam 1 review

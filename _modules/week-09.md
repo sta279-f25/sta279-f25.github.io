@@ -1,15 +1,15 @@
 ---
-title: Text as data
+title: Web scraping
 ---
 
 October 20
-: Intro to text data and strings
+: Intro to web scraping
 
 : Reading for Wednesday's class
-  : [Sections 15.1 - 15.3, R4DS](https://r4ds.hadley.nz/regexps.html)
+  : [Chapter 24, R4DS](https://r4ds.hadley.nz/webscraping.html)
 
 October 22
-: Regular expressions
+: Web scraping as wrangling
 
 October 24
-: Regular expressions
+: Web scraping and wrangling

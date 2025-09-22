@@ -1,0 +1,28 @@
+---
+title: "Activity: simulation"
+format: html
+editor: source
+---
+
+**Instructions:** 
+
+* Work with a neighbor to answer the following questions 
+* To get started, download the [class activity template](https://sta279-f25.github.io/class_activities/ca_12_template.qmd) file
+* When you are finished, render the file as an HTML and submit the HTML to Canvas (let me know if you encounter any problems)
+
+## Probability simulation: the birthday problem
+
+Suppose we have a class of 30 students. What is the probability that there is at least one shared birthday?
+
+* Assume there are 365 days in a year
+* Assume that each day is equally likely as a birthday
+* Assume there are no multiple-birth siblings (e.g. twins, triplets, etc.) in the class
+
+1. Write a simulation to estimate this probability, and report your estimate.
+
+
+2. How many students do we need for the probability to be approximately 50%?
+
+
+
+

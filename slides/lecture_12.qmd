@@ -1,0 +1,273 @@
+---
+title: "Iteration and simulation"
+format: 
+  revealjs:
+    theme: theme.scss
+editor: source
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, message=F}
+library(tidyverse)
+```
+
+
+## Warm-up question
+
+**Problem:** 10 people are at a party, and all of them are wearing hats. They each place their hat in a pile; when they leave, they choose a hat at random. What is the probability at least one person selected the correct hat?
+
+**Question:** Work with your neighbor to discuss the following question:
+
+-   Without calculating probabilities, how could you design an experiment to estimate this probability?
+
+## Designing an experiment
+
+## Step 1: representing the hats
+
+```{r, echo=T}
+hats <- 1:10
+
+hats
+hats[3]
+```
+
+-   `hats` is a **vector**, containing the numbers 1 to 10
+-   entries in a vector are accessed by their index
+
+## Step 2: everyone draws a random hat
+
+```{r, echo=T}
+hats <- 1:10
+randomized_hats <- sample(hats, size = 10, replace = FALSE)
+
+hats
+randomized_hats
+```
+
+-   The `sample` function creates a random sample from a vector
+-   How many people selected their original hat?
+
+## Step 3: check who got their original hat
+
+```{r, echo=T, eval=F}
+hats <- 1:10
+randomized_hats <- sample(hats, size = 10, replace = FALSE)
+```
+
+```{r, echo=T}
+hats
+randomized_hats
+```
+
+```{r, echo=T}
+hats == randomized_hats
+
+# TRUE is 1, FALSE is 0
+sum(hats == randomized_hats)
+
+# did at least one person get their hat?
+sum(hats == randomized_hats) > 0
+```
+
+## Code so far
+
+```{r, echo=T, eval=F}
+hats <- 1:10
+randomized_hats <- sample(hats, size = 10, replace = FALSE)
+```
+
+```{r, echo=T}
+sum(hats == randomized_hats) > 0
+```
+
+-   Is this a good estimate of the probability?
+
+## Step 4: iteration
+
+A `for` loop repeats code many times:
+
+```{r, echo=T, eval=F}
+nsim <- 10000 # number of simulations 
+for(i in 1:nsim){
+  
+  
+}
+```
+
+## Step 4: iteration
+
+A `for` loop repeats code many times:
+
+```{r, echo=T}
+nsim <- 10000 # number of simulations
+hats <- 1:10
+results <- rep(NA, nsim) # vector to store results
+
+for(i in 1:nsim){
+  randomized_hats <- sample(hats, size = 10, replace = FALSE)
+  results[i] <- sum(hats == randomized_hats) > 0
+}
+
+head(results)
+```
+
+## Step 4: iteration
+
+A `for` loop repeats code many times:
+
+```{r, echo=T}
+nsim <- 10000 # number of simulations
+hats <- 1:10
+results <- rep(NA, nsim) # vector to store results
+
+for(i in 1:nsim){
+  randomized_hats <- sample(hats, size = 10, replace = FALSE)
+  results[i] <- sum(hats == randomized_hats) > 0
+}
+
+mean(results)
+```
+
+-   What if I wanted to repeat the simulation, with a different number of people?
+
+## Removing magic numbers
+
+Without magic numbers:
+
+```{r, echo=T}
+nsim <- 10000 # number of simulations
+n_people <- 10 # number of people
+hats <- 1:n_people
+results <- rep(NA, nsim) # vector to store results
+
+for(i in 1:nsim){
+  randomized_hats <- sample(hats, 
+                            size = n_people, 
+                            replace = FALSE)
+  results[i] <- sum(hats == 
+                      randomized_hats) > 0
+}
+
+mean(results)
+```
+
+-   Why did I get different results?
+
+## Final code
+
+```{r, echo=T, eval=F}
+set.seed(3) # set a seed for reproducibility
+
+n_people <- 10 # number of people at the party
+hats <- 1:n_people # numbered hats
+nsim <- 10000 # number of simulations
+results <- rep(NA, nsim) # vector to store the results
+
+for(i in 1:nsim){
+  # hats are randomly assigned to each person
+  randomized_hats <- sample(hats, n_people, replace = F)
+  
+  # did at least one person get their hat back?
+  results[i] <- sum(randomized_hats == hats) > 0
+}
+
+mean(results)
+```
+
+## Map?
+
+```{r, echo=T, eval=F}
+set.seed(3) # set a seed for reproducibility
+
+n_people <- 10 # number of people at the party
+hats <- 1:n_people # numbered hats
+nsim <- 10000 # number of simulations
+results <- rep(NA, nsim) # vector to store the results
+
+for(i in 1:nsim){
+  # hats are randomly assigned to each person
+  randomized_hats <- sample(hats, n_people, replace = F)
+  
+  # did at least one person get their hat back?
+  results[i] <- sum(randomized_hats == hats) > 0
+}
+
+mean(results)
+```
+
+How could we do this with `map` instead?
+
+## Map: writing a function
+
+```{r, echo=T}
+set.seed(3)
+
+hat_match <- function(n){
+  hats <- 1:n
+  randomized_hats <- sample(hats, n, replace = F)
+  sum(randomized_hats == hats) > 0
+}
+
+hat_match(10)
+hat_match(10)
+hat_match(10)
+hat_match(10)
+```
+
+## Map: iterating
+
+```{r, echo=T, eval=F}
+set.seed(3)
+nsim <- 20
+
+hat_match <- function(n){
+  hats <- 1:n
+  randomized_hats <- sample(hats, n, replace = F)
+  sum(randomized_hats == hats) > 0
+}
+
+map(1:nsim, hat_match)
+```
+
+Will this do what I want?
+
+## Map: iterating
+
+```{r, echo=T, eval=T}
+set.seed(3)
+nsim <- 20
+n_people <- 10
+
+hat_match <- function(n){
+  hats <- 1:n
+  randomized_hats <- sample(hats, n, replace = F)
+  sum(randomized_hats == hats) > 0
+}
+
+map_lgl(1:nsim, function(i) hat_match(n_people))
+```
+
+## Map: iterating
+
+```{r, echo=T, eval=T}
+set.seed(3)
+nsim <- 1000
+n_people <- 10
+
+hat_match <- function(n){
+  hats <- 1:n
+  randomized_hats <- sample(hats, n, replace = F)
+  sum(randomized_hats == hats) > 0
+}
+
+map_lgl(1:nsim, function(i) hat_match(n_people)) |>
+  mean()
+```
+
+## Class activity
+
+[https://sta279-f25.github.io/class_activities/ca_12.html](https://sta279-f25.github.io/class_activities/ca_12.html)
+
+* Work with a neighbor on the class activity
+* At the end of class, submit your work as an HTML file on Canvas (one per group, list all your names)

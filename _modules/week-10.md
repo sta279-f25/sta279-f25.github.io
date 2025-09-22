@@ -1,15 +1,12 @@
 ---
-title: Web scraping
+title: Wrangling wrap-up
 ---
 
 October 27
-: Intro to web scraping
-
-: Reading for Wednesday's class
-  : [Chapter 24, R4DS](https://r4ds.hadley.nz/webscraping.html)
+: Wrangling wrap-up
 
 October 29
-: Web scraping and wrangling
+: Wrangling wrap-up
 
 October 31
-: Web scraping and wrangling
+: Wrangling wrap-up
