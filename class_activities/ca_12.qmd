@@ -18,11 +18,12 @@ Suppose we have a class of 30 students. What is the probability that there is at
 * Assume that each day is equally likely as a birthday
 * Assume there are no multiple-birth siblings (e.g. twins, triplets, etc.) in the class
 
-1. Write a simulation to estimate this probability, and report your estimate.
+1. Create a vector to store the days of the year (numbered 1 to 365)
 
+2. Use the `sample` function to randomly choose birthdays for the class (think about whether we want to sample with or without replacement here...)
 
-2. How many students do we need for the probability to be approximately 50%?
+3. Check the number of distinct birthdays (hints: `unique` returns the unique elements of a vector; `length` returns the length of a vector). Are there 30 distinct birthdays?
 
+4. Use a for loop to repeat the experiment `nsim=10000` times, making sure to store the results. What is the probability of at least one shared birthday?
 
-
-
+5. How many students do we need for the probability to be approximately 50%?

@@ -1,0 +1,93 @@
+---
+title: "Untitled"
+format: html
+---
+
+## Probability simulation: theater seating
+
+Suppose there are exactly 100 seats in a movie theater. Further, suppose the movie theater has imposed a new ticketing system where each person’s ticket has an assigned seat number. Consider the case where the movie is sold-out (all 100 seats will be taken) and the first person in the theater lost their ticket and takes a random seat. Each subsequent person attempts to go to their seat. If their seat is open, they take it. Otherwise, to avoid confrontation, they choose a random seat. 
+
+6. Conduct a simulation to assess the probability that the last person into the theater will get their assigned seat.
+
+**Solution:**
+
+For loop approach:
+
+```{r}
+n_people <- 100 # number of people in the theater
+nsim <- 1000 # number of simulations to estimate probability
+results <- rep(NA, nsim)
+seats <- 1:n_people
+
+for(i in 1:nsim){
+  # vector to store which seats are taken
+  # taken[i] is 0 when the seat is free
+  taken <- rep(0, n_people)
+  
+  # first person randomly chooses a seat
+  choice <- sample(seats, 1)
+  taken[choice] <- 1
+  
+  # now go through everyone else (except the last person)
+  for(j in 2:(n_people - 1)){
+    
+    # if the seat is free, take their seat. Otherwise,
+    # randomly choose a seat from the ones available
+    choice <- ifelse(taken[j] == 0, j, 
+                     sample(seats[taken == 0], 1))
+    taken[choice] <- 1
+  }
+  
+  results[i] <- taken[n_people]
+}
+
+mean(results)
+```
+
+**Notes:**
+
+* Make sure to use difference indices for the two `for` loops! Here I have used `i` and `j`
+* In the inner for loop, I used `2:(n_people - 1)` to do `2, 3, ..., 99`. This is *different* from `2:n_people - 1`, which would give us `1, 2, ..., 99`.
+* There are lots of other ways to code this question (e.g., you could use a counter to record the results, rather than a vector)
+* It is crucial to treat the first person separately from the rest
+
+
+Map approach: One run of the simulation is actually easier to do with the for loop, because the first person is treated differently than the others, and we need to update the `taken` vector. However, we can write a function to do one run of the simulation, then iterate it with `map`.
+
+```{r}
+n_people <- 100 # number of people in the theater
+nsim <- 1000 # number of simulations to estimate probability
+seats <- 1:n_people
+
+take_seats <- function(n){
+  seats <- 1:n
+  taken <- rep(0, n)
+  
+  # first person randomly chooses a seat
+  choice <- sample(seats, 1)
+  taken[choice] <- 1
+  
+  # now go through everyone else (except the last person)
+  for(j in 2:(n - 1)){
+    
+    # if the seat is free, take their seat. Otherwise,
+    # randomly choose a seat from the ones available
+    choice <- ifelse(taken[j] == 0, j, 
+                     sample(seats[taken == 0], 1))
+    taken[choice] <- 1
+  }
+  
+  taken[n_people]
+}
+
+for(i in 1:nsim){
+  # vector to store which seats are taken
+  # taken[i] is 0 when the seat is free
+  
+}
+
+mean(results)
+```
+
+
+

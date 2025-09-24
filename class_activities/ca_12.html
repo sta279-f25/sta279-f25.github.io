@@ -77,7 +77,10 @@ ul.task-list li input[type="checkbox"] {
 <li>Assume there are no multiple-birth siblings (e.g.&nbsp;twins, triplets, etc.) in the class</li>
 </ul>
 <ol type="1">
-<li><p>Write a simulation to estimate this probability, and report your estimate.</p></li>
+<li><p>Create a vector to store the days of the year (numbered 1 to 365)</p></li>
+<li><p>Use the <code>sample</code> function to randomly choose birthdays for the class (think about whether we want to sample with or without replacement here…)</p></li>
+<li><p>Check the number of distinct birthdays (hints: <code>unique</code> returns the unique elements of a vector; <code>length</code> returns the length of a vector). Are there 30 distinct birthdays?</p></li>
+<li><p>Use a for loop to repeat the experiment <code>nsim=10000</code> times, making sure to store the results. What is the probability of at least one shared birthday?</p></li>
 <li><p>How many students do we need for the probability to be approximately 50%?</p></li>
 </ol>
 </section>

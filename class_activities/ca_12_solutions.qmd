@@ -12,7 +12,7 @@ Suppose we have a class of 30 students. What is the probability that there is at
 * Assume that each day is equally likely as a birthday
 * Assume there are no multiple-birth siblings (e.g. twins, triplets, etc.) in the class
 
-1. Write a simulation to estimate this probability, and report your estimate.
+4. Use a for loop to repeat the experiment `nsim=10000` times, making sure to store the results. What is the probability of at least one shared birthday?
 
 **Solution:**
 
@@ -55,7 +55,7 @@ map_lgl(1:nsim, function(i) birthday_match(n_students)) |>
 ```
 
 
-2. How many students do we need for the probability to be approximately 50%?
+5. How many students do we need for the probability to be approximately 50%?
 
 **Solution:** 23
 
@@ -69,4 +69,5 @@ map_lgl(1:nsim, function(i) birthday_match(23)) |>
 map_lgl(1:nsim, function(i) birthday_match(24)) |>
   mean()
 ```
+
 
