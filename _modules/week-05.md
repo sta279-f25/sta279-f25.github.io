@@ -11,7 +11,8 @@ September 22
 
 September 24
 : Probability simulations
-  : [slides (html)](https://sta279-f25.github.io/slides/lecture_13.html), [slides (pdf)](https://sta279-f25.github.io/slides/lecture_13.pdf), [Class Activity](https://sta279-f25.github.io/class_activities/ca_12.html)
+  : [slides (html)](https://sta279-f25.github.io/slides/lecture_13.html), [slides (pdf)](https://sta279-f25.github.io/slides/lecture_13.pdf), [Class Activity](https://sta279-f25.github.io/class_activities/ca_12.html), [Class Activity solutions](https://sta279-f25.github.io/class_activities/ca_12_solutions.html)
 
 September 26
-: Statistical simulations
+: Probability simulations
+  : [Class Activity](https://sta279-f25.github.io/class_activities/ca_13.html)
