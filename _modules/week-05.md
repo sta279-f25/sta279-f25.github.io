@@ -16,3 +16,6 @@ September 24
 September 26
 : Probability simulations
   : [Class Activity](https://sta279-f25.github.io/class_activities/ca_13.html)
+  
+: **Homework 5 released**{: .label .label-yellow }
+  : [HW 5](https://sta279-f25.github.io/homework/hw_05.html)

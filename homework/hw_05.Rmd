@@ -1,0 +1,130 @@
+---
+title: "Homework 5"
+output: 
+  rmdformats::robobook:
+    css: "homework.css"
+    highlight: pygments
+link-citations: yes
+---
+
+**Due:** Friday, October 3, 11:59pm on Canvas
+
+**Instructions:** 
+
+1. Go to Canvas -> Assignments -> HW 5. Open the GitHub Classroom assignment link
+2. Follow the [instructions](https://sta279-f25.github.io/resources/github_instructions/) to accept the assignment and clone the repository to your local computer
+3. The repository contains the file `hw_05.qmd`. Write your code and answers to the questions in the Quarto document. Commit and push to GitHub regularly.
+4. When you are finished, make sure to Render your Quarto document; this will produce a `hw_05.md` file which is easy to view on GitHub. Commit and push both the `hw_05.qmd` and `hw_05.md` files to GitHub
+5. Finally, [request feedback](https://sta279-f25.github.io/resources/github_instructions/#step-10-request-feedback) on your assignment on the "Feedback" pull request on your HW 5 repository
+
+**Important:** Make sure to include both the `.qmd` and `.md` files when you submit to receive full credit
+
+**Code guidelines:**
+
+* If a question requires code, and code is not provided, you will not receive full credit
+* You will be graded on the quality of your code. In addition to being correct, your code should also be easy to read
+
+
+## Probability simulations
+
+### Robot tug-of-war
+
+Consider a tug-of-war competition for robots. In each match up, two robots take turns tugging the rope until the marker indicates that one of the robots won. The match starts with the marker at 0.
+
+* Robot A pulls the rope – use `runif(n=1,min=0,max=0.50)` to simulate the magnitude of the pull. Adding the simulated value to the marker position gives the new position of the marker.
+* Robot B pulls the rope in the opposite direction – use `runif(n=1,min=0,max=0.50)` to simulate the magnitude of the pull. Adding the simulated value to the marker position gives the new position of the marker.
+* The two robots continue taking turns until the marker moves past -0.50 or 0.50. The marker is check after *each* robot takes their turn -- the robots alternate, they do not pull simultaneously! It is therefore possible that the winning robot got more turns than the losing robot. 
+
+:::{.question}
+#### Question 1
+
+Write code that simulates 1000 robot tug of war battles.
+:::
+
+:::{.question}
+#### Question 2
+
+Report the results of 1000 simulated robot tug of war battles. Is the game fair? If not, what adjustments can be made to make it more fair?
+:::
+
+### Labeled boxes
+
+Consider the following $(a + 1)$ player game (Gal and Miltersen, 2007). There are $a$ boxes with labels $1, ..., a$ and slips of paper labeled $1, 2, ..., a$ The lead player colors each slip of paper either red or blue and puts each slip of paper in a box so there is one and only one slip of paper per box, without the other $a$ players observing.
+
+Now, each player $i ∈ {1, 2, ..., a}$ can look in at most $a/2$ boxes and based on this make a guess about the color of the slip $i$. This done by each player in isolation. The $a$ players win if *every* player correctly announces the color of "their" slip.
+
+:::{.question}
+#### Question 3
+
+Conduct a simulation where the lead player colors the slips and adds them to the boxes at random. The other players randomly choose which boxes to open. What proportion of the time do all of the players see their own slip, guaranteeing they win? Does the proportion depend on $a$?
+
+*Tip:* To efficiently check whether a vector contains a specific value, you can use `%in%`. For example,
+
+```{r}
+3 %in% c(1, 2, 3)
+4 %in% c(1, 2, 3)
+```
+
+:::
+
+:::{.question}
+#### Question 4
+
+Conduct a simulation where the lead player colors the slips and adds them to the boxes at random. The other players randomly choose which boxes to open. Suppose a player that doesn’t see their own slip randomly guesses either red or blue. What proportion of the time do the $a$ players win?
+:::
+
+
+## More practice with functions
+
+Neural networks are a way to learn complex prediction models. Fundamentally, a neural network works by passing input data through a series of nodes; the output of one layer of nodes is the input for the next layer. Each time the data goes through a node, an *activation function* is applied to transform the output (this allows the network to model nonlinear relationships).
+
+Common activation functions include the ReLU (rectified linear unit):
+
+$$f(x) = \begin{cases} x & x > 0 \\ 0 & x \leq 0 \end{cases}$$
+and the *leaky* ReLU, with parameter $a$:
+
+$$f_a(x) = \begin{cases} x & x > 0 \\ a \cdot x & x \leq 0 \end{cases}$$
+Indeed, the ReLU could be considered a special case of the leaky ReLU with $a = 0$. 
+
+Here is an implementation of the ReLU function in R:
+
+```{r}
+relu <- function(x){
+  if(x > 0){
+    return(x)
+  } else {
+    return(0)
+  }
+}
+```
+
+This `relu` function works for single inputs:
+
+```{r}
+relu(1)
+relu(-1)
+```
+
+However, it does not work for vectors of length greater than 1:
+
+```{r, error=T}
+relu(c(1, -1))
+```
+
+The issue here is that `if(x > 0)` in the `if...else...` statement is not vectorized. That is, R is expecting a single true or false, not a vector. To vectorize this function we can use the `ifelse` function (which IS vectorized).
+
+:::{.question}
+#### Question 5
+
+Re-write the `relu` function above, using the `ifelse` function, so that `relu` can be applied to vectors.
+:::
+
+:::{.question}
+#### Question 6
+
+Adapt your `relu` function from Question 4 to create a new function, `leaky_relu`, which takes TWO inputs, $x$ and $a$, and returns $f_a(x)$ as defined above. Make $a = 0$ the default value.
+:::
+
+
+
+
