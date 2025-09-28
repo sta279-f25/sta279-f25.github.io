@@ -1,5 +1,5 @@
 ---
-title: "Untitled"
+title: "Class activity solutions"
 format: html
 ---
 
@@ -7,13 +7,15 @@ format: html
 
 Suppose there are exactly 100 seats in a movie theater. Further, suppose the movie theater has imposed a new ticketing system where each person’s ticket has an assigned seat number. Consider the case where the movie is sold-out (all 100 seats will be taken) and the first person in the theater lost their ticket and takes a random seat. Each subsequent person attempts to go to their seat. If their seat is open, they take it. Otherwise, to avoid confrontation, they choose a random seat. 
 
-6. Conduct a simulation to assess the probability that the last person into the theater will get their assigned seat.
+1. Conduct a simulation to assess the probability that the last person into the theater will get their assigned seat.
 
 **Solution:**
 
 For loop approach:
 
 ```{r}
+set.seed(771)
+
 n_people <- 100 # number of people in the theater
 nsim <- 1000 # number of simulations to estimate probability
 results <- rep(NA, nsim)
@@ -54,10 +56,12 @@ mean(results)
 
 Map approach: One run of the simulation is actually easier to do with the for loop, because the first person is treated differently than the others, and we need to update the `taken` vector. However, we can write a function to do one run of the simulation, then iterate it with `map`.
 
-```{r}
+```{r, message=F}
+library(tidyverse)
+set.seed(771)
+
 n_people <- 100 # number of people in the theater
 nsim <- 1000 # number of simulations to estimate probability
-seats <- 1:n_people
 
 take_seats <- function(n){
   seats <- 1:n
@@ -80,11 +84,7 @@ take_seats <- function(n){
   taken[n_people]
 }
 
-for(i in 1:nsim){
-  # vector to store which seats are taken
-  # taken[i] is 0 when the seat is free
-  
-}
+results <- map_dbl(1:nsim, function(i) take_seats(n_people))
 
 mean(results)
 ```

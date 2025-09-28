@@ -1,0 +1,415 @@
+---
+title: "Exam 1 review"
+format: html
+editor: source
+---
+
+Below are questions to help you study for Exam 1. These are some examples of the kinds of questions I might ask.
+
+* This is not a practice exam. There will be fewer questions on the actual exam.
+* The questions cover most, but not all, possible material for the exam.
+* The distribution of questions here is not necessarily reflective of the distribution of questions on the actual exam.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message = FALSE)
+```
+
+
+# Practice with loops in R
+
+1. What will the following code return when you run it in R?
+
+```{r, eval=F}
+output <- rep(NA, 10)
+for(i in 1:5){
+  output[i] <- i
+}
+
+output[6]
+```
+
+2. What will the following code return when you run it in R?
+
+```{r, eval=F}
+output <- rep(0, 10)
+for(i in 1:10){
+  output[i] <- i
+}
+
+output[6]
+```
+
+3. What will the following code return when you run it in R?
+
+```{r, eval=F}
+output <- rep(0, 10)
+for(i in 1:10){
+  output[i] <- i
+}
+
+output[11]
+```
+
+4. What will the following code return when you run it in R?
+
+```{r, eval=F}
+output <- rep(1, 10)
+for(i in 2:10){
+  output[i] <- i + output[i-1]
+}
+
+output[5]
+```
+
+5. What will the following code return when you run it in R?
+
+```{r, eval=F}
+output <- rep(1, 10)
+for(i in 2:10){
+  output[i] <- i + output[i+1]
+}
+
+output[5]
+```
+
+
+# Practice with functions
+
+## Standard deviation
+
+The *sample standard deviation* of numbers $x_1,...,x_n$ is given by 
+
+$$\widehat{\sigma} = \sqrt{\frac{1}{n-1}\sum \limits_{i=1}^n (x_i - \bar{x})^2},$$
+
+where $\bar{x} = \frac{1}{n} \sum \limits_{i=1}^n x_i$.
+
+6. Write a function called `my_sd` which calculates the standard deviation of a vector in R.
+
+## $\ell_p$ norm
+
+The $\ell_p$ norm of a vector $x = (x_1,...,x_k)$ is given by
+
+$$||x||_p = \left( \sum \limits_{i=1}^k |x_i|^p \right)^{1/p}$$
+
+7. Write a function called `p_norm` in R, which takes two inputs: a vector `x`, and `p`, and returns $\ell_p(x)$. Make `p = 2` the default value (this corresponds to the usual Euclidean norm).
+
+## Kurtosis
+
+Suppose we have a sample $X_1,...,X_n$ from some population distribution. We know that the mean describes the "center" of the distribution, the standard deviation is a measure of variability, and skewness describes the shape of the distribution. 
+
+Another quantity we can calculate to describe a distribution is *kurtosis*, which describes how heavy the tails of the distribution are. The *sample kurtosis* is calculated by:
+
+$$\dfrac{\frac{1}{n} \sum \limits_{i=1}^n (X_i - \bar{X})^4}{\left( \frac{1}{n} \sum \limits_{i=1}^n (X_i - \bar{X})^2 \right)^2} \ \ - \ \ 3$$
+
+where $\bar{X}$ is the sample mean.
+
+8. Write a function in R to calculate the sample kurtosis. Your function should take in one argument: a vector `x`.
+
+## Correlation
+
+Suppose we have a sample $(X_1, Y_1),...,(X_n, Y_n)$ of $n$ observations collected on two variables, $X$ and $Y$. The strength of the linear relationship between $X$ and $Y$ is measured by their *correlation*, and the sample correlation is calculated with the following formula:
+
+
+$$\dfrac{ \sum \limits_{i=1}^n (X_i - \bar{X})(Y_i - \bar{Y})}{\left( \sum \limits_{i=1}^n (X_i - \bar{X})^2 \right)^{1/2} \left( \sum \limits_{i=1}^n (Y_i - \bar{Y})^2 \right)^{1/2}}$$
+
+9. Write a function in R to calculate the sample correlation. Your function should take in two arguments: a vector `x` and a vector `y`.
+
+
+# Practice with probability simulations
+
+Three players enter a room and a red or blue hat is placed on each person’s head.
+The color of each hat is determined by [an independent] coin toss (so, any combination of red and blue hats is possible). No communication of any sort is allowed, except for an initial strategy session before the game begins. Once they have had a chance to look at the other hats [but not their own], the players must *simultaneously* guess the color of their own hats or pass. The players win the game if at least one person guesses correctly, and no one guesses incorrectly.
+
+10. Here is one strategy: one player randomly guesses the color of their hat, while the other two players pass. Write a simulation to estimate the probability the players win the game (the true probability is 1/2).
+
+11. Here is another strategy: if a player sees the same color on the other two hats, they guess the color they do not see. If a player sees different colors on the other two hats, they pass. For example: If players A, B, and C have hats red, blue, and blue respectively, then player A would guess red, player B would pass, and player C would pass. Write a simulation to estimate the probability the players win the game with this new strategy (the true probability is 3/4).
+
+**Note:** For the exam, I am more interested in the logic of how you approach the simulation, than in your code syntax being perfect. Your code should be mostly correct, but a few minor errors isn't an issue.
+
+
+# Practice with data wrangling
+
+## Writing code
+
+In each of the questions below, write code to produce the output from the original data.
+
+12. Original data:
+
+```{r, echo=F, message=F, warning=F}
+library(tidyverse)
+library(palmerpenguins)
+
+set.seed(3)
+
+sub_data <- penguins |>
+  slice_sample(n=10) |>
+  select(species, island, bill_length_mm, bill_depth_mm)
+
+sub_data
+```
+
+Output:
+
+```{r, echo=F}
+sub_data |>
+  count(species, island)
+```
+
+13. Original data:
+
+```{r, echo=F}
+sub_data
+```
+
+Output:
+
+```{r, echo=F}
+sub_data |>
+  group_by(island, species) |>
+  summarize(mean_length = mean(bill_length_mm, na.rm=T))
+```
+
+
+14. Original data:
+
+```{r, echo=F}
+sub_data
+```
+
+Output:
+
+```{r, echo=F}
+sub_data |>
+  mutate(bill_ratio = bill_length_mm/bill_depth_mm)
+```
+
+
+15. Original data:
+
+```{r, echo=F}
+sub_data
+```
+
+Output:
+
+```{r, echo=F}
+sub_data |>
+  filter(species == "Adelie", 
+         island == "Dream")
+```
+
+
+16. Original data:
+
+```{r, echo=F}
+ex_df <- data.frame(
+  id = c(1, 2, 3),
+  x_1 = c(3, 1, 4),
+  x_2 = c(5, 8, 9),
+  y_1 = c(0, 1, 2),
+  y_2 = c(2, 7, 9)
+)
+
+ex_df
+```
+
+Output:
+
+```{r, echo=F}
+ex_df |>
+  pivot_longer(cols = -id, names_to = c("group", "obs"), names_sep = "_")
+```
+
+17. Original data:
+
+```{r, echo=F}
+ex_df <- data.frame(
+  id = c(1, 1, 2, 2, 3, 3),
+  group = c("x", "y", "x", "y", "x", "y"),
+  value = sample(1:6, replace=T)
+)
+
+ex_df
+```
+
+Output:
+
+```{r, echo=F}
+ex_df |>
+  pivot_wider(id_cols = id, names_from = group, values_from = value)
+```
+
+## Joins
+
+In each of the following questions, write code to produce the desired output from the two input datasets. The code may involve additional wrangling steps, beyond a join.
+
+18.
+
+```{r, echo=F}
+df1 <- data.frame(
+  id = c(1, 2, 3),
+  x = c(7, 9, 13)
+)
+
+df2 <- data.frame(
+  id = c(1, 2, 4),
+  y = c(10, 12, 14)
+)
+```
+
+```{r}
+df1
+
+df2
+```
+
+
+Output:
+
+```{r, echo=F}
+df1 |>
+  left_join(df2, join_by(id))
+```
+
+
+19.
+
+```{r}
+df1
+
+df2
+```
+
+
+Output:
+
+```{r, echo=F}
+df1 |>
+  inner_join(df2, join_by(id))
+```
+
+20.
+
+```{r, echo=F}
+df1 = data.frame(
+  a_x = 1,
+  a_y = 2,
+  b_x = 2,
+  b_y = 3
+)
+
+df2 = data.frame(
+  id = c("a", "b"),
+  z = c(4, 5)
+)
+```
+
+```{r}
+df1
+
+df2
+```
+
+
+```{r, echo=F}
+df1 |> 
+  pivot_longer(cols = -c(), names_to = c("id", ".value"), names_sep = "_") |>
+  left_join(df2, join_by(id))
+```
+
+
+## Reading data wrangling code
+
+Here are two small datasets, `df1` and `df2`:
+
+```{r, include=F}
+set.seed(3)
+
+df1 <- data.frame(id = 1:5, 
+                  x = sample(1:10, 5, replace=T),
+                  y = sample(1:10, 5, replace=T),
+                  z = sample(1:10, 5, replace=T))
+
+df2 <- data.frame(id = 3:6,
+                  a = sample(1:10, 4, replace=T),
+                  b = sample(1:10, 4, replace=T))
+```
+
+```{r}
+df1
+
+df2
+```
+
+
+For each of the following chunks of code, write down the output or explain why it will cause an error.
+
+
+21.
+
+```{r, eval=F}
+df1 |>
+  left_join(df2, join_by(id))
+```
+
+22.
+
+```{r, eval=F}
+df1 |>
+  inner_join(df2, join_by(id))
+```
+
+23.
+
+```{r, eval=F}
+df1 |>
+  group_by(z) |>
+  summarize(max_b = max(b))
+```
+
+
+24.
+
+```{r, eval=F}
+df1 |>
+  select(x, y) |>
+  pivot_longer(cols = -id,
+               names_to = "measurement",
+               values_to = "value")
+```
+
+25.
+
+```{r, eval=F}
+df1 |>
+  select(id, x, y) |>
+  pivot_longer(cols = -id,
+               names_to = "measurement",
+               values_to = "value") |>
+  filter(id %in% c(1, 2, 3))
+```
+
+26.
+
+```{r, eval=F}
+df1 |>
+  left_join(df2, join_by(id)) |>
+  mutate(new_var = x + a) |>
+  group_by(z) |>
+  summarize(mean_new_var = mean(new_var))
+```
+
+
+27.
+
+```{r, eval=F}
+df1 |>
+  left_join(df2, join_by(id)) |>
+  mutate(new_var = x + a) |>
+  group_by(z) |>
+  summarize(mean_new_var = mean(new_var, na.rm=T)) |>
+  summarize(mean_b = mean(b))
+```
+
+
+
