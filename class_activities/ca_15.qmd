@@ -1,0 +1,54 @@
+---
+title: "Activity: function scoping"
+format: html
+editor: source
+---
+
+**Instructions:** 
+
+* Work with a neighbor to answer the following questions 
+* To get started, download the [class activity template](https://sta279-f25.github.io/class_activities/ca_15_template.qmd) file
+* When you are finished, render the file as an HTML and submit the HTML to Canvas (let me know if you encounter any problems)
+
+## What will happen?
+
+For each question, predict what will happen when the code is run. Then run the code and check whether your prediction was correct.
+
+1. 
+
+```{r, eval=F}
+x <- 10
+
+g02 <- function(x){
+  x <- x + 1
+  return(x)
+}
+
+g02(x)
+x + 1
+```
+
+2.
+
+```{r, eval=F}
+x <- 10
+
+g02 <- function(x){
+  x <- x + 1
+  return(x)
+}
+
+x <- g02(x)
+x + 1
+```
+
+3. 
+
+```{r, eval=F}
+g02 <- function(y){
+  y <- y - 1
+  return(y)
+}
+
+g02(g02(20))
+```

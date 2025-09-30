@@ -1,0 +1,312 @@
+---
+title: "Functions"
+format: 
+  revealjs:
+    theme: theme.scss
+editor: source
+editor_options: 
+  chunk_output_type: console
+---
+
+## Activity
+
+Work on the warmup activity (handout), then we will discuss as a class
+
+
+## Ordering and arguments
+
+```{r, echo=T}
+my_power <- function(x, y){
+  return(x^y)
+}
+```
+
+```{r, echo=T}
+my_power(x = 2, y = 3)
+my_power(y = 3, x = 2)
+my_power(2, 3)
+my_power(3, 2)
+```
+
+* If you don't name the arguments when calling a function, R assumes you passed them in the order of the function definition
+
+## Function defaults
+
+```{r, echo=T}
+my_power <- function(x, y){
+  return(x^y)
+}
+```
+
+What will happen when I run the following code?
+
+```{r, echo=T, eval=F}
+my_power(3)
+```
+
+## Function defaults
+
+```{r, echo=T}
+my_power <- function(x, y){
+  return(x^y)
+}
+```
+
+What will happen when I run the following code?
+
+```{r, echo=T, error=T}
+my_power(3)
+```
+
+
+## Function defaults
+
+```{r, echo=T}
+my_power <- function(x, y=2){
+  return(x^y)
+}
+```
+
+What will happen when I run the following code?
+
+```{r, echo=T, eval=F}
+my_power(3)
+```
+
+## Function defaults
+
+```{r, echo=T}
+my_power <- function(x, y=2){
+  return(x^y)
+}
+```
+
+What will happen when I run the following code?
+
+```{r, echo=T}
+my_power(3)
+```
+
+## Function defaults
+
+```{r, echo=T}
+my_power <- function(x, y=2){
+  return(x^y)
+}
+```
+
+What will happen when I run the following code?
+
+```{r, echo=T, eval=F}
+my_power(2, 3)
+```
+
+## Function defaults
+
+```{r, echo=T}
+my_power <- function(x, y=2){
+  return(x^y)
+}
+```
+
+What will happen when I run the following code?
+
+```{r, echo=T}
+my_power(2, 3)
+```
+
+## Function defaults
+
+```{r, echo=T}
+my_power <- function(x, y){
+  return(x^y)
+}
+```
+
+What will happen when I run the following code?
+
+```{r, echo=T, eval=F}
+my_power(3)
+```
+
+## Function defaults
+
+```{r, echo=T}
+my_power <- function(x, y){
+  return(x^y)
+}
+```
+
+What will happen when I run the following code?
+
+```{r, echo=T, error=T}
+my_power(3)
+```
+
+## Function defaults
+
+```{r, echo=T}
+my_power <- function(x=2, y=4){
+  return(x^y)
+}
+```
+
+What will happen when I run the following code?
+
+```{r, echo=T, eval=F}
+my_power()
+```
+
+## Function defaults
+
+```{r, echo=T}
+my_power <- function(x=2, y=4){
+  return(x^y)
+}
+```
+
+What will happen when I run the following code?
+
+```{r, echo=T}
+my_power()
+```
+
+
+## Function scoping
+
+What value will the following code return?
+
+```{r, echo=T, eval=F}
+g01 <- function(x = 10) {
+  return(x)
+}
+
+g01()
+```
+
+## Function scoping
+
+What value will the following code return?
+
+```{r, echo=T}
+g01 <- function(x = 10) {
+  return(x)
+}
+
+g01()
+```
+
+What if I try to look at `x`?
+
+```{r, echo=T, eval=F}
+x
+```
+
+## Function scoping
+
+What value will the following code return?
+
+```{r, echo=T}
+g01 <- function(x = 10) {
+  return(x)
+}
+
+g01()
+```
+
+What if I try to look at `x`?
+
+```{r, echo=T, error = T}
+x
+```
+
+* Variables created within functions don't exist outside the function!
+
+## Function scoping
+
+Variables created within functions don't exist outside the function!
+
+```{r, echo=T, error=T}
+g01 <- function() {
+  x <- 10
+  return(x)
+}
+
+g01()
+x
+```
+
+## Function scoping
+
+What will the following code return?
+
+```{r, echo=T, eval=F}
+x <- 10
+
+g01 <- function(){
+  return(x)
+}
+
+g01()
+```
+
+## Function scoping
+
+```{r, echo=T}
+x <- 10
+
+g01 <- function(){
+  return(x)
+}
+
+g01()
+x
+```
+
+* If a variable is not defined in a function, R looks outside the function (the *global environment*)
+
+
+## Name masking
+
+What value will the following code return?
+
+```{r, echo=T, eval=F}
+x <- 10
+g01 <- function() {
+  x <- 20
+  return(x)
+}
+
+g01()
+x
+```
+
+## Name masking
+
+What value will the following code return?
+
+```{r, echo=T}
+x <- 10
+g01 <- function() {
+  x <- 20
+  return(x)
+}
+
+g01()
+x
+```
+
+* Names defined inside a function *mask* names defined outside a function
+* Variables created within a function don't exist outside
+
+## Summary
+
+* Variables created within a function don't exist outside
+* If a variable is not defined in a function, R looks outside the function
+* Names defined inside a function *mask* names defined outside a function
+
+## Class activity
+
+[https://sta279-f25.github.io/class_activities/ca_15.html](https://sta279-f25.github.io/class_activities/ca_15.html)
+
+

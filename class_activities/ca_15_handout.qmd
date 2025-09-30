@@ -1,0 +1,66 @@
+---
+title: "Warmup: functions"
+format: pdf
+editor: source
+---
+
+\vspace{-3cm}
+
+**Group members:**
+
+**Instructions:** Work with a neighbor on the following activity. I will collect the handout at the end of class, and it will be part of your class participation grade. You will be graded only on effort -- it is ok if you don't finish all the questions, or get them all correct.
+
+## Functions
+
+Below is a toy example function:
+
+```{r, eval=F}
+my_power <- function(x, y){
+  x^y
+}
+```
+
+For each of the following lines of code, predict what will happen when you call the function. Once you have made your predictions, check the results in R to see what happens.
+
+1.
+
+```{r, eval=F}
+my_power(x = 2, y = 3)
+```
+
+
+2.
+
+```{r, eval=F}
+my_power(y = 3, x = 2)
+```
+
+
+3.
+
+```{r, eval=F}
+my_power(2, 3)
+```
+
+
+4.
+
+```{r, eval=F}
+my_power(3, 2)
+```
+
+
+5.
+
+```{r, eval=F}
+my_power(3)
+```
+
+
+
+
+
+
+
+
+
