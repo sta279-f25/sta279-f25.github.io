@@ -10,7 +10,7 @@ September 29
   : [Section C.2, MDSE](https://mdsr-book.github.io/mdsr3e/C-algorithmic.html#simple-example), [Sections 6.1 - 6.4, Advanced R](https://adv-r.hadley.nz/functions.html)
   
 : Exam 1 review questions
-  : [review questions](https://sta279-f25.github.io/class_activities/exam_1_review.html)
+  : [review questions](https://sta279-f25.github.io/class_activities/exam_1_review.html), [review solutions](https://sta279-f25.github.io/class_activities/exam_1_review_solutions.html)
 
 October 1
 : Functions + function scoping
