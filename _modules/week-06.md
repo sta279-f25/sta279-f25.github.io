@@ -18,3 +18,4 @@ October 1
 
 October 3
 : Exam 1 review
+  : [notes](https://sta279-f25.github.io/slides/exam_1_review_class.pdf)
