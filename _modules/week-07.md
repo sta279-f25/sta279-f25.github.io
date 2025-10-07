@@ -6,7 +6,7 @@ October 6
 : **Exam 1**{: .label .label-red }
 
 October 8
-: Functions + unit testing
+: Discuss exam 1
 
 : Reading for Friday's class
   : [Sections 14.1 - 14.3, R4DS](https://r4ds.hadley.nz/strings.html)
