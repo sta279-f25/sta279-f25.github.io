@@ -1,0 +1,244 @@
+---
+title: "Regular expressions"
+format: 
+  revealjs:
+    theme: theme.scss
+editor: source
+execute: 
+  echo: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=F}
+library(tidyverse)
+
+headlines <- c("i watched \"home alone\" for the first time and it was actually horrifying", 
+               "computer professionals celebrate 10th birthday of a.l.i.c.e.",
+               "f.b.i. lab houses growing database of dna profiles",
+               "6 things i wish i knew as a teen", 
+               "i asked my mom for marriage advice and here's what happened",
+               "i wore food on my face instead of makeup to see if anyone would notice")
+```
+
+## Warmup
+
+Work on the activity (handout), then we will discuss as a class.
+
+## Warmup{.small}
+
+* computer professionals celebrate 10th birthday of a.l.i.c.e.
+* i watched 'home alone' for the first time and it was actually horrifying
+* f.b.i. lab houses growing database of dna profiles
+* 6 things i wish i knew as a teen
+* i asked my mom for marriage advice and here's what happened
+* i wore food on my face instead of makeup to see if anyone would notice
+
+Of these 6 headlines, 4 are clickbait. All the clickbait headlines are written in first person. How can I detect these headlines?
+
+## Identifying first person headlines
+
+What's wrong with this code?
+
+```{r}
+str_subset(headlines, "i")
+```
+
+
+## Identifying first person headlines
+
+Adding word boundaries:
+
+```{r}
+str_subset(headlines, "\\bi\\b")
+```
+
+How else could we modify this pattern?
+
+## Identifying first person headlines
+
+The word "I" is likely to either *start* the headline, or be preceded by a *space*:
+
+```{r}
+str_subset(headlines, "(^|\\s)i\\b")
+```
+
+
+## Regular expressions so far
+
+**Regular expression:** a tool for specifying a search pattern in text.
+
+Some regular expressions so far:
+
+* `\d` any digit
+* `+` one or more occurrences
+* `^` anchors at the beginning
+* `$` anchors at the end
+* `\b` word boundary
+* `|` alternation (this pattern OR that pattern)
+
+
+## Example 2: Cleaning phone numbers
+
+You are working with customer data in which customers have entered their phone numbers:
+
+```{r, include=F}
+phone_nums <- c("555 867-5309",
+                "555 123 1234",
+                "(555) 298-9090",
+                "(555) 095 9876",
+                "5553246789")
+```
+
+```{r, echo=F}
+phone_nums
+```
+
+You want to clean the numbers so they all have the same form. What would be the easiest approach?
+
+## Example 2: Cleaning phone numbers
+
+```{r}
+str_remove_all(phone_nums, "\\D")
+```
+
+* `str_remove_all` removes all matches to a pattern
+* `\d` matches any digit
+* `\D` matches any *non*-digit
+
+## Shorthand character classes
+
+* `\d` matches any digit
+* `\w` matches any "word character" (letters, digits, underline)
+* `\s` matches any "whitespace character" (space, tab, enter, new line)
+* `\D`, `\W`, and `\S` are negations of `\d`, `\w`, and `\s`
+
+## Example 3: Selecting files
+
+Here are a set of files that live on my computer:
+
+```{r, include=F}
+file_names <- c("research/project1/code.R",
+                "research/project1/data.csv",
+                "research/project2/sim_output.csv",
+                "teaching/sta279/lecture1.qmd",
+                "teaching/sta279/example_data.csv",
+                "teaching/sta279/research_project.html")
+```
+
+```{r}
+file_names
+```
+
+
+How would I select only the files that live in the *research* folder?
+
+## Example 3: Selecting files
+
+Here are a set of files that live on my computer:
+
+```{r}
+file_names
+```
+
+How would I select only the files that live in the *research* folder?
+
+```{r}
+str_subset(file_names, "^research")
+```
+
+
+## Example 3: Selecting files
+
+Here are a set of files that live on my computer:
+
+```{r}
+file_names
+```
+
+What about only *csv* files in the research folder?
+
+## Example 3: Selecting files
+
+Here are a set of files that live on my computer:
+
+```{r}
+file_names
+```
+
+What about only *csv* files in the research folder?
+
+```{r}
+str_subset(file_names, "^research.+\\.csv$")
+```
+## Dot
+
+The `.` is a special character which matches (almost) any character:
+
+```{r}
+str_view("I like bananas.", ".")
+```
+
+If we want to match a *literal* period, we need to escape it:
+
+```{r}
+str_view("I like bananas.", "\\.")
+```
+
+## Example 4: Extracting LaTeX
+
+LaTeX is a tool for scientific and mathematical typesetting. For example:
+
+```
+$Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i$
+```
+
+becomes
+
+$Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i$
+
+## Example 4: Extracting LaTeX
+
+Suppose we have a document which contains equations in LaTeX:
+
+```{r, include=F}
+document_text <- "The equation for the simple linear regression line is given by $Y_i = \\beta_0 + \\beta_1 X_i + \\varepsilon_i$"
+```
+
+```{r}
+document_text
+```
+
+**Question:** If I want to extract only the equation, what pattern am I trying to match?
+
+## Example 4: Extracting LaTeX
+
+```{r}
+document_text
+str_extract(document_text, "\\$.+\\$")
+```
+
+* Remember that `$` is a special character in regular expressions, meaning "the end of the string". To get a *literal* dollar sign, we need the escape character: `\\$`
+
+## Example 4: Extracting LaTeX
+
+```{r}
+document_text
+str_extract(document_text, "(?<=\\$).+(?=\\$)")
+```
+
+* `(?<=)` is a *positive lookbehind*. It is used to identify expressions which are *preceded* by a particular expression
+* `(?=)` is a *positive lookahead*. It is used to identify expressions which are *followed* by a particular expression
+
+
+## Class activity
+
+* Work independently or with a neighbor on the class activity
+* At the end of class, submit your work as an HTML file on Canvas (one per group, list all your names)
+
+
+**For next time**, read:
+
+* Chapter 15.4 - 15.7 in *R for Data Science*
+
+

@@ -1,0 +1,56 @@
+---
+title: "Activity: Strings and regular expressions II"
+format: html
+editor: source
+---
+
+**Instructions:** 
+
+* Work with a neighbor to answer the following questions 
+* To get started, download the [class activity template](https://sta279-f25.github.io/class_activities/ca_17_template.qmd) file
+* When you are finished, render the file as an HTML and submit the HTML to Canvas (let me know if you encounter any problems)
+
+# Episode titles
+
+The following code loads a data frame containing episode information from Season 11 of the British TV show *Taskmaster*:
+
+```{r, message=F, warning=F}
+library(tidyverse)
+episode_info <- read_csv("https://sta279-f25.github.io/class_activities/taskmaster_episodes.csv")
+```
+
+The resulting data frame contains columns for the task, task description, episode, contestant, and score.
+
+Examining the `episode` column, we see that the entries are strings that look like
+
+```
+"Episode 1: It's not your fault. (18 March 2021)"
+```
+
+That is, the string contains three different pieces of information: the episode number, the episode title, and the air date. In this activity, we will pull out each of these pieces of information.
+
+
+## Questions
+
+1. Extract just the episode numbers from the `episode` column.
+
+2. Now we want to extract the episode title for each entry. Use positive lookaheads and lookbehinds to extract the episode titles from the `episode` column. *Hint:* Parentheses `( )` are special characters in regular expressions. To match a *literal* parenthesis, you will need to use escape characters -- that is, `\\(` and `\\)`
+
+3. Finally, use positive lookaheads and lookbehinds to extract the episode air dates from the `episode` column.
+
+4. Using your answers to the previous questions, modify the `episode_info` dataset so that the `episode` column is split into three different columns: episode number, episode title, and episode air date. Here is some example output:
+
+```{r, echo=F}
+episode_info |>
+  mutate(episode_num = str_extract(episode, "\\d+"),
+         title = str_extract(episode, "(?<=: ).+(?=\\()"),
+         air_date = str_extract(episode, "(?<=\\().+(?=\\))")) |>
+  select(episode_num, title, air_date) |>
+  as.data.frame() |>
+  head()
+```
+
+
+
+
+

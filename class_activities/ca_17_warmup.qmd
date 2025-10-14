@@ -1,0 +1,56 @@
+---
+title: "Warmup: clickbait headlines?"
+format: pdf
+editor: source
+---
+
+\vspace{-2.5cm}
+
+**Group members:**
+
+**Instructions:** Work with a neighbor on the following activity. I will collect the handout at the end of class, and it will be part of your class participation grade. You will be graded only on effort -- it is ok if you don't finish all the questions, or get them all correct.
+
+## Assessing headlines
+
+Consider the following selection of headlines from several different online websites. Some of these headlines come from clickbait articles, and some don't. All of the headlines have been converted to lower case.
+
+```
+headlines
+```
+
+* computer professionals celebrate 10th birthday of a.l.i.c.e.
+* i watched 'home alone' for the first time and it was actually horrifying
+* f.b.i. lab houses growing database of dna profiles
+* 6 things i wish i knew as a teen
+* i asked my mom for marriage advice and here's what happened
+* i wore food on my face instead of makeup to see if anyone would notice
+
+### Questions
+
+1. The clickbait headlines in this example are written in *first person*. Complete the code below with an appropriate regular expression to identify only the headlines in first person:
+
+```{r, include=F}
+library(tidyverse)
+headlines <- read_csv("https://sta279-f25.github.io/data/clickbait_headlines_small.csv")
+
+headlines <- headlines |>
+  pull(headline) |>
+  tolower()
+
+headlines <- c(headlines, 
+               "6 things i wish i knew as a teen", 
+               "i asked my mom for marriage advice and here's what happened",
+               "i wore food on my face instead of makeup to see if anyone would notice")
+```
+
+```{r, eval=F}
+str_subset(headlines, ...)
+```
+
+
+```{r, echo=F}
+str_subset(headlines, "(^|\\s)i\\b")
+```
+
+
+
