@@ -429,6 +429,26 @@
 <pre><code>[1] "research/project1/data.csv"       "research/project2/sim_output.csv"</code></pre>
 </div>
 </div>
+</section>
+<section id="dot" class="slide level2">
+<h2>Dot</h2>
+<p>The <code>.</code> is a special character which matches (almost) any character:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href=""></a><span class="fu">str_view</span>(<span class="st">"I like bananas."</span>, <span class="st">"."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] │ &lt;I&gt;&lt; &gt;&lt;l&gt;&lt;i&gt;&lt;k&gt;&lt;e&gt;&lt; &gt;&lt;b&gt;&lt;a&gt;&lt;n&gt;&lt;a&gt;&lt;n&gt;&lt;a&gt;&lt;s&gt;&lt;.&gt;</code></pre>
+</div>
+</div>
+<p>If we want to match a <em>literal</em> period, we need to escape it:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href=""></a><span class="fu">str_view</span>(<span class="st">"I like bananas."</span>, <span class="st">"</span><span class="sc">\\</span><span class="st">."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] │ I like bananas&lt;.&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="example-4-extracting-latex" class="slide level2">
+<h2>Example 4: Extracting LaTeX</h2>
 
 </section>
     </div>
