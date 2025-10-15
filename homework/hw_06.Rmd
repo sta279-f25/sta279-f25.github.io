@@ -1,0 +1,343 @@
+---
+title: "Homework 6"
+output: 
+  rmdformats::robobook:
+    css: "homework.css"
+    highlight: pygments
+link-citations: yes
+---
+
+**Due:** Friday, October 24, 11:59pm 
+
+**Instructions:** 
+
+1. Go to Canvas -> Assignments -> HW 6. Open the GitHub Classroom assignment link
+2. Follow the [instructions](https://sta279-f25.github.io/resources/github_instructions/) to accept the assignment and clone the repository to your local computer
+3. The repository contains the file `hw_06.qmd`. Write your code and answers to the questions in the Quarto document. Commit and push to GitHub regularly.
+4. When you are finished, make sure to Render your Quarto document; this will produce a `hw_06.md` file which is easy to view on GitHub. Commit and push both the `hw_06.qmd` and `hw_06.md` files to GitHub
+5. Finally, [request feedback](https://sta279-f25.github.io/resources/github_instructions/#step-10-request-feedback) on your assignment on the "Feedback" pull request on your HW 6 repository
+
+**Important:** Make sure to include both the `.qmd` and `.md` files when you submit to receive full credit
+
+
+# The Great British Bake Off
+
+The Great British Bake Off (called the Great British Baking Show in the US because of trademark issues with Pillsbury -- yes, really) is a British competition baking show. Each episode involves three challenges: a signature bake, a technical challenge, and a showstopper, all centered around a theme (bread week, cake week, pastry week, etc.). The participant who performs worst is eliminated (with a couple rare exceptions), and the participant who performs best is awarded "star baker" for the week. 
+
+The goal of this assignment is to use web scraping and data wrangling (including working with strings) to collect and analyze data about the show. We will scrape the data from Wikipedia articles about the show.
+
+## Getting the episode names and information
+
+We will begin with series 2 as an example. The Wikipedia article on series 2 can be found at:
+
+[https://en.wikipedia.org/wiki/The_Great_British_Bake_Off_series_2](https://en.wikipedia.org/wiki/The_Great_British_Bake_Off_series_2)
+
+If you scroll down, you will notice that there is an "Episodes" section, which contains the headings "Episode 1: Cakes", "Episode 2: Tarts", etc. 
+
+We will soon learn some basic web scraping tools. For now, I will provide you code with which to get the episode titles into R:
+
+```{r, message=F, warning=F}
+library(tidyverse)
+library(rvest)
+
+episodes <- read_html("https://en.wikipedia.org/wiki/The_Great_British_Bake_Off_series_2") |>
+  html_elements(".mw-heading > [id^='Episode_']") |>
+  html_text2() 
+```
+
+:::{.question}
+#### Question 1
+
+Using string and regular expression tools, use the `episodes` vector provided by the code above to create a data frame which contains the episode information in the following format:
+
+```{r, echo=F, message=F, warning=F}
+data.frame(episode = as.numeric(str_extract(episodes, "\\d+")),
+             name = str_extract(episodes, 
+                                        "(?<=: )[^\\(\\)]+(?=( \\(|$))"))
+```
+
+:::
+
+:::{.question}
+#### Question 2
+
+Re-run the web scraping code, and your code from question 1, for Series 4 instead of Series 2. You should get some unexpected results; explain what goes wrong, and *why* you get those results (look at the Wikipedia page!).
+
+(If, for whatever reason, you did not produce any unexpected results for Series 4, still look at the Wikipedia page, and describe what is different for the episode list of Series 4 vs. Series 2).
+:::
+
+
+:::{.question}
+#### Question 3
+
+To fix the issue from question 2, we will get rid of the "Episodes" from the masterclass. This can be done with a little help from the `str_subset` function.
+
+Fill in the modified web scraping code below, with an appropriate regular expression, so that the masterclass episodes are *not* included for Series 4:
+
+```{r, eval=F}
+read_html("https://en.wikipedia.org/wiki/The_Great_British_Bake_Off_series_4") |>
+  html_elements(".mw-heading > [id^='Episode_']") |>
+  html_text2() |>
+  str_subset(...) # fill this in!
+```
+
+:::
+
+:::{.question}
+#### Question 4
+
+Use an appropriate regular expression to extract the series number of the Wikipedia URL. 
+
+For example:
+
+```{r, eval=F}
+str_extract("https://en.wikipedia.org/wiki/The_Great_British_Bake_Off_series_4", 
+            ... ) # fill this in!
+```
+
+Desired output:
+
+```{r, echo=F}
+str_extract("https://en.wikipedia.org/wiki/The_Great_British_Bake_Off_series_4", "\\d+") # fill this in!
+```
+
+:::
+
+:::{.question}
+#### Question 5
+
+Using your answers to the previous questions, write a function called `clean_ggbo` which satisfies the following requirements:
+
+* Input: `url`, a string containing the URL for one of the GBBO seasons (excluding season 1)
+* Output: a data frame with columns for the episode number, episode title, and season number
+
+Here are some examples of this function in action:
+
+```{r, include=F}
+clean_gbbo <- function(url){
+  season_num <- str_extract(url, "(?<=series_)\\d+")
+  episodes <- read_html(url) |>
+    html_elements(".mw-heading > [id^='Episode_']") |>
+    html_text2() |>
+    str_subset(":")
+  data.frame(episode = as.numeric(str_extract(episodes, "\\d+")),
+             name = str_extract(episodes, 
+                                        "(?<=: )[^\\(\\)]+(?=( \\(|$))"),
+             season = as.numeric(season_num))
+}
+```
+
+```{r}
+clean_gbbo("https://en.wikipedia.org/wiki/The_Great_British_Bake_Off_series_2")
+
+clean_gbbo("https://en.wikipedia.org/wiki/The_Great_British_Bake_Off_series_4")
+```
+
+:::
+
+
+## Iterating over series
+
+So far, we have only worked with one series at a time. We will next want to think about iterating over multiple series. As a first step, it will help to create a vector of URLs, for each of the Bake Off series.
+
+The `str_glue` function will help here. Here is an example of the `str_glue` function in action:
+
+```{r}
+str_glue("class_activities/ca_{class_num}.html", 
+         class_num = 1:5)
+```
+
+
+```{r, include=F}
+season_urls <- str_glue("https://en.wikipedia.org/wiki/The_Great_British_Bake_Off_series_{series}", series=1:15)
+```
+
+:::{.question}
+#### Question 6
+
+Use the `str_glue` function to create a vector called `season_urls` which contains the URLs of the Wikipedia pages for seasons 1 - 15 of the Great British Bake Off.
+
+:::
+
+Now let's iterate over the `season_urls` vector!
+
+:::{.question}
+#### Question 7
+
+Use the `map` and `list_rbind` functions from the `purrr` package to create a dataframe which contains episode information for *all* episodes in seasons 1 - 15. The combined output should look something like this:
+
+```{r, echo=F, message=F, warning=F}
+library(data.table)
+map(season_urls, clean_gbbo) |>
+  rbindlist()
+```
+
+
+:::
+
+
+## Exploring the data
+
+Now let's explore the episode information! **For each of the following questions, you must write code to produce the answer. You may not answer just by looking through the combined data manually.**
+
+:::{.question}
+#### Question 8
+
+Which seasons have fewer than 10 episodes?
+
+:::
+
+Now let's look at the episode titles, which describe the "theme" of each week. Some of these themes appear multiple times, others appear only once. 
+
+**Note:** looking at the episode information, you will see that "Cakes" appears 8 times, and "Cake" appears 7 times. So, "Cake week" actually happens every series! The issue here is that "Cake" vs. "Cakes" looks different, but they are really the same theme (just singular vs. plural).
+
+There are some other issues: should we count "Biscuits" the same as "Biscuits and Traybakes"? Are "Pies" the same as "Pies and Tarts"? And depending on how you wrote the regular expressions, some of the names might have trailing white space.
+
+Handling the extra white space is straightforward: the `trimws` function in base R will do that for us, or we can modify our regular expressions. The other issues are more complicated.
+
+:::{.question}
+#### Question 9
+
+Which themes have appeared in every series? 
+
+In answering this question, you should modify the dataframe so that an episode name of "Cake" or "Cakes" is treated the same.
+
+:::
+
+:::{.question}
+#### Question 10
+
+How many episode themes have appeared only once? 
+
+:::
+
+:::{.question}
+#### Question 11
+
+How often are the first three weeks Biscuits, Bread, and Cakes (in any order)?
+
+:::
+
+
+```{r, eval=F, include=F}
+combined_seasons <- map(season_urls, clean_gbbo) |> 
+  list_rbind()
+combined_seasons |>
+  count(season)
+```
+
+# Converting LaTeX to Markdown
+
+(The following section is unrelated to the Bake Off section from above).
+
+For another class, I wrote a homework assignment in LaTeX, which contained variable descriptions for a dataset on Titanic passengers. Here is what the original LaTeX looked like:
+
+```
+The data include the following variables:
+
+\begin{itemize}
+\item \verb;Passenger;: A unique ID number for each passenger.
+\item \verb;Survived;: An indicator for whether the passenger survived (1) or perished (0) during the disaster.
+\item \verb;Pclass;: Indicator for the class of the ticket held by this passengers. 1 = 1st class, 2 = 2nd class, 3 = 3rd class.
+\item \verb;Name;: The name of the passenger.
+\item \verb;Sex;: Binary indicator for the sex of the passenger.
+\item \verb;Age;: Age of the passenger in years. Age is fractional if the passenger was less than 1 year old.
+\item \verb;SibSp;: number of siblings/spouses the passenger had aboard the Titanic. Here, siblings are defined as brother, sister, stepbrother, and stepsister. Spouses are defined as husband and wife.
+\item \verb;Parch;: number of parents/children the passenger had aboard the Titanic. Here, parent is defined as mother/father and child is defined as daughter,son, stepdaughter or stepson. NOTE: Some children traveled only with a nanny, therefore parch=0 for them. There were no parents aboard for these children.
+\item \verb;Ticket;: The unique ticket number for each passenger.
+\item \verb;Fare;: How much the ticket cost in US dollars.
+\item \verb;Cabin;: The cabin number assigned to each passenger. Some cabins hold more than one passenger.
+\item \verb;Embarked;: Port where the passenger boarded the ship, C = Cherbourg, Q = Queenstown, S = Southampton
+\end{itemize}
+```
+
+In a LaTeX document, this would then render to look like the following:
+
+:::{.question}
+The data include the following variables:
+
+* `Passenger`: A unique ID number for each passenger.
+* `Survived`: An indicator for whether the passenger survived (1) or perished (0) during the disaster.
+* `Pclass`: Indicator for the class of the ticket held by this passengers. 1 = 1st class, 2 = 2nd class, 3 = 3rd class.
+* `Name`: The name of the passenger.
+* `Sex`: Binary indicator for the sex of the passenger.
+* `Age`: Age of the passenger in years. Age is fractional if the passenger was less than 1 year old.
+* `SibSp`: number of siblings/spouses the passenger had aboard the Titanic. Here, siblings are defined as brother, sister, stepbrother, and stepsister. Spouses are defined as husband and wife.
+* `Parch`: number of parents/children the passenger had aboard the Titanic. Here, parent is defined as mother/father and child is defined as daughter,son, stepdaughter or stepson. NOTE: Some children traveled only with a nanny, therefore parch=0 for them. There were no parents aboard for these children.
+* `Ticket`: The unique ticket number for each passenger.
+* `Fare`: How much the ticket cost in US dollars.
+* `Cabin`: The cabin number assigned to each passenger. Some cabins hold more than one passenger.
+* `Embarked`: Port where the passenger boarded the ship, C = Cherbourg, Q = Queenstown, S = Southampton
+:::
+
+Unfortunately, I later wanted to copy these variable descriptions into a **Quarto** document. Quarto will render some LaTeX equations, but not the formatting shown above. Instead, to write these descriptions in a Quarto document, it would look like
+
+
+```
+The data include the following variables:
+
+* `Passenger`: A unique ID number for each passenger.
+* `Survived`: An indicator for whether the passenger survived (1) or perished (0) during the disaster.
+* `Pclass`: Indicator for the class of the ticket held by this passengers. 1 = 1st class, 2 = 2nd class, 3 = 3rd class.
+* `Name`: The name of the passenger.
+* `Sex`: Binary indicator for the sex of the passenger.
+* `Age`: Age of the passenger in years. Age is fractional if the passenger was less than 1 year old.
+* `SibSp`: number of siblings/spouses the passenger had aboard the Titanic. Here, siblings are defined as brother, sister, stepbrother, and stepsister. Spouses are defined as husband and wife.
+* `Parch`: number of parents/children the passenger had aboard the Titanic. Here, parent is defined as mother/father and child is defined as daughter,son, stepdaughter or stepson. NOTE: Some children traveled only with a nanny, therefore parch=0 for them. There were no parents aboard for these children.
+* `Ticket`: The unique ticket number for each passenger.
+* `Fare`: How much the ticket cost in US dollars.
+* `Cabin`: The cabin number assigned to each passenger. Some cabins hold more than one passenger.
+* `Embarked`: Port where the passenger boarded the ship, C = Cherbourg, Q = Queenstown, S = Southampton
+```
+
+Making all these changes by hand is tedious! Instead, let's do it with some string and regular expression tools.
+
+Here is a string that you can copy into R, which contains the original LaTeX text:
+
+```{r}
+original_str <- "The data include the following variables:
+
+\\begin{itemize}
+\\item \\verb;Passenger;: A unique ID number for each passenger.
+\\item \\verb;Survived;: An indicator for whether the passenger survived (1) or perished (0) during the disaster.
+\\item \\verb;Pclass;: Indicator for the class of the ticket held by this passengers. 1 = 1st class, 2 = 2nd class, 3 = 3rd class.
+\\item \\verb;Name;: The name of the passenger.
+\\item \\verb;Sex;: Binary indicator for the sex of the passenger.
+\\item \\verb;Age;: Age of the passenger in years. Age is fractional if the passenger was less than 1 year old.
+\\item \\verb;SibSp;: number of siblings/spouses the passenger had aboard the Titanic. Here, siblings are defined as brother, sister, stepbrother, and stepsister. Spouses are defined as husband and wife.
+\\item \\verb;Parch;: number of parents/children the passenger had aboard the Titanic. Here, parent is defined as mother/father and child is defined as daughter,son, stepdaughter or stepson. NOTE: Some children traveled only with a nanny, therefore parch=0 for them. There were no parents aboard for these children.
+\\item \\verb;Ticket;: The unique ticket number for each passenger.
+\\item \\verb;Fare;: How much the ticket cost in US dollars.
+\\item \\verb;Cabin;: The cabin number assigned to each passenger. Some cabins hold more than one passenger.
+\\item \\verb;Embarked;: Port where the passenger boarded the ship, C = Cherbourg, Q = Queenstown, S = Southampton
+\\end{itemize}
+"
+```
+
+You can check how R would print this string with `cat`:
+
+```{r}
+cat(original_str)
+```
+
+
+:::{.question}
+#### Question 12
+
+Using string functions and regular expressions, convert the LaTeX text into the desired Quarto text.
+
+Hints:
+
+* Look at `str_remove_all` and `str_replace_all`
+* [Back references](https://r4ds.hadley.nz/regexps.html#grouping-and-capturing) will be particularly useful here!
+:::
+
+
+```{r, include=F, eval=F}
+original_str |>
+  str_remove_all("\\\\.+\\}\n") |>
+  str_replace_all("\\\\item", "*") |>
+  str_replace_all("\\\\verb;(.+);", "`\\1`") |>
+  cat()
+```
+
