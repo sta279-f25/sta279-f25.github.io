@@ -50,6 +50,26 @@ episode_info |>
   head()
 ```
 
+# Phone numbers
+
+Below is a vector containing 10 phone numbers:
+
+```{r}
+phone_numbers <- c("(336) 703-2910",
+                   "(336) 703-2665",
+                   "(336) 703-2920",
+                   "(336) 703-2930",
+                   "(336) 703-2940",
+                   "(336) 703-2950",
+                   "(336) 703-2960",
+                   "(336) 703-2970",
+                   "(336) 703-2980",
+                   "(336) 703-2990")
+```
+
+5. Use string functions and regular expressions to convert these phone numbers to the following format: `336-703-2910`
+
+For question 5, try doing this with and without back references. Helpful string functions for this question include `str_remove_all`, `str_replace`, and `str_replace_all`
 
 
 
