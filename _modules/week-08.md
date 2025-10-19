@@ -14,7 +14,7 @@ October 15
 
 October 17
 : Regular expressions
-  : [slides (html)](https://sta279-f25.github.io/slides/lecture_18.html), [slides (pdf)](https://sta279-f25.github.io/slides/lecture_18.pdf), [Class Activity](https://sta279-f25.github.io/class_activities/ca_17.html)
+  : [slides (html)](https://sta279-f25.github.io/slides/lecture_18.html), [slides (pdf)](https://sta279-f25.github.io/slides/lecture_18.pdf), [Class Activity](https://sta279-f25.github.io/class_activities/ca_17.html), [Class Activity solutions](https://sta279-f25.github.io/class_activities/ca_17_solutions.html)
   
 : **Homework 6 released**{: .label .label-yellow }
   : [HW 6](https://sta279-f25.github.io/homework/hw_06.html)
