@@ -1,0 +1,83 @@
+---
+title: "Activity: Intro to web scraping"
+format: html
+editor: source
+---
+
+# Web scraping
+
+In this activity, you will scrape data from the page here: [https://rvest.tidyverse.org/articles/starwars.html](https://rvest.tidyverse.org/articles/starwars.html)
+
+This is a small HTML page designed to help you practice some web scraping fundamentals. We can read the HTML page in R with the following:
+
+```{r, eval=F}
+library(rvest)
+library(tidyverse)
+starwars <- read_html("https://rvest.tidyverse.org/articles/starwars.html")
+```
+
+## Questions
+
+To begin, let's try to get the titles of the Star Wars films included on the web page.
+
+1. In your browser, inspect the web page (right-click the element you want, and click "Inspect"). What type of HTML elements contain the film titles?
+
+**Solution:** `h2` elements
+
+2. Use the `html_elements` function to find the HTML elements you identified in question 1.
+
+**Solution:**
+
+```{r, eval=F}
+starwars |>
+  html_elements("h2")
+```
+
+3. Did your elements in question 2 capture *only* the elements corresponding to film titles? Or did you get any additional results that you don't want to include? If so, modify your code from question 2 to more specifically choose the elements you want.
+
+**Solution:** My solution for question 2 above also captured `On this page`, which is not one of the film titles, but *is* included in an `h2` element. 
+
+There are a few ways to modify this code. Here is one option: the film titles are all in `h2` elements with a `data-id` attribute.
+
+```{r, eval=F}
+starwars |>
+  html_elements("h2[data-id]")
+```
+
+Here is another option: the film titles are all in `h2` elements which are contained in `section` elements. So, first find the `section` elements, and then the `h2` elements within them:
+
+```{r, eval=F}
+starwars |>
+  html_elements("section") |>
+  html_element("h2")
+```
+
+This can also be written a different way: here `>` means "child node", i.e. `h2` is a child node of `section`
+
+```{r, eval=F}
+starwars |>
+  html_elements("section > h2")
+```
+
+
+4. Now pull out just the film titles from the elements with `html_text2`:
+
+```{r, eval=F}
+starwars |>
+  html_elements("h2[data-id]") |> 
+  html_text2()
+```
+
+5. Now write code to pull out just the *release date* for each film. Note: specifying HTML elements won't be enough to get only the release dates; you will need to use some string functions (such as `str_subset` and `str_extract`) too.
+
+```{r, eval=F}
+starwars |>
+  html_elements("p") |>
+  html_text2() |>
+  str_subset("^Released") |>
+  str_extract("(?<=: ).+")
+```
+
+
+
+

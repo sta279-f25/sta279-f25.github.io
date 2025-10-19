@@ -1,0 +1,253 @@
+---
+title: "Introduction to web scraping"
+format: 
+  revealjs:
+    theme: theme.scss
+editor: source
+execute: 
+  echo: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include=F}
+library(tidyverse)
+```
+
+## Motivation: Great British Bake Off
+
+![](https://thegreatbritishbakeoff.co.uk/wp-content/uploads/2025/08/78357_S16_group.jpg)
+
+## Show information
+
+* 15 full series (series 16 currently in progress)
+* Each series involves around 12 contestants, with one contestant eliminated each episode
+* Each episode involves 3 baking challenges
+
+## Episode information
+
+```
+https://en.wikipedia.org/wiki/The_Great_British_Bake_Off_series_15
+```
+
+![](bakeoff_1.png)
+
+![](bakeoff_2.png)
+
+## Goal and required steps
+
+**Goal:** Explore the different baking challenges across all the different series. Which challenges appear most frequently? Which challenges appear earliest in the series?
+
+* Scrape episode information from each series
+* Combine and clean
+* Summarize the data, do statistics!
+
+## Scraping the data
+
+```{r}
+library(rvest)
+library(tidyverse)
+
+gbbo <- read_html("https://en.wikipedia.org/wiki/The_Great_British_Bake_Off_series_15")
+gbbo
+```
+
+## HTML basics
+
+```
+<html>
+  <head>
+    <title>Page title</title>
+  </head>
+  <body>
+    <h1 id='first'>A heading</h1>
+    <p>Some text &amp; <b>some bold text.</b></p>
+    <img src='bakeoff_0.jpg' width='300' height='200'>
+  </body>
+</html>
+```
+
+## HTML basics
+
+:::: {.columns}
+
+::: {.column width="50%"}
+```
+<html>
+  <head>
+    <title>Page title</title>
+  </head>
+  <body>
+    <h1 id='first'>A heading</h1>
+    <p>Some text &amp; <b>some bold text.</b></p>
+    <img src='bakeoff_0.jpg' width='300' height='200'>
+  </body>
+</html>
+```
+:::
+
+::: {.column width="50%"}
+<h1 id='first'>A heading</h1>
+<p>Some text &amp; <b>some bold text.</b></p>
+<img src='bakeoff_0.jpg' width='300' height='200'>
+:::
+
+::::
+
+
+## Some HTML elements
+
+* `<html>`: start of the HTML page
+* `<head>`: header information (metadata about the page)
+* `<body>`: everything that is on the page
+* `<h1>` to `<h6>`: headings
+* `<p>`: paragraphs
+* `<b>`: bold
+* `<table>`: table
+
+## Extracting HTML elements
+
+![](bakeoff_1.png)
+
+It looks like the episode name is contained in a heading. How can we extract it?
+
+## Extracting HTML elements
+
+![](bakeoff_1.png)
+
+```{r}
+gbbo |>
+  html_elements("h1")
+```
+
+## Extracting HTML elements
+
+![](bakeoff_1.png)
+
+```{r}
+gbbo |>
+  html_elements("h2")
+```
+
+## Extracting HTML elements
+
+![](bakeoff_1.png)
+
+```{r}
+gbbo |>
+  html_elements("h3")
+```
+
+## Finding the right selectors
+
+(Demo)
+
+## Finding the right selectors
+
+1. Open the web page in your browser (I find that Firefox or Chrome tend to work best)
+2. Right-click on the element you want, and click "Inspect"
+
+![](bakeoff_3_1.png)
+![](bakeoff_3_2.png)
+
+
+## Finding the right selector
+
+```{r, eval=F}
+gbbo |>
+  html_elements("h3")
+```
+
+```
+{xml_nodeset (12)}
+ [1] <h3 id="Episode_1:_Cake">Episode 1: Cake</h3>\n
+ [2] <h3 id="Episode_2:_Biscuits">Episode 2: Biscuits</h3>\n
+ [3] <h3 id="Episode_3:_Bread">Episode 3: Bread</h3>\n
+ [4] <h3 id="Episode_4:_Caramel">Episode 4: Caramel</h3>\n
+ [5] <h3 id="Episode_5:_Pastry">Episode 5: Pastry</h3>\n
+ [6] <h3 id="Episode_6:_Autumn">Episode 6: Autumn</h3>\n
+ [7] <h3 id="Episode_7:_Desserts">Episode 7: Desserts</h3>\n
+ [8] <h3 id="Episode_8:_The_'70s_(Quarterfinals)">\n<span id=" ...
+ [9] <h3 id="Episode_9:_Patisserie_(Semifinal)">\n<span id="Ep ...
+[10] <h3 id="Episode_10:_Final">Episode 10: Final</h3>\n
+[11] <h3 id="The_Great_Christmas_Bake_Off"><i>The Great Christ ...
+[12] <h3 id="The_Great_New_Year_Bake_Off"><i>The Great New Yea ...
+```
+
+## Finding the right selector
+
+```{r}
+gbbo |>
+  html_elements("h3[id^='Episode']")
+```
+
+## Extracting the data
+
+```{r}
+gbbo |>
+  html_elements("h3[id^='Episode']") |>
+  html_text2()
+```
+
+## Extracting data from other elements
+
+![](bakeoff_4.png)
+
+How would we scrape the air dates for the series?
+
+## Extracting data from other elements
+
+![](bakeoff_5.png)
+
+```{r, eval=F}
+gbbo |>
+  html_elements("table")
+```
+
+```
+{xml_nodeset (18)}
+ [1] <table class="infobox vevent"><tbody>\n<tr><th colspan="2 ...
+ [2] <table class="wikitable sortable" style="text-align:cente ...
+ [3] <table class="wikitable" style="text-align:center; font-s ...
+```
+
+## Extracting data from other elements
+
+![](bakeoff_5.png)
+
+```{r}
+gbbo |>
+  html_elements("table[class='infobox vevent']")
+```
+
+## Extracting data from other elements
+
+![](bakeoff_5.png)
+
+```{r}
+gbbo |>
+  html_elements("table.infobox.vevent")
+```
+
+## Extracting data from other elements
+
+```{r, eval=F}
+gbbo |>
+  html_element("table.infobox.vevent") |>
+  html_table()
+```
+
+
+```{r, echo=F}
+gbbo |>
+  html_element("table.infobox.vevent") |>
+  html_table() |>
+  knitr::kable()
+```
+
+## Class activity
+
+* Work independently or with a neighbor on the class activity
+* At the end of class, submit your work as an HTML file on Canvas (one per group, list all your names)
+
+

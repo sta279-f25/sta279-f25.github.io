@@ -1,0 +1,53 @@
+---
+title: "Activity: Intro to web scraping"
+format: html
+editor: source
+---
+
+**Instructions:** 
+
+* Work with a neighbor to answer the following questions 
+* To get started, download the [class activity template](https://sta279-f25.github.io/class_activities/ca_19_template.qmd) file
+* When you are finished, render the file as an HTML and submit the HTML to Canvas (let me know if you encounter any problems)
+
+# Web scraping
+
+In this activity, you will scrape data from the page here: [https://rvest.tidyverse.org/articles/starwars.html](https://rvest.tidyverse.org/articles/starwars.html)
+
+This is a small HTML page designed to help you practice some web scraping fundamentals. We can read the HTML page in R with the following:
+
+```{r, eval=F}
+library(rvest)
+library(tidyverse)
+starwars <- read_html("https://rvest.tidyverse.org/articles/starwars.html")
+```
+
+## Questions
+
+To begin, let's try to get the titles of the Star Wars films included on the web page.
+
+1. In your browser, inspect the web page (right-click the element you want, and click "Inspect"). What type of HTML elements contain the film titles?
+
+2. Use the `html_elements` function to find the HTML elements you identified in question 1:
+
+```{r, eval=F}
+starwars |>
+  html_elements("...") # fill this in!
+```
+
+3. Did your elements in question 2 capture *only* the elements corresponding to film titles? Or did you get any additional results that you don't want to include? If so, modify your code from question 2 to more specifically choose the elements you want.
+
+4. Now pull out just the film titles from the elements with `html_text2`:
+
+```{r, eval=F}
+starwars |>
+  html_elements("...") |> # fill this in!
+  html_text2()
+```
+
+5. Now write code to pull out just the *release date* for each film. Note: specifying HTML elements won't be enough to get only the release dates; you will need to use some string functions (such as `str_subset` and `str_extract`) too.
+
+
+
+
+

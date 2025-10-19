@@ -1,0 +1,122 @@
+---
+title: "Activity: Strings and regular expressions II"
+format: html
+editor: source
+---
+
+# Episode titles
+
+The following code loads a data frame containing episode information from Season 11 of the British TV show *Taskmaster*:
+
+```{r, include=F}
+library(tidyverse)
+episode_info <- read_csv("taskmaster_episodes.csv")
+```
+
+The resulting data frame contains columns for the task, task description, episode, contestant, and score.
+
+Examining the `episode` column, we see that the entries are strings that look like
+
+```
+"Episode 1: It's not your fault. (18 March 2021)"
+```
+
+That is, the string contains three different pieces of information: the episode number, the episode title, and the air date. In this activity, we will pull out each of these pieces of information.
+
+
+## Questions
+
+1. Extract just the episode numbers from the `episode` column.
+
+**Solution:** As usual, this could be written many different ways. E.g.
+
+```{r, eval=F}
+episode_info |>
+  pull(episode) |>
+  str_extract("\\d+") |>
+  as.numeric()
+```
+
+or
+
+```{r, eval=F}
+as.numeric(str_extract(episode_info$episode, "\\d+"))
+```
+
+
+
+2. Now we want to extract the episode title for each entry. Use positive lookaheads and lookbehinds to extract the episode titles from the `episode` column. *Hint:* Parentheses `( )` are special characters in regular expressions. To match a *literal* parenthesis, you will need to use escape characters -- that is, `\\(` and `\\)`
+
+**Solution:**
+
+```{r, eval=F}
+episode_info |>
+  pull(episode) |>
+  str_extract("(?<=: ).+(?= \\()")
+```
+
+
+3. Finally, use positive lookaheads and lookbehinds to extract the episode air dates from the `episode` column.
+
+**Solution:**
+
+```{r, eval=F}
+episode_info |>
+  pull(episode) |>
+  str_extract("(?<=\\().+(?=\\))")
+```
+
+
+4. Using your answers to the previous questions, modify the `episode_info` dataset so that the `episode` column is split into three different columns: episode number, episode title, and episode air date. Here is some example output:
+
+**Solution:**
+
+```{r, eval=F}
+episode_info |>
+  mutate(episode_num = as.numeric(str_extract(episode, "\\d+")),
+         title = str_extract(episode, "(?<=: ).+(?= \\()"),
+         air_date = str_extract(episode, "(?<=\\().+(?=\\))")) |>
+  select(episode_num, title, air_date)
+```
+
+# Phone numbers
+
+Below is a vector containing 10 phone numbers:
+
+```{r}
+phone_numbers <- c("(336) 703-2910",
+                   "(336) 703-2665",
+                   "(336) 703-2920",
+                   "(336) 703-2930",
+                   "(336) 703-2940",
+                   "(336) 703-2950",
+                   "(336) 703-2960",
+                   "(336) 703-2970",
+                   "(336) 703-2980",
+                   "(336) 703-2990")
+```
+
+5. Use string functions and regular expressions to convert these phone numbers to the following format: `336-703-2910`
+
+For question 5, try doing this with and without back references. Helpful string functions for this question include `str_remove_all`, `str_replace`, and `str_replace_all`
+
+**Solution:**
+
+With a back reference:
+
+```{r}
+str_replace(phone_numbers,
+            "\\((.+)\\) ",
+            "\\1-")
+```
+
+Without a back reference:
+
+```{r}
+str_remove_all(phone_numbers, "[\\(\\)]") |>
+  str_replace(" ", "-")
+```
+
+
+
+
