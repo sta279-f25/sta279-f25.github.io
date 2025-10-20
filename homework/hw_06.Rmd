@@ -9,6 +9,10 @@ link-citations: yes
 
 **Due:** Friday, October 24, 11:59pm 
 
+**GitHub classroom link:** Canvas has been down, so here is the GitHub classroom link:
+
+[https://classroom.github.com/a/iDBpjdo6](https://classroom.github.com/a/iDBpjdo6)
+
 **Instructions:** 
 
 1. Go to Canvas -> Assignments -> HW 6. Open the GitHub Classroom assignment link
