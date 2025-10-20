@@ -1,0 +1,73 @@
+---
+title: "Introduction to web scraping"
+format: 
+  revealjs:
+    theme: theme.scss
+editor: source
+execute: 
+  echo: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r, include=F}
+library(tidyverse)
+```
+
+## Warmup
+
+Work on the warmup activity (handout), then we will discuss as a class.
+
+## Motivation: Great British Bake Off
+
+![](https://thegreatbritishbakeoff.co.uk/wp-content/uploads/2025/08/78357_S16_group.jpg)
+
+## Accessing HTML attributes
+
+```
+https://en.wikipedia.org/wiki/The_Great_British_Bake_Off
+```
+
+![](bakeoff_6.png)
+
+## Accessing HTML attributes
+
+```
+https://en.wikipedia.org/wiki/The_Great_British_Bake_Off
+```
+
+![](bakeoff_6.png)
+
+![](bakeoff_7.png)
+
+## Accessing HTML attributes
+
+(Demo)
+
+## Accessing HTML attributes
+
+```{r setup, include=F}
+library(tidyverse)
+library(rvest)
+```
+
+```{r}
+gbbo <- read_html("https://en.wikipedia.org/wiki/The_Great_British_Bake_Off")
+gbbo |> 
+  html_elements("div.hatnote.navigation-not-searchable > a") |>
+  html_attr("href")
+```
+
+## Accessing HTML attributes
+
+```{r}
+gbbo |> 
+  html_elements("div.hatnote.navigation-not-searchable > a") |>
+  html_text2()
+```
+
+## Class activity
+
+Spend the remainder of the class period on the class activity (CSS Diner: practice with CSS selectors).  You do not need to submit anything.
+
+
