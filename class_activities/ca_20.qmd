@@ -1,0 +1,13 @@
+---
+title: "Activity: CSS Diner"
+format: html
+editor: source
+---
+
+**Instructions:** 
+
+To scrape data from html pages, we need to identify the correct elements to select. In this class activity, you will work on an activity that will walk you through selectors for these elements:
+
+[https://flukeout.github.io/](https://flukeout.github.io/)
+
+There are 32 levels in the activity; see how many you can do! (You do not need to submit anything for this activity).
