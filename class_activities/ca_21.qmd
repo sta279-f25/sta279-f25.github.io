@@ -1,0 +1,81 @@
+---
+title: "Activity: Web scraping"
+format: html
+editor: source
+---
+
+**Instructions:** 
+
+* Work with a neighbor to answer the following questions 
+* To get started, download the [class activity template](https://sta279-f25.github.io/class_activities/ca_21_template.qmd) file
+* When you are finished, render the file as an HTML and submit the HTML to Canvas (let me know if you encounter any problems)
+
+
+# Cheese
+
+The web page [https://www.cheese.com/alphabetical/a/](https://www.cheese.com/alphabetical/a/) contains a list of cheeses, in alphabetical order, whose name begins with "A". (The website has similar pages for the other letters of the alphabet).
+
+By default, when you visit this page the first 20 cheeses will be displayed. The name of each cheese links to its own page; e.g. if you click "Aarewasser" you will be taken to [https://www.cheese.com/aarewasser/](https://www.cheese.com/aarewasser/).
+
+## Questions
+
+For scraping the cheese information in the following questions, we will be polite. Start with the following:
+
+```{r, message=F, warning=F}
+library(tidyverse)
+library(rvest)
+library(polite)
+session <- bow("https://www.cheese.com/alphabetical/a/")
+```
+
+
+1. Scrape the hyperlinks from the first page of "A" cheeses:
+
+```{r, eval=F}
+a_cheeses <- session |>
+  scrape() |>
+  html_elements("...") |> # fill in!
+  ... # fill in!
+```
+
+Your results should look like this:
+
+```{r, include=F}
+a_cheeses <- session |>
+  scrape() |>
+  html_elements("h3 > a") |>
+  html_attr("href")
+```
+
+```{r}
+a_cheeses
+```
+
+If you visit the page for each cheese, you will get information on that cheese. For example, visiting [https://www.cheese.com/aarewasser/](https://www.cheese.com/aarewasser/), we can see that Aarewasser comes from Switzerland, is a semi-soft cheese, and has a buttery texture.
+
+2. Use string and web scraping tools to extract this information from the web page. We will start by nodding at the updated URL:
+
+```{r, eval=F}
+current_page <- session |>
+    nod("/aarewasser")
+current_page |>
+  scrape() |>
+  html_elements("...") |> # fill in!
+  ... # fill in!
+```
+
+Your results should look like this:
+
+```{r, echo=F}
+current_page <- session |>
+    nod("/aarewasser")
+current_page |>
+  scrape() |>
+  html_elements("li > p") |>
+  html_text2() |>
+  str_subset("^(Country|Type|Texture)")
+```
+
+
+
+
