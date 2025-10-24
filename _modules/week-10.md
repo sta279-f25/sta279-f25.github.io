@@ -1,12 +1,15 @@
 ---
-title: Wrangling wrap-up
+title: SQL and relational data
 ---
 
 October 27
-: Wrangling wrap-up
+: Intro to SQL
+
+: Reading for Wednesday's class
+  : [Chapter 21, R4DS](https://r4ds.hadley.nz/databases.html), [Chapter 15, MDSR](https://mdsr-book.github.io/mdsr3e/15-sqlI.html)
 
 October 29
-: Wrangling wrap-up
+: SQL activity -- murder mystery
 
 October 31
-: Wrangling wrap-up
+: SQL and relational data
