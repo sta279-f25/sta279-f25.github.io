@@ -1,0 +1,22 @@
+---
+title: "Warmup: terms and conditions"
+format: pdf
+editor: source
+---
+
+\vspace{-2.5cm}
+
+**Group members:**
+
+# IMDb
+
+The Internet Movie Database (IMDb) contains a *lot* of information about different movies. It seems like this would be a great website to scrape data from, right?
+
+Whether a website wants users to scrape information is spelled out in their terms and conditions. The name for this page varies from site to site (Terms and Conditions, Terms of Service, Conditions of Use, etc.).
+
+Here is the URL for the IMDb Conditions of Use: `https://www.imdb.com/conditions/`
+
+
+## Questions
+
+1. Does IMDb want us to scrape their website? Search through the terms to find the answer (look for key words like "robots", "spiders", "crawlers", "scrapers", "scraping", etc.)
