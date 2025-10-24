@@ -15,3 +15,7 @@ October 22
 
 October 24
 : Web scraping and wrangling
+  : [slides (html)](https://sta279-f25.github.io/slides/lecture_21.html), [slides (pdf)](https://sta279-f25.github.io/slides/lecture_21.pdf), [warmup](https://sta279-f25.github.io/class_activities/ca_21_warmup.pdf), [Class Activity](https://sta279-f25.github.io/class_activities/ca_21.html)
+
+: **Homework 7 released**{: .label .label-yellow }
+  : [HW 7](https://sta279-f25.github.io/homework/hw_07.html)
