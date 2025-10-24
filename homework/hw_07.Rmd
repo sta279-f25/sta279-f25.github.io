@@ -77,6 +77,7 @@ There are 112 cheeses to scrape, and being polite, you are going to wait 5 secon
 ### A few hints
 
 * My solution to this task used many of the tools we have used throughout the semester. In addition to the web scraping and string/text wrangling tools we have learned recently, it is likely that you will need to use many of the general data wrangling tools from earlier in the course
+* Not all 112 cheeses display on the first page when showing the cheeses alphabetically. By default, there are 20 cheeses visible on each page. You can change the number of cheeses per page, and navigate to a different page in the list of cheeses, by modifying the `scrape` function. E.g. `scrape(query = list(per_page = 100, page=2))` will scrape from page 2, when 100 cheeses are listed per page
 * If you find yourself in a situation with a list of vectors, you can use the `unlist` function to make a single combined vector
 * If you find yourself in a situation with a list of data frames, you can use the `list_rbind` function to combine them into a single dataframe. Note that `list_rbind` is smart and will allow the data frames in the list to have different numbers of columns
 * **General guidance:** Start small, then build up. E.g. start by scraping the required info for a single cheese, and get it into the right format. Then think about how to iterate over all of the cheeses, and then combine the information

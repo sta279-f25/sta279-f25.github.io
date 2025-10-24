@@ -1741,6 +1741,13 @@ throughout the semester. In addition to the web scraping and string/text
 wrangling tools we have learned recently, it is likely that you will
 need to use many of the general data wrangling tools from earlier in the
 course</li>
+<li>Not all 112 cheeses display on the first page when showing the
+cheeses alphabetically. By default, there are 20 cheeses visible on each
+page. You can change the number of cheeses per page, and navigate to a
+different page in the list of cheeses, by modifying the
+<code>scrape</code> function. E.g.
+<code>scrape(query = list(per_page = 100, page=2))</code> will scrape
+from page 2, when 100 cheeses are listed per page</li>
 <li>If you find yourself in a situation with a list of vectors, you can
 use the <code>unlist</code> function to make a single combined
 vector</li>
