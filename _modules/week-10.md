@@ -11,6 +11,7 @@ October 27
 
 October 29
 : SQL activity -- murder mystery
+  : [Class Activity](https://sta279-f25.github.io/class_activities/ca_23.html)
 
 October 31
 : SQL and relational data

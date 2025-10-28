@@ -1,0 +1,19 @@
+---
+title: "Activity: SQL Murder Mystery"
+format: html
+editor: source
+---
+
+**Instructions:** 
+
+In this activity, you will work on solving a murder mystery, using SQL to find and connect clues in a database. You are welcome to collaborate on this puzzle; there is nothing you need to submit for today.
+
+If you feel confident about your SQL skills, try the mystery here:
+
+[https://mystery.knightlab.com/](https://mystery.knightlab.com/)
+
+If you want some more SQL guidance and a more structured walkthrough, try the mystery here:
+
+[https://mystery.knightlab.com/walkthrough.html](https://mystery.knightlab.com/walkthrough.html)
+
+Both links involve solving the same mystery. The only difference is how much guidance and scaffolding is provided.
