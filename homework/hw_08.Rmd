@@ -1,0 +1,64 @@
+---
+title: "Homework 8"
+output: 
+  rmdformats::robobook:
+    css: "homework.css"
+    highlight: pygments
+link-citations: yes
+---
+
+**Due:** Friday, November 7, 11:59pm 
+
+**Instructions:** 
+
+1. Go to Canvas -> Assignments -> HW 8. Open the GitHub Classroom assignment link
+2. Follow the [instructions](https://sta279-f25.github.io/resources/github_instructions/) to accept the assignment and clone the repository to your local computer
+3. The repository contains **several files**: `data_creation.R`, `mystery.md`, and `solution.qmd`. You will use **all** of these files in your homework 8 submission. Commit and push to GitHub regularly.
+4. When you are finished, make sure to Render your Quarto document; this will produce a `solution.md` file which is easy to view on GitHub. 
+5. In the process of completing this assignment, you will also create several csv files. Commit and push all of your files to GitHub
+5. Finally, [request feedback](https://sta279-f25.github.io/resources/github_instructions/#step-10-request-feedback) on your assignment on the "Feedback" pull request on your HW 8 repository
+
+**Important:** Make sure to include **all necessary files** in your repository on GitHub to receive full credit.
+
+**Important:** This assignment can be completed as a **group assignment**. That is, you may work individually or in groups of up to 3 students total. If you work in a group, all members must contribute, but only one student needs to submit the assignment on GitHub; list the names of all group members in the submission.
+
+# SQL Murder Mystery
+
+In class, you worked on solving a [murder mystery](https://mystery.knightlab.com/) using SQL. In this homework assignment, you will create your *own* SQL murder mystery!
+
+## Your task
+
+Create a set of tables which contain clues to solve a murder mystery. Like the activity from class, your mystery should be solvable using SQL queries to explore the clues and narrow down the suspects.
+
+Your mystery must satisfy the following requirements:
+
+* You must have at least 4 different tables, and all 4 tables must be involved in solving the mystery
+* All tables must have at least 50 rows
+* Your mystery must require at least 6 SQL queries to solve
+* Each of the following SQL commands must appear at least once in the set of SQL queries needed to solve the mystery:
+    * `WHERE`
+    * `GROUP BY`
+    * `JOIN`
+    * `ORDER BY`
+* The mystery must have a unique solution -- that is, I must be able to uniquely identify the culprit using the information provided. I should never have to "guess and check" different suspects
+
+Your submission must satisfy the following requirements:
+
+* Create the tables as CSV files, which you will submit to GitHub. Use R to create the tables and save them as CSV files; you should write your R code in the `data_creation.R` script.
+* Write a brief introduction to your mystery in the `mystery.md` file. This is where you will provide the information needed to begin solving the mystery.
+* Provide a solution to your mystery in the `solution.qmd` file. Your solution should:
+  * Make a database connection with `DBI::dbConnect(duckdb::duckdb())`
+  * Add your tables to the database with `DBI::dbWriteTable`
+  * Show all the SQL queries (in SQL chunks) needed to solve the mystery
+
+## Some suggestions
+
+You will likely need to generate some random values with which to populate your tables. 
+
+* R functions like `sample`, `rnorm`, `rpois`, `runif`, etc are useful for sampling values from a set of values or from a distribution
+* The `randomNames` package in R is useful for generating random names
+
+
+
+
+

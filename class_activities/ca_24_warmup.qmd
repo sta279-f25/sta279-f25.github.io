@@ -1,0 +1,23 @@
+---
+title: "Activity: Primary and Foreign Keys"
+format: pdf
+editor: source
+---
+
+\vspace{-2.5cm}
+
+**Group members:**
+
+# `nycflights13` data
+
+The `nycflights13` package in R contains 5 different datasets: `airlines`, `airports`, `planes`, `flights`, and `weather`. 
+
+* For each of these tables, determine a column, or combination of columns, which could be used as the table's **primary key**. Remember that a primary key must be *unique* in the table, and can have no missing values. 
+
+* For each of these tables, determine any **foreign keys** that reference primary keys in the other tables. 
+
+* Work with the `nycflights13` package documentation and the data in R to identify potential primary and foreign keys. You do not need to do any SQL here.
+
+* Finally, try to sketch an ERD for the `nycflights13` tables. (Don)
+
+
