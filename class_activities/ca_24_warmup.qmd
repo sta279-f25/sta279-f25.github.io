@@ -18,6 +18,6 @@ The `nycflights13` package in R contains 5 different datasets: `airlines`, `airp
 
 * Work with the `nycflights13` package documentation and the data in R to identify potential primary and foreign keys. You do not need to do any SQL here.
 
-* Finally, try to sketch an ERD for the `nycflights13` tables. (Don)
+* Finally, try to sketch an ERD for the `nycflights13` tables.
 
 
