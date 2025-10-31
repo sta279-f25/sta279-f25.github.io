@@ -1,0 +1,25 @@
+---
+---
+---
+title: "Class activity"
+format: 
+  html:
+    embed-resources: true
+editor: source
+author: "Group members: "
+---
+
+```{r}
+conn <- DBI::dbConnect(duckdb::duckdb())
+DBI::dbWriteTable(conn, "airlines", nycflights13::airlines)
+DBI::dbWriteTable(conn, "airports", nycflights13::airports)
+DBI::dbWriteTable(conn, "flights", nycflights13::flights)
+DBI::dbWriteTable(conn, "planes", nycflights13::planes)
+DBI::dbWriteTable(conn, "weather", nycflights13::weather)
+```
+
+```{sql}
+#| connection: conn
+SHOW TABLES;
+```
+
