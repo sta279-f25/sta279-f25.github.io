@@ -267,10 +267,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>Adding a foreign key</h1>
 <p>Now let’s add a foreign key to the <code>weather</code> table, which specifies that the <code>origin</code> column references the <code>faa</code> column in the <code>airports</code> table.</p>
 <p>In some versions of SQL, this can be done with an <code>ALTER TABLE</code> command, but that approach is not implemented in the version of SQL accessible through the <code>duckdb</code> package. Rather, we will create a foreign key by creating a new table and copying in the appropriate information. To make the example easier, we will only include a few of the columns from the <code>weather</code> table in our new table.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> weather_new (</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  origin <span class="dt">VARCHAR</span>,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  time_hour <span class="dt">TIMESTAMP</span>,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  temp <span class="dt">DOUBLE</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  dewp <span class="dt">DOUBLE</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  humid <span class="dt">DOUBLE</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">PRIMARY</span> <span class="kw">KEY</span> (origin, time_hour),</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FOREIGN</span> <span class="kw">KEY</span> (origin) <span class="kw">REFERENCES</span> airports(faa)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>);</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> weather_new </span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> origin, time_hour, temp, dewp, humid </span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> weather;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <p>The <code>DESCRIBE</code> command we used above to see the primary keys won’t show us the foreign keys in a table. We can, however, look for all the primary and foreign keys across tables in the database:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> table_name, column_name, constraint_type</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> information_schema.constraint_column_usage;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> table_name, column_name, constraint_type</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> information_schema.constraint_column_usage;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ol start="6" type="1">
 <li>Run the code above to create the <code>weather_new</code> table with <code>origin</code> as a foreign key referencing the <code>faa</code> column in <code>airports</code>. Then, use the code above to inspect the constraints in the database and verify that the primary and foreign keys appear.</li>
@@ -281,8 +296,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>All values of a foreign key must appear in the values of a primary key in the referenced table.</p>
 <p>There is no airport with <code>faa</code> code ‘123’. Let’s see what happens when we try to add an entry with origin value ‘123’ to the <code>weather_new</code> table:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> weather_new</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="kw">VALUES</span> (<span class="st">'123'</span>, <span class="st">'2014-01-01 18:00:00'</span>, <span class="dv">53</span>, <span class="dv">26</span>, <span class="dv">59</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> weather_new</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">VALUES</span> (<span class="st">'123'</span>, <span class="st">'2014-01-01 18:00:00'</span>, <span class="dv">53</span>, <span class="dv">26</span>, <span class="dv">59</span>);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ol start="7" type="1">
 <li>Run the query above. What happens?</li>
@@ -292,7 +307,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>Disconnecting</h1>
 <p>Finall, when we are finished we should disconnect from the database. Run the following code in R to disconnect, and make sure it is included at the end of your .qmd file.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>DBI<span class="sc">::</span><span class="fu">dbDisconnect</span>(conn)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>DBI<span class="sc">::</span><span class="fu">dbDisconnect</span>(conn)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 

@@ -106,7 +106,7 @@ Now let's add a foreign key to the `weather` table, which specifies that the `or
 
 In some versions of SQL, this can be done with an `ALTER TABLE` command, but that approach is not implemented in the version of SQL accessible through the `duckdb` package. Rather, we will create a foreign key by creating a new table and copying in the appropriate information. To make the example easier, we will only include a few of the columns from the `weather` table in our new table.
 
-```{sql connection=conn, include=F}
+```{sql connection=conn, eval=F}
 CREATE TABLE weather_new (
   origin VARCHAR,
   time_hour TIMESTAMP,
