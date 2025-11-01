@@ -15,7 +15,7 @@ October 29
 
 October 31
 : SQL and relational data
-  : [slides (html)](https://sta279-f25.github.io/slides/lecture_24.html), [slides (pdf)](https://sta279-f25.github.io/slides/lecture_24.pdf), [handout](https://sta279-f25.github.io/class_activities/ca_24_warmup.pdf), [Class Activity](https://sta279-f25.github.io/class_activities/ca_24.html)
+  : [slides (html)](https://sta279-f25.github.io/slides/lecture_24.html), [slides (pdf)](https://sta279-f25.github.io/slides/lecture_24.pdf), [handout](https://sta279-f25.github.io/class_activities/ca_24_warmup.pdf)
   
 : **Homework 8 released**{: .label .label-yellow }
   : [HW 8](https://sta279-f25.github.io/homework/hw_08.html)
