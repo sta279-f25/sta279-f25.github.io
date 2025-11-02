@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Activity: Primary and Foreign Keys</title>
+<title>Activity: Primary and Foreign Keys, SQL practice</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Activity: Primary and Foreign Keys</h1>
+<h1 class="title">Activity: Primary and Foreign Keys, SQL practice</h1>
 </div>
 
 
@@ -303,11 +303,108 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Run the query above. What happens?</li>
 </ol>
 </section>
+<section id="query-practice" class="level1">
+<h1>Query practice</h1>
+<p>Finally, let’s practice with a couple more SQL queries. Write queries to answer the following questions.</p>
+<ol start="8" type="1">
+<li>Which airports have the highest arrival delay in the data? Display the name (not FAA code) of the five airports with the highest arrival delays, the number of flights to each airport, and the average arrival delay:</li>
+</ol>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>5 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">name</th>
+<th style="text-align: right;">N</th>
+<th style="text-align: right;">mean_arr_delay</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Columbia Metropolitan</td>
+<td style="text-align: right;">106</td>
+<td style="text-align: right;">41.76415</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Tulsa Intl</td>
+<td style="text-align: right;">294</td>
+<td style="text-align: right;">33.65986</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Will Rogers World</td>
+<td style="text-align: right;">315</td>
+<td style="text-align: right;">30.61905</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Jackson Hole Airport</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">28.09524</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mc Ghee Tyson</td>
+<td style="text-align: right;">578</td>
+<td style="text-align: right;">24.06920</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><strong>Note:</strong> The version of SQL implemented in <code>duckdb</code> supports <code>LIMIT 5</code> but not <code>LIMIT 0,5</code></p>
+<p>Now suppose we want to look at cancelled flights. We could define a flight as “cancelled” when the arrival time is missing. In R, this would be when <code>arr_time</code> is <code>NA</code>. In SQL, the equivalent value is <code>NULL</code>.</p>
+<p>One way to check whether a flight is cancelled is to use the <code>CASE</code> statement, which works a lot like the <code>case_when</code> function we have used in R:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> arr_time,</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">CASE</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">WHEN</span> arr_time <span class="kw">IS</span> <span class="kw">NULL</span> <span class="cf">THEN</span> <span class="dv">1</span> </span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">ELSE</span> <span class="dv">0</span> </span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">END</span> <span class="kw">AS</span> cancelled</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> flights</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="kw">LIMIT</span> <span class="dv">5</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>5 records</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;">arr_time</th>
+<th style="text-align: right;">cancelled</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">830</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">850</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">923</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1004</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">812</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Here <code>IS NULL</code> checks whether the column value is <code>NULL</code> or not.</p>
+<ol start="9" type="1">
+<li>How many flights were there from JFK to SFO? What fraction of those flights were cancelled?</li>
+</ol>
+</section>
 <section id="disconnecting" class="level1">
 <h1>Disconnecting</h1>
 <p>Finall, when we are finished we should disconnect from the database. Run the following code in R to disconnect, and make sure it is included at the end of your .qmd file.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>DBI<span class="sc">::</span><span class="fu">dbDisconnect</span>(conn)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>DBI<span class="sc">::</span><span class="fu">dbDisconnect</span>(conn)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 

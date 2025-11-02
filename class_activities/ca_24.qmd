@@ -1,5 +1,5 @@
 ---
-title: "Activity: Primary and Foreign Keys"
+title: "Activity: Primary and Foreign Keys, SQL practice"
 format: html
 editor: source
 ---
@@ -143,6 +143,54 @@ VALUES ('123', '2014-01-01 18:00:00', 53, 26, 59);
 ```
 
 7. Run the query above. What happens?
+
+# Query practice
+
+Finally, let's practice with a couple more SQL queries. Write queries to answer the following questions.
+
+8. Which airports have the highest arrival delay in the data? Display the name (not FAA code) of the five airports with the highest arrival delays, the number of flights to each airport, and the average arrival delay:
+
+```{sql connection=conn, echo=F}
+SELECT 
+  name, COUNT(arr_delay) as N, AVG(arr_delay) as mean_arr_delay
+FROM flights
+JOIN airports on flights.dest = airports.faa
+GROUP BY name
+ORDER BY mean_arr_delay DESC
+LIMIT 5;
+```
+
+**Note:** The version of SQL implemented in `duckdb` supports `LIMIT 5` but not `LIMIT 0,5`
+
+
+Now suppose we want to look at cancelled flights. We could define a flight as "cancelled" when the arrival time is missing. In R, this would be when `arr_time` is `NA`. In SQL, the equivalent value is `NULL`.
+
+One way to check whether a flight is cancelled is to use the `CASE` statement, which works a lot like the `case_when` function we have used in R:
+
+```{sql connection=conn}
+SELECT arr_time,
+  CASE
+    WHEN arr_time IS NULL THEN 1 
+    ELSE 0 
+  END AS cancelled
+FROM flights
+LIMIT 5;
+```
+
+Here `IS NULL` checks whether the column value is `NULL` or not.
+
+
+9. How many flights were there from JFK to SFO? What fraction of those flights were cancelled?
+
+
+```{sql connection=conn, eval=F, echo=F}
+SELECT COUNT(*) as N,
+avg(case when arr_time is null then 1 else 0 end) as frac_null
+from flights
+where dest = 'SFO' AND origin='JFK'
+limit 5
+```
+
 
 
 # Disconnecting
