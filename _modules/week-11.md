@@ -7,7 +7,7 @@ November 3
   : [Class Activity](https://sta279-f25.github.io/class_activities/ca_24.html)
 
 November 5
-: SQL
+: HW 8 work time
 
 November 7
 : SQL
