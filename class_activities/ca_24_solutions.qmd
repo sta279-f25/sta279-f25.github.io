@@ -1,0 +1,260 @@
+---
+title: "Activity: Primary and Foreign Keys, SQL practice"
+format: html
+editor: source
+---
+
+
+## `nycflights13` data
+
+The `nycflights13` package contains 5 different datasets: `airlines`, `airports`, `planes`, `flights`, and `weather`. In this activity, you will work with these data in a SQL session, and create primary and foreign keys to link the tables. You will also explore how primary and foreign keys impose constraints on the tables.
+
+### Setup
+
+We'll work in SQL a little differently than last time. The `duckdb` package allows us to establish a SQL database connection, and add and modify our own tables. To establish the connection and create the tables, run the following code in R (this code is also included in your template file):
+
+```{r}
+conn <- DBI::dbConnect(duckdb::duckdb())
+DBI::dbWriteTable(conn, "airlines", nycflights13::airlines)
+DBI::dbWriteTable(conn, "airports", nycflights13::airports)
+DBI::dbWriteTable(conn, "flights", nycflights13::flights)
+DBI::dbWriteTable(conn, "planes", nycflights13::planes)
+DBI::dbWriteTable(conn, "weather", nycflights13::weather)
+```
+
+Now run the following SQL query to verify that the tables are available in your session:
+
+```{sql}
+#| connection: conn
+SHOW TABLES;
+```
+
+To make life easier, we won't use functions like `dbGetQuery` in this assignment. Instead, you can run SQL queries directly through a *SQL chunk* in your Quarto file. As you can see in the template file, a SQL chunk looks like this:
+
+```{sql}
+#| echo: fenced
+#| connection: conn
+
+SHOW TABLES;
+```
+
+# Adding primary keys
+
+Let's start by adding a primary key to the `airlines` data. Before we add the primary key, let's examine information about the current `airlines` table. The `DESCRIBE` keyword in a SQL query provides information about a table and its columns:
+
+```{sql}
+#| connection: conn
+DESCRIBE airlines;
+```
+
+From this output, we can see that:
+
+* There are two columns, named `carrier` and `name`
+* Both columns are character columns
+* Both columns currently allow `NULL` values
+* Neither column is part of a primary key
+
+Now let's make the `carrier` column the primary key of the table:
+
+```{sql connection=conn}
+ALTER TABLE airlines 
+ ADD PRIMARY KEY (carrier);
+```
+
+
+1. Run the code to create the primary key, then `DESCRIBE` the airlines table again. What has changed?
+
+**Solution:**
+
+```{sql}
+#| connection: conn
+DESCRIBE airlines;
+```
+
+We can see that the `carrier` column is now the primary key. Primary keys cannot have null values, so we also see that `carrier` is not allowed to be `NULL`.
+
+2. Now create primary keys for the `airports` and `planes` tables.
+
+**Solution:**
+
+```{sql connection=conn}
+ALTER TABLE airports 
+ ADD PRIMARY KEY (faa);
+ 
+ALTER TABLE planes 
+ ADD PRIMARY KEY (tailnum);
+```
+
+# Composite primary keys
+
+The three tables above had primary keys created from a single column. For the `weather` table, however, our primary key will be a combination of two columns: `origin` and `time_hour`. This is called a *composite* primary key. Here is the code:
+
+```{sql connection=conn}
+ALTER TABLE weather 
+ ADD PRIMARY KEY (origin, time_hour);
+```
+
+3. Run the code to add the primary key to the `weather` table.
+
+# Primary key constraints
+
+Primary keys must be *unique* and cannot contain any `NULL` values. Let's see what happens if we try to create a primary key which does not obey these constraints. Here is code which tries to create a primary key on the `flights` table from the `carrier` and `flight` columns:
+
+```{sql connection=conn, eval=F}
+ALTER TABLE flights 
+ ADD PRIMARY KEY (carrier, flight);
+```
+
+4. Run the query -- it will produce an error. What does the error message tell you? Why did the query fail?
+
+**Solution:** The error message says `Constraint Error: Data contains duplicates on indexed column(s)`. That is, we can't create the primary key on just carrier and flight, some combinations of carriers and flights appear multiple times in the data.
+
+5. Add a primary key to the `flights` table using the `carrier`, `flight`, and `time_hour` columns.
+
+```{sql connection=conn}
+ALTER TABLE flights 
+ ADD PRIMARY KEY (carrier, flight, time_hour);
+```
+
+# Adding a foreign key
+
+Now let's add a foreign key to the `weather` table, which specifies that the `origin` column references the `faa` column in the `airports` table. 
+
+In some versions of SQL, this can be done with an `ALTER TABLE` command, but that approach is not implemented in the version of SQL accessible through the `duckdb` package. Rather, we will create a foreign key by creating a new table and copying in the appropriate information. To make the example easier, we will only include a few of the columns from the `weather` table in our new table.
+
+```{sql connection=conn, eval=F}
+CREATE TABLE weather_new (
+  origin VARCHAR,
+  time_hour TIMESTAMP,
+  temp DOUBLE,
+  dewp DOUBLE,
+  humid DOUBLE,
+  PRIMARY KEY (origin, time_hour),
+  FOREIGN KEY (origin) REFERENCES airports(faa)
+);
+
+INSERT INTO weather_new 
+SELECT origin, time_hour, temp, dewp, humid 
+FROM weather;
+```
+
+The `DESCRIBE` command we used above to see the primary keys won't show us the foreign keys in a table. We can, however, look for all the primary and foreign keys across tables in the database:
+
+```{sql connection=conn, eval=F}
+SELECT table_name, column_name, constraint_type
+FROM information_schema.constraint_column_usage;
+```
+
+6. Run the code above to create the `weather_new` table with `origin` as a foreign key referencing the `faa` column in `airports`. Then, use the code above to inspect the constraints in the database and verify that the primary and foreign keys appear.
+
+**Solution:**
+
+```{sql connection=conn}
+CREATE TABLE weather_new (
+  origin VARCHAR,
+  time_hour TIMESTAMP,
+  temp DOUBLE,
+  dewp DOUBLE,
+  humid DOUBLE,
+  PRIMARY KEY (origin, time_hour),
+  FOREIGN KEY (origin) REFERENCES airports(faa)
+);
+
+INSERT INTO weather_new 
+SELECT origin, time_hour, temp, dewp, humid 
+FROM weather;
+```
+
+```{sql connection=conn}
+SELECT table_name, column_name, constraint_type
+FROM information_schema.constraint_column_usage;
+```
+
+
+# Foreign key constraints
+
+All values of a foreign key must appear in the values of a primary key in the referenced table.
+
+There is no airport with `faa` code '123'. Let's see what happens when we try to add an entry with origin value '123' to the `weather_new` table:
+
+```{sql connection=conn, eval=F}
+INSERT INTO weather_new
+VALUES ('123', '2014-01-01 18:00:00', 53, 26, 59);
+```
+
+7. Run the query above. What happens?
+
+**Solution:** We can an error: `Constraint Error: Violates foreign key constraint because key "faa: 123" does not exist in the referenced table`. That is, there is no airport with FAA code "123" in the `airports` table, so we can't add `123` to the `origin` column of `weather_new`
+
+# Query practice
+
+Finally, let's practice with a couple more SQL queries. Write queries to answer the following questions.
+
+8. Which airports have the highest arrival delay in the data? Display the name (not FAA code) of the five airports with the highest arrival delays, the number of flights to each airport, and the average arrival delay:
+
+```{sql connection=conn, echo=F}
+SELECT 
+  name, COUNT(arr_delay) as N, AVG(arr_delay) as mean_arr_delay
+FROM flights
+JOIN airports on flights.dest = airports.faa
+GROUP BY name
+ORDER BY mean_arr_delay DESC
+LIMIT 5;
+```
+
+**Note:** The version of SQL implemented in `duckdb` supports `LIMIT 5` but not `LIMIT 0,5`
+
+**Solution:**
+
+```{sql connection=conn}
+SELECT 
+  name, COUNT(arr_delay) as N, AVG(arr_delay) as mean_arr_delay
+FROM flights
+JOIN airports on flights.dest = airports.faa
+GROUP BY name
+ORDER BY mean_arr_delay DESC
+LIMIT 5;
+```
+
+
+Now suppose we want to look at cancelled flights. We could define a flight as "cancelled" when the arrival time is missing. In R, this would be when `arr_time` is `NA`. In SQL, the equivalent value is `NULL`.
+
+One way to check whether a flight is cancelled is to use the `CASE` statement, which works a lot like the `case_when` function we have used in R:
+
+```{sql connection=conn}
+SELECT arr_time,
+  CASE
+    WHEN arr_time IS NULL THEN 1 
+    ELSE 0 
+  END AS cancelled
+FROM flights
+LIMIT 5;
+```
+
+Here `IS NULL` checks whether the column value is `NULL` or not.
+
+
+9. How many flights were there from JFK to SFO? What fraction of those flights were cancelled?
+
+**Solution:**
+
+```{sql connection=conn}
+SELECT COUNT(*) as N,
+AVG(CASE WHEN arr_time IS NULL THEN 1 ELSE 0 END) AS frac_null
+FROM flights
+WHERE dest = 'SFO' AND origin='JFK'
+LIMIT 5;
+```
+
+
+
+# Disconnecting
+
+Finall, when we are finished we should disconnect from the database. Run the following code in R to disconnect, and make sure it is included at the end of your .qmd file.
+
+```{r}
+DBI::dbDisconnect(conn)
+```
+
+
+

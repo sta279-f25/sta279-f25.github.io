@@ -4,7 +4,7 @@ title: SQL and relational data
 
 November 3
 : SQL
-  : [Class Activity](https://sta279-f25.github.io/class_activities/ca_24.html)
+  : [Class Activity](https://sta279-f25.github.io/class_activities/ca_24.html), [activity solutions](https://sta279-f25.github.io/class_activities/ca_24_solutions.html)
 
 November 5
 : HW 8 work time
