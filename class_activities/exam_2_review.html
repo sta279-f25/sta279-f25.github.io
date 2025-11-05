@@ -342,7 +342,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 STA 279
 </h1>
 <p>
-Welcome to STA 279! This is a 16-week course offered at Wake Forest University, which meets 3 hours each week. The syllabus can be found <a href="https://sta279-s24.github.io/about/">here</a>
+Welcome to STA 279! This is a 16-week course offered at Wake Forest University, which meets 3 hours each week. The syllabus can be found <a href="https://sta279-f25.github.io/about/">here</a>
 </p>
 <p>
 Below are some useful dates for the semester:
@@ -373,7 +373,7 @@ April 12
   This is a 16-week course offered at Wake Forest University, 
   which meets 3 hours each week. 
   The syllabus can be found 
-  &lt;a href='https://sta279-s24.github.io/about/'&gt;here&lt;/a&gt; 
+  &lt;a href='https://sta279-f25.github.io/about/'&gt;here&lt;/a&gt; 
 &lt;/p&gt;
 
 &lt;p&gt;
@@ -423,79 +423,355 @@ April 12
   &lt;/span&gt;
 &lt;/div&gt;</code></pre>
 <ol start="16" type="1">
-<li>Write code in R that will extract the following strings from this web page (as a vector):</li>
+<li>Write code in R that will extract the following string from this web page:</li>
 </ol>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "Room: Carswell 102" "Exam dates"        </code></pre>
+<pre><code>[1] "Carswell 102"</code></pre>
 </div>
 </div>
+<ol start="17" type="1">
+<li>Using your code from the previous question, write a short function with the following specifications:
+<ul>
+<li>Input: <code>url</code> the URL for a web page with the same format as above</li>
+<li>Output: the building and room number for the class, scraped from the web page</li>
+</ul></li>
+<li>Suppose that we have the web pages for 20 different classes at Wake Forest, all of which have the same format as shown above, but which take places in different rooms. The URLS are stored in a vector:</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>class_urls</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "https://fake_page_1.html"  "https://fake_page_2.html" 
+ [3] "https://fake_page_3.html"  "https://fake_page_4.html" 
+ [5] "https://fake_page_5.html"  "https://fake_page_6.html" 
+ [7] "https://fake_page_7.html"  "https://fake_page_8.html" 
+ [9] "https://fake_page_9.html"  "https://fake_page_10.html"
+[11] "https://fake_page_11.html" "https://fake_page_12.html"
+[13] "https://fake_page_13.html" "https://fake_page_14.html"
+[15] "https://fake_page_15.html" "https://fake_page_16.html"
+[17] "https://fake_page_17.html" "https://fake_page_18.html"
+[19] "https://fake_page_19.html" "https://fake_page_20.html"</code></pre>
+</div>
+</div>
+<p>Using your answers to the previous questions, iterate over this vector of URLs to produce a vector containing the building and room number for each class.</p>
+</section>
+<section id="polite-web-scraping" class="level2">
+<h2 class="anchored" data-anchor-id="polite-web-scraping">Polite web scraping</h2>
+<ol start="19" type="1">
+<li><p>Why is it important to be polite when scraping from a website?</p></li>
+<li><p>What are the features of polite web scraping that we discussed in class?</p></li>
+</ol>
+</section>
+</section>
+<section id="sql" class="level1">
+<h1>SQL</h1>
+<p>Here is a rough summary of what you should know from the SQL unit:</p>
+<ul>
+<li>Pieces of a SQL query you should know:
+<ul>
+<li><code>SELECT</code></li>
+<li><code>FROM</code></li>
+<li><code>JOIN</code> (an inner join) and <code>LEFT JOIN</code> (a left join)</li>
+<li><code>WHERE</code></li>
+<li><code>GROUP BY</code></li>
+<li><code>HAVING</code></li>
+<li><code>ORDER BY</code></li>
+<li><code>LIMIT</code></li>
+</ul></li>
+<li>You should also know the order in which queries must be written</li>
+<li>Other functions to know for queries:
+<ul>
+<li><code>DISTINCT</code></li>
+<li>Summary functions like <code>SUM</code>, <code>AVG</code>, <code>MIN</code>, <code>MAX</code>, <code>COUNT</code></li>
+<li><code>LIKE</code>, and the wildcards <code>%</code> and <code>_</code></li>
+<li><code>CASE</code></li>
+</ul></li>
+<li>The function of primary and foreign keys, and the constraints they place on tables</li>
+<li>How to read and interpret an ERD</li>
+<li>You should be able to read and interpet the results of <code>DESCRIBE</code>, <code>ALTER TABLE</code>, and <code>INSERT INTO</code> statements. You will <em>not</em> have to write these statements</li>
+<li>Subqueries</li>
+</ul>
+<section id="practice-with-sql-queries" class="level2">
+<h2 class="anchored" data-anchor-id="practice-with-sql-queries">Practice with SQL queries</h2>
+<p>Here is a small table in a SQL database. The name of the table is <code>small_penguins</code>.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>     species island bill_length_mm bill_depth_mm
+1     Gentoo Biscoe           43.3          14.0
+2     Gentoo Biscoe           59.6          17.0
+3     Adelie  Dream           39.7          17.9
+4     Adelie  Dream           39.2          21.1
+5  Chinstrap  Dream           50.8          19.0
+6     Gentoo Biscoe           49.9          16.1
+7  Chinstrap  Dream           50.7          19.7
+8     Gentoo Biscoe           47.3          15.3
+9     Gentoo Biscoe           49.3          15.7
+10    Adelie  Dream           37.5          18.9</code></pre>
+</div>
+</div>
+<p>In each of the following examples, write a SQL query to produce the desired output from <code>small_penguins</code>.</p>
+<ol start="21" type="1">
+<li>Output:</li>
+</ol>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>    species island n
+1    Adelie  Dream 3
+2 Chinstrap  Dream 2
+3    Gentoo Biscoe 5</code></pre>
+</div>
+</div>
+<ol start="22" type="1">
+<li>Output:</li>
+</ol>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>  island   species mean_length
+1 Biscoe    Gentoo       49.88
+2  Dream    Adelie       38.80
+3  Dream Chinstrap       50.75</code></pre>
+</div>
+</div>
+<ol start="23" type="1">
+<li>Output:</li>
+</ol>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>     species island bill_length_mm bill_depth_mm bill_ratio
+1     Gentoo Biscoe           43.3          14.0   3.092857
+2     Gentoo Biscoe           59.6          17.0   3.505882
+3     Adelie  Dream           39.7          17.9   2.217877
+4     Adelie  Dream           39.2          21.1   1.857820
+5  Chinstrap  Dream           50.8          19.0   2.673684
+6     Gentoo Biscoe           49.9          16.1   3.099379
+7  Chinstrap  Dream           50.7          19.7   2.573604
+8     Gentoo Biscoe           47.3          15.3   3.091503
+9     Gentoo Biscoe           49.3          15.7   3.140127
+10    Adelie  Dream           37.5          18.9   1.984127</code></pre>
+</div>
+</div>
+<ol start="24" type="1">
+<li>Output:</li>
+</ol>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>  species island bill_length_mm bill_depth_mm
+1  Adelie  Dream           39.7          17.9
+2  Adelie  Dream           39.2          21.1
+3  Adelie  Dream           37.5          18.9</code></pre>
+</div>
+</div>
+</section>
+<section id="joins" class="level2">
+<h2 class="anchored" data-anchor-id="joins">Joins</h2>
+<p>In each of the following questions, write a SQL query to produce the desired output from the two input tables</p>
+<ol start="25" type="1">
+<li></li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>df1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  id  x
+1  1  7
+2  2  9
+3  3 13</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>df2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  id  y
+1  1 10
+2  2 12
+3  4 14</code></pre>
+</div>
+</div>
+<p>Output:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>  id  x  y
+1  1  7 10
+2  2  9 12
+3  3 13 NA</code></pre>
+</div>
+</div>
+<ol start="26" type="1">
+<li></li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>df1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  id  x
+1  1  7
+2  2  9
+3  3 13</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>df2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  id  y
+1  1 10
+2  2 12
+3  4 14</code></pre>
+</div>
+</div>
+<p>Output:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>  id x  y
+1  1 7 10
+2  2 9 12</code></pre>
+</div>
+</div>
+</section>
+<section id="more-practice-with-sql-queries" class="level2">
+<h2 class="anchored" data-anchor-id="more-practice-with-sql-queries">More practice with SQL queries</h2>
+<p>The <code>nycflights13</code> package in R contains several datasets describing flights from NY airports in 2013, including the <code>airports</code> and <code>weather</code> tables.</p>
+<p>The <code>airports</code> table has one row for each different airport in the database. There are a total of 1458 rows and 8 columns in the <code>airports</code> table; here are a few random rows from the table, showing the relevant columns for this question:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>  faa                                                name
+1 RAC                              John H. Batten Airport
+2 RME                                       Griffiss Afld
+3 PDK                            Dekalb-Peachtree Airport
+4 HSV Huntsville International Airport-Carl T Jones Field
+5 OEB                      Branch County Memorial Airport</code></pre>
+</div>
+</div>
+<p>The <code>weather</code> table has one row for each date-time, for each of the three NY airports (EWR, JFK, LGA), and records a variety of weather variables at each time for each location. Here are a few random rows from the table, showing the relevant columns for this question:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>  origin month  temp humid
+1    EWR    12 39.92 73.08
+2    EWR     9 77.00 51.76
+3    JFK    10 64.94 67.57
+4    LGA     3 48.02 86.08
+5    EWR     9 62.06 74.75</code></pre>
+</div>
+</div>
+<p>The <code>weather</code> table uses a 3-character FAA code to identify each airport. It does <em>not</em> include the full name for the airports.</p>
+<p>We would like to produce a table with the mean temperature, and humidity for each month, for each of the 3 NYC airports in the database. The output table should also include the full name of each airport. Here is what the output table looks like:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>   origin                name month mean_temp mean_humid
+1     EWR Newark Liberty Intl     1  35.56216   62.12451
+2     EWR Newark Liberty Intl     2  34.26332   63.33558
+3     EWR Newark Liberty Intl     3  40.11865   57.91382
+4     EWR Newark Liberty Intl     4  52.97750   54.23513
+5     EWR Newark Liberty Intl     5  63.32024   64.07371
+6     EWR Newark Liberty Intl     6  73.26725   67.00229
+7     EWR Newark Liberty Intl     7  80.70300   66.67641
+8     EWR Newark Liberty Intl     8  74.53748   65.75175
+9     EWR Newark Liberty Intl     9  67.30478   64.03556
+10    EWR Newark Liberty Intl    10  59.77821   65.31928
+11    EWR Newark Liberty Intl    11  44.57734   56.52011
+12    EWR Newark Liberty Intl    12  37.95008   69.72141
+13    JFK John F Kennedy Intl     1  35.38555   61.66162
+14    JFK John F Kennedy Intl     2  34.19246   62.55848
+15    JFK John F Kennedy Intl     3  39.54472   58.02222
+16    JFK John F Kennedy Intl     4  50.14270   60.05764
+17    JFK John F Kennedy Intl     5  59.31476   70.98926
+18    JFK John F Kennedy Intl     6  69.95825   73.76147
+19    JFK John F Kennedy Intl     7  78.73492   71.74469
+20    JFK John F Kennedy Intl     8  73.81878   67.84420
+21    JFK John F Kennedy Intl     9  66.89775   65.25182
+22    JFK John F Kennedy Intl    10  59.80195   65.06362
+23    JFK John F Kennedy Intl    11  45.13419   56.79961
+24    JFK John F Kennedy Intl    12  38.60487   68.31341
+25    LGA          La Guardia     1  35.95927   59.15609
+26    LGA          La Guardia     2  34.35612   60.68603
+27    LGA          La Guardia     3  39.97652   56.55947
+28    LGA          La Guardia     4  52.11450   53.15060
+29    LGA          La Guardia     5  62.75000   61.49618
+30    LGA          La Guardia     6  73.32650   61.22686
+31    LGA          La Guardia     7  80.76425   62.26404
+32    LGA          La Guardia     8  75.04825   60.34574
+33    LGA          La Guardia     9  67.91125   59.67743
+34    LGA          La Guardia    10  60.63244   60.13875
+35    LGA          La Guardia    11  45.26093   53.49296
+36    LGA          La Guardia    12  38.76976   63.62769</code></pre>
+</div>
+</div>
+<ol start="27" type="1">
+<li><p>Write a SQL query to produce the desired results.</p></li>
+<li><p>How would you modify your above query to keep only the rows in the results for which the mean temperature is at least 60?</p></li>
+<li><p>How would you modify your above query to keep only the rows for which the mean temperature is the highest average temperature?</p></li>
+</ol>
+</section>
+<section id="conceptual-questions" class="level2">
+<h2 class="anchored" data-anchor-id="conceptual-questions">Conceptual questions</h2>
+<ol start="30" type="1">
+<li><p>What are the differences between <code>SELECT</code> in a SQL query, and the <code>select</code> function from <code>dplyr</code> in R?</p></li>
+<li><p>Suppose you are managing a database for a hospital. List four different tables which might be included in the hospital database. For each table:</p></li>
+</ol>
+<ul>
+<li>Describe what information would be included (what would a row represent? what would be some of the columns?)</li>
+<li>Is there a natural primary key for the table? What column or set of columns would form that primary key?</li>
+<li>Are there any columns in the table that would be foreign keys for other tables in the database?</li>
+</ul>
 </section>
 </section>
 <section id="practice-with-function-scoping" class="level1">
 <h1>Practice with function scoping</h1>
-<ol start="6" type="1">
+<ol start="32" type="1">
 <li>What will be the output of the following code?</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">10</span></span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>test_fun <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">x =</span> <span class="dv">11</span>){</span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(x)</span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="fu">test_fun</span>()</span>
-<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>test_fun <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">x =</span> <span class="dv">11</span>){</span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(x)</span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a><span class="fu">test_fun</span>()</span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<ol start="7" type="1">
+<ol start="33" type="1">
 <li>What will be the output of the following code?</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">10</span></span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>test_fun <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">y =</span> <span class="dv">11</span>){</span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(x <span class="sc">+</span> <span class="dv">1</span>)</span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a><span class="fu">test_fun</span>()</span>
-<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>test_fun <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">y =</span> <span class="dv">11</span>){</span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(x <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a><span class="fu">test_fun</span>()</span>
+<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<ol start="8" type="1">
+<ol start="34" type="1">
 <li>What will be the output of the following code?</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">10</span></span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>test_fun <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">y =</span> <span class="dv">11</span>){</span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> x <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(x <span class="sc">+</span> <span class="dv">1</span>)</span>
-<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="fu">test_fun</span>()</span>
-<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>test_fun <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">y =</span> <span class="dv">11</span>){</span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> x <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(x <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a><span class="fu">test_fun</span>()</span>
+<span id="cb60-7"><a href="#cb60-7" aria-hidden="true" tabindex="-1"></a>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<ol start="9" type="1">
+<ol start="35" type="1">
 <li>What will be the output of the following code?</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">10</span></span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>test_fun <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">x =</span> <span class="dv">11</span>){</span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> x <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(x <span class="sc">+</span> <span class="dv">1</span>)</span>
-<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a><span class="fu">test_fun</span>()</span>
-<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>test_fun <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">x =</span> <span class="dv">11</span>){</span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> x <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(x <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a><span class="fu">test_fun</span>()</span>
+<span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<ol start="10" type="1">
+<ol start="36" type="1">
 <li>What will be the output of the following code?</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">10</span></span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>test_fun <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">x =</span> <span class="dv">11</span>){</span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> x <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(x <span class="sc">+</span> <span class="dv">1</span>)</span>
-<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">test_fun</span>(x)</span>
-<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>test_fun <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">x =</span> <span class="dv">11</span>){</span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> x <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(x <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb62-6"><a href="#cb62-6" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">test_fun</span>(x)</span>
+<span id="cb62-7"><a href="#cb62-7" aria-hidden="true" tabindex="-1"></a>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="practice-with-lists" class="level1">
 <h1>Practice with lists</h1>
-<ol start="15" type="1">
+<ol start="37" type="1">
 <li>Create a list <code>x</code> in R such that:</li>
 </ol>
 <ul>

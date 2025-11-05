@@ -250,7 +250,7 @@ Consider the following portion of a web page:
 <h1> STA 279 </h1>
 
 <p> 
-  Welcome to STA 279! This is a 16-week course offered at Wake Forest University, which meets 3 hours each week. The syllabus can be found <a href='https://sta279-s24.github.io/about/'>here</a> 
+  Welcome to STA 279! This is a 16-week course offered at Wake Forest University, which meets 3 hours each week. The syllabus can be found <a href='https://sta279-f25.github.io/about/'>here</a> 
 </p>
 
 <p>
@@ -277,7 +277,7 @@ Now here is the source HTML for that simple web page:
   This is a 16-week course offered at Wake Forest University, 
   which meets 3 hours each week. 
   The syllabus can be found 
-  <a href='https://sta279-s24.github.io/about/'>here</a> 
+  <a href='https://sta279-f25.github.io/about/'>here</a> 
 </p>
 
 <p>
@@ -332,21 +332,230 @@ Consider the following short portion of a web page, with URL `https://fake_page.
 </div>
 ```
 
-16. Write code in R that will extract the following strings from this web page (as a vector):
+16. Write code in R that will extract the following string from this web page:
 
 ```{r, include=F}
-res_strs <- c("Room: Carswell 102", "Exam dates")
+res_strs <- c("Carswell 102")
 ```
 
 ```{r, echo=F}
 res_strs
 ```
 
+17. Using your code from the previous question, write a short function with the following specifications:
+    * Input: `url` the URL for a web page with the same format as above
+    * Output: the building and room number for the class, scraped from the web page
 
+18. Suppose that we have the web pages for 20 different classes at Wake Forest, all of which have the same format as shown above, but which take places in different rooms. The URLS are stored in a vector:
+
+```{r, include=F}
+class_urls <- paste0("https://fake_page_", 1:20, ".html")
+```
+
+```{r}
+class_urls
+```
+
+Using your answers to the previous questions, iterate over this vector of URLs to produce a vector containing the building and room number for each class.
+
+
+
+
+
+## Polite web scraping
+
+19. Why is it important to be polite when scraping from a website?
+
+20. What are the features of polite web scraping that we discussed in class?
+
+
+# SQL
+
+Here is a rough summary of what you should know from the SQL unit:
+
+* Pieces of a SQL query you should know:
+  * `SELECT`
+  * `FROM`
+  * `JOIN` (an inner join) and `LEFT JOIN` (a left join)
+  * `WHERE`
+  * `GROUP BY`
+  * `HAVING`
+  * `ORDER BY`
+  * `LIMIT`
+* You should also know the order in which queries must be written
+* Other functions to know for queries:
+  * `DISTINCT`
+  * Summary functions like `SUM`, `AVG`, `MIN`, `MAX`, `COUNT`
+  * `LIKE`, and the wildcards `%` and `_`
+  * `CASE`
+* The function of primary and foreign keys, and the constraints they place on tables
+* How to read and interpret an ERD
+* You should be able to read and interpet the results of `DESCRIBE`, `ALTER TABLE`, and `INSERT INTO` statements. You will *not* have to write these statements
+* Subqueries
+
+## Practice with SQL queries
+
+Here is a small table in a SQL database. The name of the table is `small_penguins`.
+
+```{r, echo=F, message=F, warning=F}
+library(tidyverse)
+library(palmerpenguins)
+
+set.seed(3)
+
+sub_data <- penguins |>
+  slice_sample(n=10) |>
+  select(species, island, bill_length_mm, bill_depth_mm)
+
+sub_data |>
+  data.frame()
+```
+
+In each of the following examples, write a SQL query to produce the desired output from `small_penguins`.
+
+21. Output:
+
+```{r, echo=F}
+sub_data |>
+  count(species, island) |>
+  data.frame()
+```
+
+22. Output:
+
+```{r, echo=F}
+sub_data |>
+  group_by(island, species) |>
+  summarize(mean_length = mean(bill_length_mm, na.rm=T)) |>
+  data.frame()
+```
+
+
+23. Output:
+
+```{r, echo=F}
+sub_data |>
+  mutate(bill_ratio = bill_length_mm/bill_depth_mm) |>
+  data.frame()
+```
+
+
+24. Output:
+
+```{r, echo=F}
+sub_data |>
+  filter(species == "Adelie", 
+         island == "Dream") |>
+  data.frame()
+```
+
+
+## Joins
+
+In each of the following questions, write a SQL query to produce the desired output from the two input tables
+
+25.
+
+```{r, echo=F}
+df1 <- data.frame(
+  id = c(1, 2, 3),
+  x = c(7, 9, 13)
+)
+
+df2 <- data.frame(
+  id = c(1, 2, 4),
+  y = c(10, 12, 14)
+)
+```
+
+```{r}
+df1
+
+df2
+```
+
+
+Output:
+
+```{r, echo=F}
+df1 |>
+  left_join(df2, join_by(id))
+```
+
+
+26.
+
+```{r}
+df1
+
+df2
+```
+
+
+Output:
+
+```{r, echo=F}
+df1 |>
+  inner_join(df2, join_by(id))
+```
+
+## More practice with SQL queries
+
+The `nycflights13` package in R contains several datasets describing flights from NY airports in 2013, including the `airports` and `weather` tables. 
+
+The `airports` table has one row for each different airport in the database. There are a total of 1458 rows and 8 columns in the `airports` table; here are a few random rows from the table, showing the relevant columns for this question:
+
+```{r, echo=F, message=F, warning=F}
+library(nycflights13)
+
+airports |>
+  select(faa, name) |>
+  slice_sample(n=5) |>
+  data.frame()
+```
+
+The `weather` table has one row for each date-time, for each of the three NY airports (EWR, JFK, LGA), and records a variety of weather variables at each time for each location. Here are a few random rows from the table, showing the relevant columns for this question:
+
+```{r, echo=F}
+weather |>
+  select(origin, month, temp, humid) |>
+  slice_sample(n=5) |>
+  data.frame()
+```
+
+The `weather` table uses a 3-character FAA code to identify each airport. It does *not* include the full name for the airports. 
+
+We would like to produce a table with the mean temperature, and humidity for each month, for each of the 3 NYC airports in the database. The output table should also include the full name of each airport. Here is what the output table looks like:
+
+```{r, echo=F}
+weather |>
+  group_by(origin, month) |>
+  summarize(mean_temp = mean(temp, na.rm=T),
+            mean_humid = mean(humid, na.rm=T)) |>
+  inner_join(airports, join_by(origin == faa)) |>
+  select(origin, name, month, mean_temp, mean_humid) |>
+  data.frame()
+```
+
+27. Write a SQL query to produce the desired results.
+
+28. How would you modify your above query to keep only the rows in the results for which the mean temperature is at least 60?
+
+29. How would you modify your above query to keep only the rows for which the mean temperature is the highest average temperature?
+
+
+## Conceptual questions
+
+30. What are the differences between `SELECT` in a SQL query, and the `select` function from `dplyr` in R?
+
+31. Suppose you are managing a database for a hospital. List four different tables which might be included in the hospital database. For each table:
+  * Describe what information would be included (what would a row represent? what would be some of the columns?)
+  * Is there a natural primary key for the table? What column or set of columns would form that primary key?
+  * Are there any columns in the table that would be foreign keys for other tables in the database?
 
 # Practice with function scoping
 
-6. What will be the output of the following code?
+32. What will be the output of the following code?
 
 ```{r, eval=F}
 x <- 10
@@ -357,7 +566,7 @@ test_fun()
 x
 ```
 
-7. What will be the output of the following code?
+33. What will be the output of the following code?
 
 ```{r, eval=F}
 x <- 10
@@ -368,7 +577,7 @@ test_fun()
 x
 ```
 
-8. What will be the output of the following code?
+34. What will be the output of the following code?
 
 ```{r, eval=F}
 x <- 10
@@ -380,7 +589,7 @@ test_fun()
 x
 ```
 
-9. What will be the output of the following code?
+35. What will be the output of the following code?
 
 ```{r, eval=F}
 x <- 10
@@ -392,7 +601,7 @@ test_fun()
 x
 ```
 
-10. What will be the output of the following code?
+36. What will be the output of the following code?
 
 ```{r, eval=F}
 x <- 10
@@ -406,7 +615,7 @@ x
 
 # Practice with lists
 
-15. Create a list `x` in R such that:
+37. Create a list `x` in R such that:
 
 * `x[[1]]` returns the function `mean`
 * `x[[2]]` returns the function `sd`
