@@ -1,0 +1,421 @@
+---
+title: "Exam 2 review"
+format: html
+editor: source
+---
+
+Below are questions to help you study for Exam 2. These are some examples of the kinds of questions I might ask.
+
+* This is not a practice exam. There will be fewer questions on the actual exam.
+* The questions cover most, but not all, possible material for the exam.
+* The distribution of questions here is not necessarily reflective of the distribution of questions on the actual exam.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message = FALSE)
+library(tidyverse)
+```
+
+
+# Strings and regular expressions
+
+## Example 1
+
+Consider the following strings:
+
+```{r, echo=F}
+strings <- c(
+  "George Washington: February 22, 1732",
+  "Thomas Jefferson: April 13, 1743",
+  "Abraham Lincoln: February 12, 1809",
+  "Theodore Roosevelt: October 27, 1858"
+)
+
+strings
+```
+
+For each question below, fill in the R code to produce the desired output.
+
+1.
+
+```{r, eval=F}
+str_extract(strings, ...)
+```
+
+```{r, echo=F}
+str_extract(strings, ".+(?=:)")
+```
+
+2.
+
+
+```{r, eval=F}
+str_extract(strings, ...)
+```
+
+```{r, echo=F}
+str_extract(strings, "(?<=: ).+")
+```
+
+3.
+
+```{r, eval=F}
+str_extract(strings, ...)
+```
+
+```{r, echo=F}
+str_extract(strings, "(?<=\\s).+(?=:)")
+```
+
+4.
+
+```{r, eval=F}
+str_extract(strings, ...)
+```
+
+```{r, echo=F}
+str_extract(strings, "(?<=, ).+")
+```
+
+## Example 2
+
+Consider the following strings:
+
+```{r, echo=F}
+strings <- c("apple", "banana", "canteloupe", "durian",
+             "eggplant", "french fries", "goat cheese",
+             "pizza", "99 red balloons", "101 dalmatians",
+             "route 66")
+```
+
+```{r}
+strings
+```
+
+
+For each question below, fill in the R code to produce the desired output.
+
+5.
+
+```{r, eval=F}
+str_subset(strings, ...)
+```
+
+```{r, echo=F}
+str_subset(strings, "\\d+")
+```
+
+6.
+
+```{r, eval=F}
+str_subset(strings, ...)
+```
+
+```{r, echo=F}
+str_subset(strings, "^\\d+")
+```
+
+7.
+
+```{r, eval=F}
+str_subset(strings, ...)
+```
+
+```{r, echo=F}
+str_subset(strings, "a")
+```
+
+8.
+
+```{r, eval=F}
+str_subset(strings, ...)
+```
+
+```{r, echo=F}
+str_subset(strings, "\\s")
+```
+
+9.
+
+```{r, eval=F}
+str_subset(strings, ...)
+```
+
+```{r, echo=F}
+str_subset(strings, "(.)\\1{1}")
+```
+
+## Example 3
+
+Suppose you receive a vector containing the following email addresses:
+
+```{r}
+emails <- c("evansc@wfu.edu",
+            "dalzelnm@wfu.edu",
+            "heplersa@wfu.edu")
+```
+
+10. Fill in the following code to produce the desired output:
+
+```{r, eval=F}
+str_extract(emails, ...)
+```
+
+```{r, echo=F}
+str_extract(emails, "^.+(?=@)")
+```
+
+## Example 4
+
+You have a folder with the following filenames:
+
+```{r}
+filenames <- c(".bash_profile",
+               "workspace.doc",
+               "img0912.jpg",
+               "updated_img0912.png",
+               "documentation.html",
+               "favicon.gif",
+               "access.lock")
+```
+
+
+11. Fill in the following code to produce the desired output:
+
+```{r, eval=F}
+str_subset(filenames, ...)
+```
+
+```{r, echo=F}
+str_subset(filenames, "(gif|png|jpg)")
+```
+
+## Example 5
+
+Consider the following string:
+
+```{r}
+ex_str <- "The kurtosis is defined by the equation $\\mu_4/\\sigma^4$, 
+where $\\mu_4$ is the fourth central moment 
+and $\\sigma$ is the standard deviation."
+```
+
+12. Fill in the following code to produce the desired output:
+
+```{r, eval=F}
+str_extract_all(ex_str, ...)
+```
+
+```{r, echo=F}
+str_extract_all(ex_str, "\\$[^\\$]+\\$")
+```
+
+## Example 6
+
+Here is another small dataset, `ex_df`, which has a single column (`faculty`):
+
+```{r, include=F}
+ex_df <- data.frame(faculty = c("Rob Erhardt, Professor: MAN 343",
+                "Daniel Beavers, Associate Professor: MAN 337",
+                "Kenneth Berenhaut, Professor: MAN 379",
+                "Leonardo Cella, Assistant Professor: MAN 344",
+                "Lucy D'Agostino McGowan, Assistant Professor: MAN 342",
+                "Nicole Dalzell, Associate Teaching Professor: MAN 338"))
+```
+
+```{r}
+ex_df
+```
+
+13. Write code to produce the following output using `ex_df`:
+
+```{r, echo=F}
+ex_df |>
+  separate_wider_regex(faculty,
+                       patterns = c(
+                         name = ".+",
+                         ", ",
+                         position = ".+",
+                         ": ",
+                         office = ".+"
+                       ))
+```
+
+
+# Web scraping
+
+## Example 1
+
+Consider the following portion of a web page:
+
+<h1> STA 279 </h1>
+
+<p> 
+  Welcome to STA 279! This is a 16-week course offered at Wake Forest University, which meets 3 hours each week. The syllabus can be found <a href='https://sta279-s24.github.io/about/'>here</a> 
+</p>
+
+<p>
+  Below are some useful dates for the semester:
+   <table>
+  <tr>
+    <td>Exam 1</td>
+    <td>March 1</td>
+  </tr>
+  <tr>
+    <td>Exam 2</td>
+    <td>April 12</td>
+  </tr>
+</table> 
+</p>
+
+Now here is the source HTML for that simple web page:
+
+```
+<h1> STA 279 </h1>
+
+<p> 
+  Welcome to STA 279! 
+  This is a 16-week course offered at Wake Forest University, 
+  which meets 3 hours each week. 
+  The syllabus can be found 
+  <a href='https://sta279-s24.github.io/about/'>here</a> 
+</p>
+
+<p>
+  Below are some useful dates for the semester:
+   <table>
+  <tr>
+    <td>Exam 1</td>
+    <td>March 1</td>
+  </tr>
+  <tr>
+    <td>Exam 2</td>
+    <td>April 12</td>
+  </tr>
+</table> 
+</p>
+```
+
+14. Suppose that the url for this page is "https://fake_web_page.html". Write code that will import the table of exam dates into R, as a data frame.
+
+15. Suppose that the url for this page is "https://fake_web_page.html". What will the following code return?
+
+```{r, eval=F}
+read_html("https://fake_web_page.html") |>
+  html_element("h1") |>
+  html_text2() |>
+  str_extract("\\d+")
+```
+
+## Example 2
+
+Consider the following short portion of a web page, with URL `https://fake_page.html`.
+
+```
+<div class="mesa">
+  <span>
+    <p> Hello! </p>
+  </span>
+  
+  <p class="small"> Welcome to STA 279! </p>
+  
+  <span>
+    <p class="small"> Room: Carswell 102 </p>
+  </span>
+  
+  <span>
+    <h3 class="small"> Grading policy </h3>
+  </span>
+  
+  <span>
+    <p class="small"> Exam dates </p>
+  </span>
+</div>
+```
+
+16. Write code in R that will extract the following strings from this web page (as a vector):
+
+```{r, include=F}
+res_strs <- c("Room: Carswell 102", "Exam dates")
+```
+
+```{r, echo=F}
+res_strs
+```
+
+
+
+# Practice with function scoping
+
+6. What will be the output of the following code?
+
+```{r, eval=F}
+x <- 10
+test_fun <- function(x = 11){
+  return(x)
+}
+test_fun()
+x
+```
+
+7. What will be the output of the following code?
+
+```{r, eval=F}
+x <- 10
+test_fun <- function(y = 11){
+  return(x + 1)
+}
+test_fun()
+x
+```
+
+8. What will be the output of the following code?
+
+```{r, eval=F}
+x <- 10
+test_fun <- function(y = 11){
+  x <- x + 1
+  return(x + 1)
+}
+test_fun()
+x
+```
+
+9. What will be the output of the following code?
+
+```{r, eval=F}
+x <- 10
+test_fun <- function(x = 11){
+  x <- x + 1
+  return(x + 1)
+}
+test_fun()
+x
+```
+
+10. What will be the output of the following code?
+
+```{r, eval=F}
+x <- 10
+test_fun <- function(x = 11){
+  x <- x + 1
+  return(x + 1)
+}
+x <- test_fun(x)
+x
+```
+
+# Practice with lists
+
+15. Create a list `x` in R such that:
+
+* `x[[1]]` returns the function `mean`
+* `x[[2]]` returns the function `sd`
+* `x[[3]][[1]]` returns the vector `c(0, 1, 2)`
+* `x[[3]][[2]]` returns a function which calculates the cube root of a vector
+
+
+
+
+
+
+
