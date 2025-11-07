@@ -16,4 +16,4 @@ November 5
   : [Select Star SQL](https://selectstarsql.com/)
 
 November 7
-: SQL
+: HW 8 work time
