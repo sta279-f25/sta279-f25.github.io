@@ -10,7 +10,7 @@ November 5
 : HW 8 work time
 
 : Exam 2 review questions
-  : [practice questions](https://sta279-f25.github.io/class_activities/exam_2_review.html)
+  : [practice questions](https://sta279-f25.github.io/class_activities/exam_2_review.html), [practice question solutions](https://sta279-f25.github.io/class_activities/exam_2_review_solutions.html)
   
 : Additional SQL practice
   : [Select Star SQL](https://selectstarsql.com/)
