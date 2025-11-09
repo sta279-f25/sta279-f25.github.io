@@ -1,0 +1,181 @@
+---
+title: "Project"
+output: 
+  rmdformats::robobook:
+    css: "homework.css"
+    highlight: pygments
+link-citations: yes
+---
+
+**Due:** 
+
+**Instructions:** 
+
+1. Go to Canvas -> Assignments -> Project. Open the GitHub Classroom assignment link
+2. Follow the [instructions](https://sta279-f25.github.io/resources/github_instructions/) to accept the assignment and clone the repository to your local computer
+3. The repository contains **two files**: `hw_07.R` and `hw_07.qmd`. You will use **both** of these files to write your HW 7 code. Commit and push to GitHub regularly.
+4. When you are finished, make sure to Render your Quarto document; this will produce a `hw_07.md` file which is easy to view on GitHub. 
+5. In the process of completing this assignment, you will also create a csv file, called something like `cheese_info.csv`. Commit and push all of the following files to GitHub: `cheese_info.csv`, `hw_07.R`, `hw_07.qmd`, and `hw_07.md`
+5. Finally, [request feedback](https://sta279-f25.github.io/resources/github_instructions/#step-10-request-feedback) on your assignment on the "Feedback" pull request on your HW 7 repository
+
+**Important:** Make sure to include **all four requested files** in your repository on GitHub to receive full credit.
+
+
+
+
+
+# Organizing a student research competition
+
+I am currently one of the organizers for the Undergraduate Statistics Project Competition ([USPROC](https://www.causeweb.org/usproc/)), a national statistics competition in which students submit research projects from classes and independent studies. This organization work involves managing data about student submissions, communicating with faculty mentors, and coordinating judging. I use many of the tools we have learned in STA 279 to do this work.
+
+In this project, you will play the role of a competition organizer from start to finish, from handling student submissions to assigning judges and finally determining a winner. I have modified the rules of the competition slightly for this project, but otherwise what you will be doing is very similar.
+
+## Submission rules
+
+* One student cannot submit multiple projects
+* The length of a project can be at most 5 pages
+* There can be at most 5 authors of the project (the student who submits the project, plus at most 4 coauthors)
+* Each project must be sponsored by a faculty member, who will attest that the student(s) did complete the project themselves and were undergraduates when they did the work
+* Each faculty member can sponsor at most 5 projects for the competition. If more than 5 projects are submitted for a faculty member, then they will be asked to choose their top 5 projects for judging
+
+## Judging rules
+
+* Judges must be university faculty, graduate students, or industry professionals
+* Each judge can score at most 6 projects
+* Every project must be scored by at least 5 judges
+* Each project is scored on the following criteria. Each criterion is worth 10 points:
+  * Introduction: how well the students introduce and motivate the problem
+  * Methods: are the chosen statistical methods sufficient and appropriate to address the research question?
+  * Interpretation: do the students use and interpret their statistical results correctly?
+  * Discussion: do the students discuss their results and conclusions in the context of the research problem?
+  * Discretionary: each judge can award additional discretionary points for projects they believe are particularly worthy of praise
+* Judges scores will be combined to determine 1st place, 2nd place, and 3rd place winners of the competition. It will be up to you to decide how to appropriately combine these scores
+
+# Your task
+
+## Provided data
+
+In the GitHub repository, you are provided with 5 CSV files:
+
+* `faculty_info.csv`: the name and email address of the faculty members sponsoring the student projects in this competition
+* `judge_info.csv`: the name, judge ID, and role (faculty, graduate student, etc.) of everyone who volunteered to judge this competition
+* `judge_scores.csv`: scores from the judges on their assigned projects.
+  * **Note:** part of your task will involve you assigning judges to projects. You will almost certainly make different assignments than what I did here. That is ok! You will just use the `judges_scores.csv` file to find the winners
+* `student_submissions.csv`: information about the different student submissions to the competition
+* `verification_responses.csv`: information provided by faculty sponsors when asked to verify their students' submissions
+
+## Part 1: Send verification emails
+
+The email addresses included in the `faculty_info.csv` file really work (they all go to me). Your first task is to email each faculty member with information about the project(s) submitted by their students; each sponsor is asked to (1) verify their students' work, and tell us if any projects should be disqualified, and (2) choose their top 5 projects, if they have more than 5 projects submitted to the competition.
+
+Here is an example of what the email should look like:
+
+:::{.question}
+---
+subject: 'Student Submissions Verifications'
+---
+
+Dear Professor Sebastian Vigil,
+
+We are delighted to see that you have **3** student(s) who submitted to the competition.
+
+For your convenience, here is a list of your students who have submitted to the competition:
+
+<table>\n <thead>\n  <tr>\n   <th style=\"text-align:right;\"> ID </th>\n   <th style=\"text-align:left;\"> Student </th>\n   <th style=\"text-align:left;\"> Coauthors </th>\n  </tr>\n </thead>\n<tbody>\n  <tr>\n   <td style=\"text-align:right;\"> 2 </td>\n   <td style=\"text-align:left;\"> Cody Estudillo </td>\n   <td style=\"text-align:left;\"> Shaofan Roe-Miller, Dominic Oyebi, Brenda Collazo, Jesse Kuebler, Connie Jernigan </td>\n  </tr>\n  <tr>\n   <td style=\"text-align:right;\"> 14 </td>\n   <td style=\"text-align:left;\"> Kiana Blackmon </td>\n   <td style=\"text-align:left;\"> Mohamed Hines, Andrea Omar, Melana Axalan, Thaaqib al-Vohra, Ashley Makaiwi </td>\n  </tr>\n  <tr>\n   <td style=\"text-align:right;\"> 70 </td>\n   <td style=\"text-align:left;\"> Shawn Del Rosario </td>\n   <td style=\"text-align:left;\"> Derek Rhoads, Kamri Comfort, Cheyenne Cholas, Anna Moland </td>\n  </tr>\n</tbody>\n</table>
+
+*Please note that in the case of multiple authors, the corresponding author is listed as Student and other authors are listed as Co-Authors.* 
+
+We have **two requests** for you as the faculty sponsor. 
+
+1. Please **verify that all of these are your students**, that they (and any co-authors) are/were an undergraduate student when completing the work, and that you have approved their project for submission to the competition. 
+
+2. If you have **more than 5 submissions in any of the categories, we ask you to provide a list of which projects you consider to be the top five submissions within each category** to reduce the burden on our judges for course-wide submissions. Those top 5 will then be sent for judging with the potential to receive an award.  While the remaining will not receive an award, they will, along with all submissions, each receive an email from us once judging is complete, thanking them for their submission and encouraging them on their educational path.  
+
+Thank you very much for promoting the competition with your students!  
+
+Best, 
+(Your name here)
+:::
+
+**Requirements:**
+
+* The student information for each faculty sponsor must be included as a **table** in the email, as shown in the example
+* The emails must be **generated** and **sent** automatically, using R. You are not allowed to write the emails all separately by hand. Rather, you must write a script that fills in the email template with the information for each faculty member (their name, the number of projects submitted, and a table of the student information), then sends the emails
+  * I would recommended looking at the [`mailmerge`](https://cran.r-project.org/web/packages/mailmerge/vignettes/introduction.html) and [`gmailr`](https://gmailr.r-lib.org/) packages for this step
+* The emails must be sent to the faculty email addressed in the `faculty_info` file. If correctly sent to these email addresses, they will be forwarded to my inbox, so I will be able to check. Make sure to sign your names!
+
+### Faculty verification responses
+
+The responses to your verification emails are contained in the `verification_responses.csv` file. Each faculty member:
+
+* Reports whether they have more than 5 projects entered in the competition
+* If they *do* have more than 5 projects, they provide the IDs for their top 5 projects for judging (their other projects will not be judged)
+* Reports the IDs for any of their projects which they think should be disqualified (e.g., because the students were not undergraduates at the time of the work)
+
+## Part 2: Assign judges
+
+Now that you have received submission verification from the faculty members, it is time to assign judges to the projects. Your task in this part is to produce a table, which you will write to a CSV file called `judging_assignments.csv`.
+
+**Requirements:**
+
+* Judging assignments should obey the judging and competition rules described above
+* You may not waste judges' time: do not send them inadmissible projects, and do not assign too many projects to any judge
+* Your `judging_assignments.csv` file should contain one row for each judge assigned to the projects, with the following columns:
+  * `judge_name`: the name of the judge
+  * `judge_id`: the judge's ID number, corresponding to the `judge_id` column in the `judge_info.csv` file
+  * A column for each project the judge is assigned, containing the project ID number. Reading across the row for each judge will tell me which projects were assigned to that judge
+  
+### Judging scores
+
+The judges submit their scores, and the resulting scores are contained in the `judge_scores.csv` file. I know that the judging assignments you made will not match up with the projects assigned to each judge in `judge_scores.csv`. That is ok! For Part 2, ignore the `judge_scores.csv` file. Then for Part 3 (finding winners), just use the `judge_scores.csv` file -- don't worry about your own judging assignments after finishing Part 2.
+
+## Part 3: Winning projects
+
+Now that we have the judging scores, we can go ahead and identify the winners! Using the scores, your task is to create a table containing the 1st, 2nd, and 3rd place winner information. Your table should have three rows (one for each winner), and the following columns:
+
+* `Award`: whether the project won 1st, 2nd, or 3rd place
+* `ID`: the ID of the project
+* `Student`: the full name of the student who submitted the project
+* `Coauthors`: the names of any co-authors on the project
+* `Faculty`: The full name of the faculty sponsor for the project
+* `School`: the school which the students attend
+
+You will save this information in a CSV file called `winning_projects.csv`.
+
+**Requirements:**
+
+* It is up to you to figure out how to combine judging scores to determine the winning projects. However, your choice must be statistically sound and defensible
+
+## Other requirements
+
+**Code:** 
+
+* All code needed to reproduce the work must be included in the repository and pushed to GitHub. This includes the code for emailing the faculty sponsors, assigning judges, and determining winners.
+* Any additional files you create, such as `judging_assignments.csv` and `winning_projects.csv`, must also be included in the GitHub repository
+* You may not modify any of the original CSV files I provide
+* Your code should be organized and commented. Consider dividing different tasks between different files. Consider using appropriate helper functions when needed.
+
+**Contributions and sources:** Include a `README.md` in the repository which describes:
+
+* The contributions for each group member
+* Any outside resources used (provide citation for things like R package documentation, discussion forum posts that were helpful, etc.)
+* Any use of generative AI. Your disclosure should state what program you used and how you used it, including links to the specific prompts you used, if possible. Properly citing the AI-generated content allows me to understand your process better and gives credit to the assistance received from these tools.
+
+
+# Checklist
+
+* All code necessary to reproduce your work is included in the repository and pushed to GitHub
+* `judging_assignments.csv` and `winning_projects.csv` files are included and pushed to GitHub
+* `README.md` is included, describing each group member's contributions, citing any outside sources, and thoroughly describing any use of AI
+* Verification emails were sent to the email addresses in `faculty_info.csv`
+* Code organization:
+  * Proper use of `.R` and `.qmd` files
+  * Code divided between multiple files if needed
+  * Code is commented
+  * Helper functions are used when appropriate
+  * Code uses tools we have learned in class
+
+
+
+
+

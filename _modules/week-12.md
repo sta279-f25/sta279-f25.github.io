@@ -3,7 +3,7 @@ title: Project work time, Exam 2
 ---
 
 November 10
-: Project work time
+: Work day
 
 November 12
 : Exam 2 review day
