@@ -1,9 +1,12 @@
 ---
-title: Project work time, Exam 2
+title: Exam 2
 ---
 
 November 10
 : Work day
+
+: **Project released**{: .label .label-green }
+  : [Project](https://sta279-f25.github.io/project/project.html)
 
 November 12
 : Exam 2 review day
