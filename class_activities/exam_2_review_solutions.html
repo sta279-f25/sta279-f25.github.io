@@ -459,7 +459,8 @@ April 12
 <div class="cell">
 <div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_html</span>(<span class="st">"https://fake_page.html"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_element</span>(<span class="st">"span &gt; p.small"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_text2</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_text2</span>() <span class="sc">|&gt;</span></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_extract</span>(<span class="st">"(?&lt;=: ).+"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ol start="17" type="1">
 <li>Using your code from the previous question, write a short function with the following specifications:
@@ -473,8 +474,9 @@ April 12
 <div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>get_room <span class="ot">&lt;-</span> <span class="cf">function</span>(url){</span>
 <span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_html</span>(url) <span class="sc">|&gt;</span></span>
 <span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_element</span>(<span class="st">"span &gt; p.small"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_text2</span>()</span>
-<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_text2</span>() <span class="sc">|&gt;</span></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_extract</span>(<span class="st">"(?&lt;=: ).+"</span>)</span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ol start="18" type="1">
 <li>Suppose that we have the web pages for 20 different classes at Wake Forest, all of which have the same format as shown above, but which take places in different rooms. The URLS are stored in a vector:</li>
@@ -1220,12 +1222,12 @@ April 12
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">LGA</td>
-<td style="text-align: right;">80.76425</td>
-</tr>
-<tr class="even">
 <td style="text-align: left;">EWR</td>
 <td style="text-align: right;">80.70300</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">LGA</td>
+<td style="text-align: right;">80.76425</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">JFK</td>
@@ -1270,25 +1272,25 @@ April 12
 </thead>
 <tbody>
 <tr class="odd">
+<td style="text-align: left;">EWR</td>
+<td style="text-align: left;">Newark Liberty Intl</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">80.70300</td>
+<td style="text-align: right;">66.67641</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">JFK</td>
 <td style="text-align: left;">John F Kennedy Intl</td>
 <td style="text-align: right;">7</td>
 <td style="text-align: right;">78.73492</td>
 <td style="text-align: right;">71.74469</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">LGA</td>
 <td style="text-align: left;">La Guardia</td>
 <td style="text-align: right;">7</td>
 <td style="text-align: right;">80.76425</td>
 <td style="text-align: right;">62.26404</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">EWR</td>
-<td style="text-align: left;">Newark Liberty Intl</td>
-<td style="text-align: right;">7</td>
-<td style="text-align: right;">80.70300</td>
-<td style="text-align: right;">66.67641</td>
 </tr>
 </tbody>
 </table>
@@ -1324,11 +1326,11 @@ April 12
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">EWR</td>
-<td style="text-align: left;">Newark Liberty Intl</td>
+<td style="text-align: left;">JFK</td>
+<td style="text-align: left;">John F Kennedy Intl</td>
 <td style="text-align: right;">7</td>
-<td style="text-align: right;">80.70300</td>
-<td style="text-align: right;">66.67641</td>
+<td style="text-align: right;">78.73492</td>
+<td style="text-align: right;">71.74469</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">LGA</td>
@@ -1338,11 +1340,11 @@ April 12
 <td style="text-align: right;">62.26404</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">JFK</td>
-<td style="text-align: left;">John F Kennedy Intl</td>
+<td style="text-align: left;">EWR</td>
+<td style="text-align: left;">Newark Liberty Intl</td>
 <td style="text-align: right;">7</td>
-<td style="text-align: right;">78.73492</td>
-<td style="text-align: right;">71.74469</td>
+<td style="text-align: right;">80.70300</td>
+<td style="text-align: right;">66.67641</td>
 </tr>
 </tbody>
 </table>

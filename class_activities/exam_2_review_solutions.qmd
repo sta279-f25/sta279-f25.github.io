@@ -350,7 +350,8 @@ res_strs
 ```{r, eval=F}
 read_html("https://fake_page.html") |>
   html_element("span > p.small") |>
-  html_text2()
+  html_text2() |>
+  str_extract("(?<=: ).+")
 ```
 
 
@@ -364,7 +365,8 @@ read_html("https://fake_page.html") |>
 get_room <- function(url){
   read_html(url) |>
   html_element("span > p.small") |>
-  html_text2()
+  html_text2() |>
+  str_extract("(?<=: ).+")
 }
 ```
 
