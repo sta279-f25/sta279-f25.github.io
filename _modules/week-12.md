@@ -10,6 +10,7 @@ November 10
 
 November 12
 : Exam 2 review day
+  : [review slides](https://sta279-f25.github.io/slides/exam_2_review.pdf)
 
 November 14
 : **Exam 2**{: .label .label-red }
