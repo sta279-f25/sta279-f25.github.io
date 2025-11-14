@@ -31,9 +31,7 @@ To get started, click on the link and log in with your usual WFU credentials.
 
 **Note:** Connecting requires you to be on campus WiFi. If you are off-campus, first connect via VPN; see the [VPN overview](https://is.wfu.edu/vpn/) and [installation instructions](https://is.wfu.edu/software/wfu-vpn/) from Information Systems.
 
-Once you log on, you will see the STA 279 course homepage, with links to RStudio and VS Code at the bottom (you can ignore VS Code, although you are certainly welcome to use it if you like):
-
-<img src="https://sta279-f25.github.io/resources/deac_cluster_instruction_pictures/deac_cluster_homepage.png" width="70%"/>
+Once you log on, you will see the STA 279 course homepage, with links to RStudio and VS Code at the bottom (you can ignore VS Code, although you are certainly welcome to use it if you like).
 
 ## Starting an RStudio session
 
@@ -81,7 +79,7 @@ This page tells you that you have a session running, provides some details about
 
 Your session should be initialized in the working directory `/deac/sta/classes/sta279/USERNAME` on the cluster. This working directory is a folder which will store all of the classwork you do on the DEAC cluster for this course. In the `Files` pane of RStudio, you should see a list of files in your working directory (if this is the first time logging on, the directory may still be empty).
 
-Most of the coding work you do in this course will be submitted through GitHub (see the next section), so typically you shouldn't need to move files between the RStudio Server and your local computer. If you do, however, then you can **upload** files with the `Upload` button on the files tab:
+Most of the coding work you do in this course will be submitted through GitHub, so typically you shouldn't need to move files between the RStudio Server and your local computer. If you do, however, then you can **upload** files with the `Upload` button on the files tab:
 
 <img src="https://sta279-f25.github.io/resources/deac_cluster_instruction_pictures/deac_cluster_files_tab.png" width="60%"/>
 
