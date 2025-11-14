@@ -1,0 +1,50 @@
+---
+title: "Warmup"
+format: pdf
+editor: source
+---
+
+\vspace{-2.5cm}
+
+# Python and R
+
+Below are two pieces of code, performing the same task. The first piece of code is written in Python, while the second is written in R.
+
+* What is this code doing?
+* What similarities and differences do you notice between Python and R?
+
+**Python:**
+
+```{python, eval=F}
+import numpy as np
+
+M = 10 
+hats = np.arange(M) 
+nsim = 10000 
+results = np.zeros(nsim) 
+
+for i in range(nsim):
+    randomized_hats = np.random.choice(hats, M, replace = False)
+    results[i] = np.sum(randomized_hats == hats) > 0
+
+np.mean(results)
+```
+
+**R:**
+
+```{r, eval=F}
+M <- 10 
+hats <- 1:M 
+nsim <- 10000 
+results <- rep(0, nsim) 
+
+for(i in 1:nsim){
+  randomized_hats <- sample(hats, M, replace = FALSE)
+  results[i] <- sum(randomized_hats == hats) > 0
+}
+
+mean(results)
+```
+
+
+
