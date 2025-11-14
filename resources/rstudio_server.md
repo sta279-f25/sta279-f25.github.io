@@ -33,7 +33,7 @@ To get started, click on the link and log in with your usual WFU credentials.
 
 Once you log on, you will see the STA 279 course homepage, with links to RStudio and VS Code at the bottom (you can ignore VS Code, although you are certainly welcome to use it if you like):
 
-<img src="https://sta279-s25.github.io/resources/deac_cluster_instruction_pictures/deac_cluster_homepage.png" width="70%"/>
+<img src="https://sta279-f25.github.io/resources/deac_cluster_instruction_pictures/deac_cluster_homepage.png" width="70%"/>
 
 ## Starting an RStudio session
 
@@ -49,7 +49,7 @@ At the top of the page, you will enter information about the working directory, 
 
 **Slurm partition:** Select `ondemand` from the drop-down menu
 
-<img src="https://sta279-s25.github.io/resources/deac_cluster_instruction_pictures/deac_cluster_request1.png" width="50%"/>
+<img src="https://sta279-f25.github.io/resources/deac_cluster_instruction_pictures/deac_cluster_request1.png" width="50%"/>
 
 ### Resource request
 
@@ -65,7 +65,7 @@ There are three types of resources to specify: *time*, *cores*, and *memory*. To
 
 A standard request will look like this, with 1 hour, 1 core, and 8 GB requested (always use node type = Any):
 
-<img src="https://sta279-s25.github.io/resources/deac_cluster_instruction_pictures/deac_cluster_request2.png" width="50%"/>
+<img src="https://sta279-f25.github.io/resources/deac_cluster_instruction_pictures/deac_cluster_request2.png" width="50%"/>
 
 Once you have configured the session correctly, submit the request at the bottom of the page.
 
@@ -73,7 +73,7 @@ Once you have configured the session correctly, submit the request at the bottom
 
 Once you have submitted your session request, the request will be **queued** on the cluster. When there are available resources and it is your turn in the queue, the session will be ready to start (generally this should only take a minute), and you will see the following page:
 
-<img src="https://sta279-s25.github.io/resources/deac_cluster_instruction_pictures/deac_cluster_startsession.png" width="50%"/>
+<img src="https://sta279-f25.github.io/resources/deac_cluster_instruction_pictures/deac_cluster_startsession.png" width="50%"/>
 
 This page tells you that you have a session running, provides some details about the session, and tells you how much time is left. To enter the session and open RStudio, click the `Connect to RStudio Server` button. This should open RStudio in a new tab in your browser.
 
@@ -83,11 +83,11 @@ Your session should be initialized in the working directory `/deac/sta/classes/s
 
 Most of the coding work you do in this course will be submitted through GitHub (see the next section), so typically you shouldn't need to move files between the RStudio Server and your local computer. If you do, however, then you can **upload** files with the `Upload` button on the files tab:
 
-<img src="https://sta279-s25.github.io/resources/deac_cluster_instruction_pictures/deac_cluster_files_tab.png" width="60%"/>
+<img src="https://sta279-f25.github.io/resources/deac_cluster_instruction_pictures/deac_cluster_files_tab.png" width="60%"/>
 
 To download files, select the files you want to download (click the checkbox next to them in the file list), then click on `More` -> `Export...`
 
-<img src="https://sta279-s25.github.io/resources/deac_cluster_instruction_pictures/deac_cluster_files_export.png" width="30%"/>
+<img src="https://sta279-f25.github.io/resources/deac_cluster_instruction_pictures/deac_cluster_files_export.png" width="30%"/>
 
 ## Saving your work and finishing the session
 
