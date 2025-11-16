@@ -9,6 +9,10 @@ editor: source
 * Work with a neighbor to answer the following questions 
 * You do not need to submit anything for this activity
 
+**Working in Python:** To work in Python, you will connect to the DEAC OnDemand server:
+
+[https://sta279-f25.github.io/resources/rstudio_server/](https://sta279-f25.github.io/resources/rstudio_server/)
+
 ## The birthday problem
 
 Suppose we have a class of 30 students. What is the probability that there is at least one shared birthday?
