@@ -355,7 +355,7 @@
 <span id="cb10-7"><a href=""></a></span>
 <span id="cb10-8"><a href=""></a>randomized_hats</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>array([2, 4, 8, 1, 7, 5, 3, 6, 9, 0])</code></pre>
+<pre><code>array([7, 6, 1, 0, 9, 2, 8, 5, 4, 3])</code></pre>
 </div>
 </div>
 <ul>
@@ -374,16 +374,16 @@
 <span id="cb12-6"><a href=""></a>randomized_hats <span class="op">=</span> np.random.choice(hats, M, replace <span class="op">=</span> <span class="va">False</span>)</span>
 <span id="cb12-7"><a href=""></a>randomized_hats</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>array([4, 8, 6, 2, 3, 0, 7, 9, 1, 5])</code></pre>
+<pre><code>array([0, 3, 1, 5, 8, 7, 6, 4, 9, 2])</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href=""></a>randomized_hats <span class="op">==</span> hats</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>array([False, False, False, False, False, False, False, False, False,
+<pre><code>array([ True, False, False, False, False, False,  True, False, False,
        False])</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href=""></a>np.<span class="bu">sum</span>(randomized_hats <span class="op">==</span> hats)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>np.int64(0)</code></pre>
+<pre><code>np.int64(2)</code></pre>
 </div>
 </div>
 <ul>
