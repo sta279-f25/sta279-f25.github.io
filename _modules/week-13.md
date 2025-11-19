@@ -8,6 +8,7 @@ November 17
   
 November 19
 : Python arrays and lists
+  : [Class Activity](https://sta279-f25.github.io/class_activities/ca_26.html)
 
 November 21
 : Data wrangling in Python
