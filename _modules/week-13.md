@@ -12,3 +12,4 @@ November 19
 
 November 21
 : Data wrangling in Python
+  : [slides (html)](https://sta279-f25.github.io/slides/lecture_27.html), [slides (pdf)](https://sta279-f25.github.io/slides/lecture_27.pdf), [Class Activity](https://sta279-f25.github.io/class_activities/ca_27.html)
