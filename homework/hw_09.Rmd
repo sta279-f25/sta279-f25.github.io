@@ -1,0 +1,249 @@
+---
+title: "Homework 9 (Optional)"
+output: 
+  rmdformats::robobook:
+    css: "homework.css"
+    highlight: pygments
+link-citations: yes
+---
+
+**Due:**  Wednesday, December 3, 11:59pm on Canvas
+
+**Important:**
+
+1. This assignment is *optional*. I will take your 8 highest hw grades in the class; so, if you choose to complete this assignment, it can potentially replace one of your other hw grades.
+2. You do *not* need to do this assignment through GitHub.
+
+**Working in Python:** To work in Python, you will connect to the DEAC OnDemand server:
+
+[https://sta279-f25.github.io/resources/rstudio_server/](https://sta279-f25.github.io/resources/rstudio_server/)
+
+**Instructions:** 
+
+1. Log on to the RStudio Server
+2. Open a Quarto file
+3. Complete the assignment, render to HTML
+4. Download your .qmd and HTML files to your local computer
+5. Submit the .qmd and HTML files on Canvas
+
+# Data wrangling in Python
+
+## `flights` data
+
+In the first part of this assignment, you will return to the `flights` data from the `nycflights13` package we have used throughout the semester. To load the `flights` data into Python, run the following in R:
+
+```{r}
+library(nycflights13)
+```
+
+
+Then run the following in Python:
+
+```{python}
+import numpy as np
+import pandas as pd
+
+flights_py = r.flights
+```
+
+### Pandas DataFrames and Series
+
+Before we begin manipulating this data in Python, let's take a look at what type of object it is:
+
+```{python}
+type(flights_py)
+```
+
+You can see that `flights_py` has been imported as a pandas DataFrame! Recall that R has two main ways of storing rectangular data: matrices and data frames. The equivalent of a matrix in Python is a 2-d NumPy array. The equivalent of an R data frame is a pandas data frame.
+
+Let's take a look at some of the attributes of this data in Python:
+
+```{python}
+flights_py.shape
+
+flights_py.columns
+```
+
+We can see that `flights_py` has 336776 and 19 columns, just like the `flights` data frame in R. The column names are also the same, and in the same order (just as we would hope).
+
+**Note:** In Python (and many object-oriented language), the `.` notation ("dot notation") is used to access attributes and methods of an object. Here, `flights_py` is an *object* (in particular, a pandas DataFrame). For example, *all* DataFrames in pandas have a `.shape` attribute, which stores information about their numbers of rows and columns.
+
+We can access column in Python by name:
+
+```{python}
+flights_py['origin']
+
+type(flights_py['origin'])
+```
+
+Each column in a pandas DataFrame is a *Series*; basically a one-dimensional DataFrame (sort of similar to a vector in R).
+
+### Basic data manipulation with pandas
+
+Pandas offers many functions which are similar to functions in `dplyr`. For example, if I want to group the flights by month, and calculate the mean departure delay in each month, I will use the `groupby` and `agg` (short for *aggregate*) functions:
+
+```{python}
+flights_py.groupby(by = 'month').agg({'dep_delay': 'mean'})
+```
+
+Let's break this code down:
+
+* First, notice that these functions are methods that belong to pandas DataFrames, so we access them with dot notation. `flights_py.groupby(by = 'month')` means "group the flights by month"
+* Second, notice that instead of piping (`|>`) from one step to the next, we chain the dot notation functions together. This is a similar idea to the pipe, just slightly different syntax. This chaining works because the output of `flights_py.groupby(...)` is itself a pandas DataFrame, and therefore has an `agg` method
+* Also notice that when I refer to columns, I always include quotes around the name
+* `agg` applies summary functions to certain columns. Here we are calculating the mean of the `dep_delay` column. If we didn't specify the `dep_delay` column, we would calculate the mean of all the numeric columns in the data
+* By default, missing values were ignored when calculating the mean
+
+Now, what if I want to calculate the proportion of cancelled flights for each month? Well, the proportion of missing values is not a built-in function (whereas the mean *is* built-in), so we have to write it ourselves:
+
+```{python}
+def prop_na(x):
+  return sum(pd.isna(x))/len(x)
+
+flights_py.groupby(by = 'month').agg(
+  {'dep_delay': prop_na}).sort_values(by = 'dep_delay', ascending = False)
+```
+
+:::{.question}
+#### Question 1
+
+Using pandas, calculate the mean arrival delay for each carrier in the NY flights data.
+:::
+
+:::{.question}
+#### Question 2
+
+How many carriers have a positive mean arrival delay?
+:::
+
+
+```{python, eval=F, include=F}
+(flights_py.groupby(by = 'carrier')
+           .agg({'arr_delay': 'mean'})
+           .query('arr_delay > 0')
+           .agg('count'))
+```
+
+:::{.question}
+#### Question 3
+
+Now use the `weather` and `airports` tables to calculate the mean temperature and humidity for each of the three NY airports, for each month.
+
+*Hints:*
+
+* You will need to move these tables from R into Python
+* Look up `merge` function in Pandas
+* Your final results should look like this:
+:::
+
+```{python, include=F}
+weather_py = r.weather
+airports_py = r.airports
+```
+
+```{python, echo=F}
+(weather_py[['origin', 'month', 'temp', 'humid']]
+          .merge(airports_py[['faa', 'name']], how = 'inner',
+                 left_on = 'origin', 
+                 right_on = 'faa')
+          .groupby(by = ['origin', 'name', 'month'])
+          .agg(mean_temp = ('temp', 'mean'), 
+               mean_humid = ('humid', 'mean')))
+```
+
+:::{.question}
+#### Question 4
+
+Modify your code from the previous question to keep only the rows corresponding to the month with the highest mean temperature for each airport. You may *not* manually specify which month this is (i.e. you may not do something like `.query(month == 7)`).
+
+*Hints:*
+
+* Grouping and then applying a [filtration](https://pandas.pydata.org/docs/user_guide/groupby.html#built-in-filtrations) may be useful here!
+* Your final results should look like this:
+:::
+
+
+```{python, echo=F}
+(weather_py[['origin', 'month', 'temp', 'humid']]
+          .merge(airports_py[['faa', 'name']], how = 'inner',
+                 left_on = 'origin', 
+                 right_on = 'faa')
+          .groupby(by = ['origin', 'name', 'month'])
+          .agg(mean_temp = ('temp', 'mean'), 
+               mean_humid = ('humid', 'mean'))
+          .sort_values(by = ['origin', 'mean_temp'], ascending = False)
+          .groupby(by = ['origin', 'name'])
+          .head(1))
+```
+
+
+## Health code violations
+
+The `Violations` data from the `mdsr` package contains information on 480621 health inspections conducted on restaurants in New York City. We can load the data into Python with the following code.
+
+First, in R:
+
+```{r, eval=F}
+library(mdsr)
+
+my_violations <- Violations |>
+  mutate(score = as.numeric(score))
+```
+
+Now in Python:
+
+```{python, eval=F}
+vio_py = r.my_violations
+```
+
+
+:::{.question}
+#### Question 5
+
+Using pandas, calculate the median inspection score by zip code for zip codes in Manhattan with 50 or more inspections.
+
+*Hints:* The following functions for pandas DataFrames will be useful:
+
+* `query`
+* `dropna`
+* `groupby`
+* `agg`
+:::
+
+
+```{python, echo=F, eval=F}
+(vio_py.query('boro == "MANHATTAN"')
+       .dropna(subset = ['zipcode', 'score', 'boro'])
+       .groupby(by = 'zipcode')
+       .agg({'score': 'median', 'zipcode': 'count'})
+       .query('zipcode >= 50'))
+```
+
+# Simulations
+
+In this part of the assignment, you will practice working in Python by re-implementing a simulation in Python. The following table shows you corresponding Python code for several R operations.
+
+| R code | (approximate) Python equivalent |
+| --- | --- |
+| `length` | `len` |
+| `dim(x)` | `x.shape` |
+| `seq` | `np.linspace` or `np.arange` |
+| `rep(0, n)` | `np.zeros(n)` |
+| `runif(n, a, b)` | `np.random.uniform(a, b, n)` |
+| `mean(x)` | `np.mean(x)` |
+| `for(i in 1:n)` | `for i in range(n):` |
+| `ifelse(...)` | `np.where(...)` |
+| `x[i]` | `x[i]` (but remember python is 0-indexed) |
+| `if(...){`<br> <br>`} else {` <br> <br> `}` | `if ... :` <br> <br> `else:` |
+| `rnorm(n, mean=0, sd=0.5)` | `np.random.normal(loc=0, scale=0.5, n)` |
+| `set.seed(...)` | `np.random.seed(...)` |
+| `sample(...)` | `np.random.choice(...)` |
+
+:::{.question}
+#### Question 6
+
+Re-do Question 1 from HW 5 (the robot tug-of-war) in Python. Confirm that you get a similar result.
+
+:::
+
+
