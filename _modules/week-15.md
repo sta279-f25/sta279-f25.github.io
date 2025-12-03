@@ -3,10 +3,10 @@ title: Semester wrap-up
 ---
 
 December 1
-: Wrap-up
+: Project work time
 
 December 3
-: Wrap-up
+: Project work time
 
 December 5
-: Wrap-up
+: Project work time
